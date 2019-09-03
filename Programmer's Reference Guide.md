@@ -35,20 +35,52 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 **TYPE: Command**
 **FORMAT: DOS &lt;string&gt;**	
 
+**Action:** This command works with the command/status channel or the directory of a Commodore DOS device and has different functionality depending on the type of argument.
+
+* Without an argument, `DOS` prints the status string of the current device.
+* With a string argument of `"8"` or `"9"`, it switches the current device to the given number.
+* With an argument starting with `"$"`, it shows the directory of the device.
+* Any other argument will be sent as a DOS command. 
+
+**EXAMPLES of DOS Statement:**
+
+      DOS"$" : REM SHOWS DIRECTORY
+      DOS"S:BAD_FILE" : REM DELETES "BAD_FILE"
+      DOS : PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
+
 #### MON
 
 **TYPE: Command**
 **FORMAT: MON**
+
+**Action:** This command enters the machine language monitor. See the dedicated chapter for a  description.
+
+**EXAMPLE of MON Statement:**
+
+      MON
 
 #### VPEEK
 
 **TYPE: Integer Function**
 **FORMAT: VPEEK (&lt;bank&gt;, &lt;address&gt;)**
 
+**Action:** Return a byte from the video address space. The video address space has 20 bit addresses, which is exposed as 16 banks of 65536 addresses each.
+
+**EXAMPLE of VPEEK Statement:**
+
+      PRINT (PEEK(4,0) AND $E0) / 32 : REM PRINTS THE CURRENT MODE (0-7)
+
 #### VPOKE
 
 **TYPE: Command**
 **FORMAT: VPOKE &lt;bank&gt;, &lt;address&gt;, &lt;value&gt;**
+
+**Action:** Set a byte in the video address space. The video address space has 20 bit addresses, which is exposed as 16 banks of 65536 addresses each.
+
+**EXAMPLE of VPOKE Statement:**
+
+      POKE 0,1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
+      REM AT 0/0 TO RED ON WHITE
 
 ### Other New Features
 
@@ -123,6 +155,7 @@ Some notes:
 * The Commodore Peripheral Bus calls first talk to the "Computer DOS" built into the ROM to detect an SD card, before falling back to the Commodore Serial Bus.
 * The `IOBASE` call returns $9F60, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
+* C64 compatibility extends into the layout of the zero page ($0000-$00FF) and, the KERNAL/BASIC variable space ($0200 -$02FF) and the vectors ($0300-$0333).
 
 ### Commodore 128 API Compatibility
 
@@ -186,10 +219,11 @@ Each of these symbols consist of 3 bytes with the following layout:
 2) Read joystick state from `JOY1` and `JOY2`.
 
 **EXAMPLE:**
-JSR GETJOY
-LDA JOY1
-AND #128
-BEQ NES_A_PRESSED
+
+      JSR GETJOY
+      LDA JOY1
+      AND #128
+      BEQ NES_A_PRESSED
 
 #### Function Name: JSRFAR
 
@@ -208,9 +242,10 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
 1) Call this routine.
 
 **EXAMPLE:**
-JSR JSRFAR
-.WORD $C000 ; ADDRESS
-.BYTE 1     ; BANK
+
+      JSR JSRFAR
+      .WORD $C000 ; ADDRESS
+      .BYTE 1     ; BANK
 
 #### Function Name: MONITOR
 
@@ -228,12 +263,22 @@ Registers affected: Does not return
 1) Call this routine.
 
 **EXAMPLE:**
-JMP MONITOR
 
+      JMP MONITOR
 
+## Machine Language Monitor
+
+[TODO: Documentation]
 
 ## Memory Map
 
+This is an overview of the X16 memory map:
+
+$0000-$9EFF: Fixed RAM
+$9F00-$9FFF: I/O Area
+$A000-$BFFF: Banked RAM
+$C000-$DFFF: Banked ROM
+$E000-$FFFF: Fixed ROM (KERNAL)
 
 
 ## Video Programming
