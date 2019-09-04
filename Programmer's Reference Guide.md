@@ -1,5 +1,9 @@
 # Commander X16 Programmer's Reference Guide
 
+*Michael Steil, mist64@mac.com*
+
+*This is the PRELIMINARY Programmer's Reference Guide for the Commander X16 computer. Every and any information in this document can change, as the product is still in development!*
+
 **Table of contents**
 
 * [BASIC Programming](#basic-programming)
