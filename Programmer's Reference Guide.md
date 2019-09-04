@@ -10,7 +10,7 @@ The Commander X16 BASIC interpreter is 100% backwards-compatible with the Commod
 
 * All statements and functions
 * Strings, arrays, integers, floats
-* Max 80 character BASIC lines
+* Max. 80 character BASIC lines
 * Printing "quote mode" control characters like cursor control and color codes, e.g.:
 	* `CHR$(147)`: clear screen
 	* `CHR$(5)`: white text
@@ -270,12 +270,25 @@ Registers affected: Does not return
 
 The built-in machine language monitor can be started with the `MON` BASIC command. It is based on the monitor of the Final Cartridge III and supports all its features. See the [Final Cartridge III Manual](https://rr.pokefinder.org/rrwiki/images/7/70/Final_Cartridge_III_english_Manual.pdf) more more information.
 
+Some features specific to this monitor are:
+* The `I` command prints a CBM-ASCII-encoded memory dump.
+* The `EC` command prints a binary memory dump. This is also useful for character sets.
+* Scrolling the screen with the cursors or F3/F5 will continue memory dumps and disassemblies, and even disassemble backwards.
+
 The following additions have been made:
 
-* The `O` command takes an 8 bit hex value as an argument and sets it as the ROM and RAM bank for reading and writing memory contents.
-* The `OV` command takes a 4 bit hex value as an argument and sets it as the video RAM bank for reading and writing memory contents.
+* The instruction set extensions of the 65C02 are supported.
+* The `O` command takes an 8 bit hex value as an argument and sets it as the ROM and RAM bank for reading and writing memory contents. The following example disassembles the beginning of the DOS ROM on bank 2:
 
-[TODO: Full documentation]
+      O02
+      DC000 C015
+
+* The `OV` command takes a 4 bit hex value as an argument and sets it as the bank in the video address space for reading and writing memory contents. The following example shows the character ROM in the video controller's address space:
+
+      OV2
+      EC0000 000F
+
+*[TODO: Full documentation]*
 
 ## Memory Map
 
@@ -283,23 +296,117 @@ The Commander X16 has 64 KB of ROM and 2,088 KB (2 MB[^1] + 40 KB) of RAM. Some 
 
 This is an overview of the X16 memory map:
 
-$0000-$9EFF: Fixed RAM (40 KB minus 256 bytes)
-$9F00-$9FFF: I/O Area (256 bytes)
-$A000-$BFFF: Banked RAM (8 KB window into one of 256 banks for a total of 2 MB)
-$C000-$DFFF: Banked ROM (8 KB window into one of 8 banks for a total of 64 KB)
-$E000-$FFFF: Fixed ROM (KERNAL)
+|Addresses  |Description                                                       |
+|-----------|------------------------------------------------------------------|
+|$0000-$9EFF|Fixed RAM (40 KB minus 256 bytes)								   |
+|$9F00-$9FFF|I/O Area (256 bytes)											   |
+|$A000-$BFFF|Banked RAM (8 KB window into one of 256 banks for a total of 2 MB)|
+|$C000-$DFFF|Banked ROM (8 KB window into one of 8 banks for a total of 64 KB) |
+|$E000-$FFFF|Fixed ROM (KERNAL)												   |
+
+### Banked Memory
 
 The RAM bank (0-255) defaults to 255, and the ROM bank (0-7) defaults to 7 on RESET. The RAM bank can be configured through VIA#1 PA0-7 ($9F61), and the ROM bank through VIA#1 PB0-2 ($9F60). The section  "I/O Programming" for more information.
 
+### ROM Allocations
+
+The fixed ROM at $E000-$FFFF contains the KERNAL. This is the allocation of the banks of banked ROM:
+
+|Bank|Name |Description                                            |
+|----|-----|-------------------------------------------------------|
+|0   |BASIC|The BASIC interpreter                                  |
+|1   |UTIL |Utilities like the machine language monitor            |
+|2   |DOS  |The computer-based CBM-DOS for FAT32 SD cards          |
+|3-7 |     |[Unassigned]                                           |
+
+### RAM Contents
+
+This is the allocation of fixed RAM in the KERNAL/BASIC environment.
+
+|Addresses  |Description                                                     |
+|-----------|----------------------------------------------------------------|
+|$0000-$00FF|KERNAL and BASIC zero page variables                            |
+|$0100-$01FF|CPU stack                                                       |
+|$0000-$03FF|KERNAL and BASIC variables                                      |
+|$0800-$9EFF|BASIC program/variables; available to the user                  |
+
+The following zero page locations are unused by KERNAL/BASIC and are available to the user:
+
+|Addresses  |
+|-----------|
+|$00FB-$00FF|
+
+In a machine language application that only uses KERNAL, the following zero page locations are also available:
+
+|Addresses  |
+|-----------|
+|$0003-$008F|
+
+This is the allocation of banked RAM in the KERNAL/BASIC environment.
+
+|Bank   |Description               |
+|-------|--------------------------|
+|0-254  |Available to the user     |
+|255[^2]|DOS buffers and variables |
+
+### I/O Area
+
+This is the memory map of the I/O Area:
+
+|Addresses  |Description                  |
+|-----------|-----------------------------|
+|$9F00-$9F1F|Reserved for audio controller|
+|$9F20-$9F3F|VERA video controller		  |
+|$9F40-$9F5F|Reserved					  |
+|$9F60-$9F6F|VIA I/O controller #1		  |
+|$9F70-$9F7F|VIA I/O controller #2		  |
+|$9F80-$9F9F|Real time clock			  |
+|$9FA0-$9FBF|Future Expansion			  |
+|$9FC0-$9FDF|Future Expansion			  |
+|$9FE0-$9FFF|Future Expansion			  |
+
 ## Video Programming
+
+The VERA video chip supports resolutions up to 640x480 with up to 256 colors from a palette of 4096, two layers of either a bitmap or tiles, 128 sprites of up to 64x64 pixels in size. It can output VGA as well as a 525 line interlaced signal, either as NTSC or as RGB (Amiga-style).
+
+See [vera-module v0.6.pdf] for the complete reference.
 
 ## Sound Programming
 
+*[TODO]*
+
 ## I/O Programming
 
+There are two 65C22 "Versatile Interface Adapter" (VIA) I/O controllers in the system, VIA#1 at address $9F60 and VIA#2 at address $9F70. The IRQ out lines of both VIAs are connected to the IRQ in line of the CPU.
 
+The following tables describe the connections of the GPIO ports:
 
+**VIA#1**
+
+|Pin  |Description |
+|-----|------------|
+|PA0-7|RAM bank    |
+|PB0-2|ROM bank    |
+|PB3-7|*[TBD]*       |
+
+**VIA#2**
+
+|Pin  |Description     |
+|-----|------------    |
+|PA0  |PS/2 DAT        |
+|PA1  |PS/2 CLK        |
+|PA2  |TBD             |
+|PA3  |JOY1/2 LATCH[^3]|
+|PA4  |JOY1 DATA       |
+|PA5  |JOY1/2 CLK      |
+|PA6  |JOY2 DATA       |
+|PA7  |*[TBD]*         |
+|PB0-7|*[TBD]*         |
 
 <!------->
 
 [^1]: Current development systems have 2 MB of bankable RAM. Actual hardware is currently planned to have an option of either 512 KB or 2 MB of RAM.
+
+[^2]: On systems with 512 KB RAM, DOS uses bank 63, and banks 0-62 are available to the user.
+
+[^3]: The pin assignment of the NES/SNES controller is likely to change.
