@@ -268,21 +268,38 @@ Registers affected: Does not return
 
 ## Machine Language Monitor
 
-[TODO: Documentation]
+The built-in machine language monitor can be started with the `MON` BASIC command. It is based on the monitor of the Final Cartridge III and supports all its features. See the [Final Cartridge III Manual](https://rr.pokefinder.org/rrwiki/images/7/70/Final_Cartridge_III_english_Manual.pdf) more more information.
+
+The following additions have been made:
+
+* The `O` command takes an 8 bit hex value as an argument and sets it as the ROM and RAM bank for reading and writing memory contents.
+* The `OV` command takes a 4 bit hex value as an argument and sets it as the video RAM bank for reading and writing memory contents.
+
+[TODO: Full documentation]
 
 ## Memory Map
 
+The Commander X16 has 64 KB of ROM and 2,088 KB (2 MB[^1] + 40 KB) of RAM. Some of the ROM and RAM is always visible at certain address ranges, while the remaining ROM and RAM is banked into one of two address windows.
+
 This is an overview of the X16 memory map:
 
-$0000-$9EFF: Fixed RAM
-$9F00-$9FFF: I/O Area
-$A000-$BFFF: Banked RAM
-$C000-$DFFF: Banked ROM
+$0000-$9EFF: Fixed RAM (40 KB minus 256 bytes)
+$9F00-$9FFF: I/O Area (256 bytes)
+$A000-$BFFF: Banked RAM (8 KB window into one of 256 banks for a total of 2 MB)
+$C000-$DFFF: Banked ROM (8 KB window into one of 8 banks for a total of 64 KB)
 $E000-$FFFF: Fixed ROM (KERNAL)
 
+The RAM bank (0-255) defaults to 255, and the ROM bank (0-7) defaults to 7 on RESET. The RAM bank can be configured through VIA#1 PA0-7 ($9F61), and the ROM bank through VIA#1 PB0-2 ($9F60). The section  "I/O Programming" for more information.
 
 ## Video Programming
 
 ## Sound Programming
 
 ## I/O Programming
+
+
+
+
+<!------->
+
+[^1]: Current development systems have 2 MB of bankable RAM. Actual hardware is currently planned to have an option of either 512 KB or 2 MB of RAM.
