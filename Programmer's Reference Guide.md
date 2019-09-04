@@ -90,6 +90,26 @@ The numeric constants parser supports both hex (`$`) and binary (`%`) literals, 
 
 The size of hex and binary values is only restricted by the range that can be represented by BASIC's internal floating point representation.
 
+In regular BASIC text mode, the video controller supports 16 foreground colors and 16 background colors for each character on the screen. The foreground color can be changed with existing PETSCII control codes. The background color currently has to be set using a POKE statement. The current colors are accessible through memory location $0286 (decimal 646):
+
+|Bits |Description      |
+|-----|-----------------|
+|0-3  |Foreground color |
+|4-7  |Background color |
+
+The following BASIC statement would set the current printing color to white on black, for example:
+
+      POKE 646, 0 * 16 + 1
+
+To set the background color of the complete screen, it just has to be cleared after setting the color:
+
+      PRINT CHR$(147)
+
+In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch modes, use the following BASIC code:
+
+      IF PEEK($D9)<>40 THEN SYS $FF5F : REM SWITCH TO 40 CHARACTER MODE
+      IF PEEK($D9)<>80 THEN SYS $FF5F : REM SWITCH TO 80 CHARACTER MODE
+
 ## KERNAL
 
 The Commander X16 contains a version of KERNAL as its operating system in ROM. It contains
@@ -152,10 +172,10 @@ $FFF3: `IOBASE` – return start of I/O area
 
 Some notes:
 
-* The Commodore Peripheral Bus calls first talk to the "Computer DOS" built into the ROM to detect an SD card, before falling back to the Commodore Serial Bus.
+* For device #8, the Commodore Peripheral Bus calls first talk to the "Computer DOS" built into the ROM to detect an SD card, before falling back to the Commodore Serial Bus.
 * The `IOBASE` call returns $9F60, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
-* C64 compatibility extends into the layout of the zero page ($0000-$00FF) and, the KERNAL/BASIC variable space ($0200 -$02FF) and the vectors ($0300-$0333).
+* The layout of the zero page ($0000-$00FF), the KERNAL/BASIC variable space ($0200 -$02FF) and the vectors ($0300-$0333) are also fully compatible with the C64.
 
 ### Commodore 128 API Compatibility
 
@@ -172,9 +192,16 @@ $FF77: `STASH` – STA (stavec),Y to any bank
 $FF7A: `CMPARE` – CMP (cmpvec),Y to any bank
 $FF7D: `PRIMM` – print string following the caller’s code
 
-One note:
+Some notes:
 
 * For `SWAPPER`, the user can detect the current mode by reading the zero page location `LLEN` ($D9), which either holds a value of 40 or 80. This is different than on the C128.
+* `FETCH`, `STASH` and `CMPARE` require the caller to set the zero page location containing the address in memory beforehand. These are different than on the C128:
+
+|Call    |Label   |Address |
+|--------|--------|--------|
+|`FETCH` |`FETVEC`|$0384   |
+|`STASH` |`STAVEC`|$03A6   |
+|`CMPARE`|`CMPVEC`|$03C2   |
 
 ### New API for the Commander X16
 
@@ -237,6 +264,7 @@ Registers affected: None
 
 **Description:** The routine `JSRFAR` enables code to execute some other code located on a specific RAM or ROM bank. This works independently of which RAM or ROM bank the currently executing code is residing in.
 The 16 bit address and the 8 bit bank number have to follow the instruction stream. The `JSRFAR` routine will switch both the ROM and the RAM bank to the specified bank and restore it after the routine's `RTS`. Execution resumes after the 3 byte arguments.
+**Note**: The C128 also has a `JSRFAR` function at $FF6E, but it is incompatible with the X16 version.
 
 **How to Use:**
 1) Call this routine.
@@ -317,7 +345,7 @@ The fixed ROM at $E000-$FFFF contains the KERNAL. This is the allocation of the 
 |0   |BASIC|The BASIC interpreter                                  |
 |1   |UTIL |Utilities like the machine language monitor            |
 |2   |DOS  |The computer-based CBM-DOS for FAT32 SD cards          |
-|3-7 |     |[Unassigned]                                           |
+|3-7 |–    |*[Currently unassigned]*                               |
 
 ### RAM Contents
 
@@ -369,7 +397,7 @@ This is the memory map of the I/O Area:
 
 The VERA video chip supports resolutions up to 640x480 with up to 256 colors from a palette of 4096, two layers of either a bitmap or tiles, 128 sprites of up to 64x64 pixels in size. It can output VGA as well as a 525 line interlaced signal, either as NTSC or as RGB (Amiga-style).
 
-See [vera-module v0.6.pdf] for the complete reference.
+See [vera-module v0.6.pdf] for the complete reference. Please note that the layout of registers is far from finalized.
 
 ## Sound Programming
 
@@ -387,7 +415,7 @@ The following tables describe the connections of the GPIO ports:
 |-----|------------|
 |PA0-7|RAM bank    |
 |PB0-2|ROM bank    |
-|PB3-7|*[TBD]*       |
+|PB3-7|*[TBD]*     |
 
 **VIA#2**
 
