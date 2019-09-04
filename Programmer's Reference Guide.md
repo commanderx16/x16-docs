@@ -1,5 +1,31 @@
 # Commander X16 Programmer's Reference Guide
 
+**Table of contents**
+
+* [BASIC Programming](#basic-programming)
+	* [Commodore 64 Compatibility](#commodore-64-compatibility)
+	* [New Statements and Functions](#new-statements-and-functions)
+		* [DOS](#dos)
+		* [MON](#mon)
+		* [VPEEK](#vpeek)
+		* [VPOKE](#vpoke)
+	* [Other New Features](#other-new-features)
+* [KERNAL](#kernal)
+	* [Commodore 64 API Compatibility](#commodore-64-api-compatibility)
+	* [Commodore 128 API Compatibility](#commodore-128-api-compatibility)
+	* [New API for the Commander X16](#new-api-for-the-commander-x16)
+		* [Function Name: GETJOY](#function-name-getjoy)
+		* [Function Name: JSRFAR](#function-name-jsrfar)
+		* [Function Name: MONITOR](#function-name-monitor)
+* [Machine Language Monitor](#machine-language-monitor)
+* [Memory Map](#memory-map)
+	* [Banked Memory](#banked-memory)
+	* [ROM Allocations](#rom-allocations)
+	* [RAM Contents](#ram-contents)
+	* [I/O Area](#io-area)
+* [Video Programming](#video-programming)
+* [Sound Programming](#sound-programming)
+* [I/O Programming](#io-programming)
 
 
 ## BASIC Programming
