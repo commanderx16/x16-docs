@@ -98,7 +98,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 **EXAMPLE of VPEEK Statement:**
 
-      PRINT (PEEK(4,0) AND $E0) / 32 : REM PRINTS THE CURRENT MODE (0-7)
+      PRINT (VPEEK(4,0) AND $E0) / 32 : REM PRINTS THE CURRENT MODE (0-7)
 
 #### VPOKE
 
@@ -109,7 +109,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 **EXAMPLE of VPOKE Statement:**
 
-      POKE 0,1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
+      VPOKE 0,1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
       REM AT 0/0 TO RED ON WHITE
 
 ### Other New Features
