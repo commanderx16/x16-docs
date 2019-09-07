@@ -6,6 +6,8 @@
 
 **Table of contents**
 
+<!-- generated with https://github.com/ekalinin/github-markdown-toc -->
+
 * [BASIC Programming](#basic-programming)
 	* [Commodore 64 Compatibility](#commodore-64-compatibility)
 	* [New Statements and Functions](#new-statements-and-functions)
@@ -14,10 +16,13 @@
 		* [VPEEK](#vpeek)
 		* [VPOKE](#vpoke)
 	* [Other New Features](#other-new-features)
+	* [Internal Representation](#internal-representation)
 * [KERNAL](#kernal)
 	* [Commodore 64 API Compatibility](#commodore-64-api-compatibility)
 	* [Commodore 128 API Compatibility](#commodore-128-api-compatibility)
 	* [New API for the Commander X16](#new-api-for-the-commander-x16)
+	* [KERNAL Version](#kernal-version)
+	* [Compatibility Considerations](#compatibility-considerations)
 		* [Function Name: GETJOY](#function-name-getjoy)
 		* [Function Name: JSRFAR](#function-name-jsrfar)
 		* [Function Name: MONITOR](#function-name-monitor)
@@ -140,6 +145,17 @@ In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch 
       IF PEEK($D9)<>40 THEN SYS $FF5F : REM SWITCH TO 40 CHARACTER MODE
       IF PEEK($D9)<>80 THEN SYS $FF5F : REM SWITCH TO 80 CHARACTER MODE
 
+### Internal Representation
+
+Like on the C64, BASIC keywords are tokenized.
+
+* The C64 BASIC V2 keywords occupy the range of $80 (`END`) to $CB (`GO`).
+* BASIC V3.5 also used $CE (`RGR`) to $FD (`WHILE`).
+* BASIC V7 introduced the $CE escape code for function tokens $CE-$02 (`POT`) to $CE-$0A (`POINTER`), and the $FE escape code for statement tokens $FE-$02 (`BANK`) to $FE-$38 (`SLOW`).
+* The unreleased BASIC V10 extended the escaped tokens up to $CE-$0D (`RPALETTE`) and $FE-$45 (`EDIT`).
+
+The X16 BASIC aims to be as compatible as possible with this encoding. Keywords added to X16 BASIC that also exist in other versions of BASIC match the token, and new keywords are encoded in the ranges $CE-$80+ and $FE-$80+.
+
 ## KERNAL
 
 The Commander X16 contains a version of KERNAL as its operating system in ROM. It contains
@@ -240,6 +256,26 @@ There are a few new APIs. Please note that their addresses and their behavior is
 $FF00: `MONITOR` – enter montior
 $FF06: `GETJOY` – query joysticks
 $FF6E: `JSRFAR` – gosub in another bank
+
+### KERNAL Version
+
+The KERNAL version can be read from location $FF80 in ROM. A value of $FF indicates a custom build. All other values encode the build number. Positive numbers are release versions ($02 = release version 2), two's complement negative numbers are prerelease versions ($FE = $100 - 2 = prerelease version 2).
+
+### Compatibility Considerations
+
+For applications to remain compatible between different versions of the ROM, they can rely upon:
+
+* the KERNAL API
+
+The following is guaranteed to remain mostly stable:
+
+* the $0000-$03FF memory layout
+
+And the following features must not be relied upon:
+
+* direct function offsets in the ROM
+
+That is, don't jump into undocumented ROM code directly, or reuse undocumented data constants in ROM.
 
 #### Function Name: GETJOY
 
@@ -451,8 +487,8 @@ The following tables describe the connections of the GPIO ports:
 
 |Pin  |Description     |
 |-----|------------    |
-|PA0  |PS/2 DAT        |
-|PA1  |PS/2 CLK        |
+|PA0  |KBD PS/2 DAT    |
+|PA1  |KBD PS/2 CLK    |
 |PA2  |TBD             |
 |PA3  |JOY1/2 LATCH[^3]|
 |PA4  |JOY1 DATA       |
@@ -460,6 +496,8 @@ The following tables describe the connections of the GPIO ports:
 |PA6  |JOY2 DATA       |
 |PA7  |*[TBD]*         |
 |PB0-7|*[TBD]*         |
+
+The GPIO connections for the Commodore Serial Bus and the mouse PS/2 connection have not been finalized.
 
 <!------->
 
