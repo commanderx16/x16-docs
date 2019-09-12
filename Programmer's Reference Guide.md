@@ -428,13 +428,14 @@ The following zero page locations are unused by KERNAL/BASIC and are available t
 
 |Addresses  |
 |-----------|
+|$0000-$0003|
 |$00FB-$00FF|
 
 In a machine language application that only uses KERNAL, the following zero page locations are also available:
 
 |Addresses  |
 |-----------|
-|$0003-$008F|
+|$0000-$008F|
 
 This is the allocation of banked RAM in the KERNAL/BASIC environment.
 
