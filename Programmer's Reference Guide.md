@@ -287,7 +287,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `GETJOY` restrieves all state from the two joysticks and stores it in the zeropage locations `JOY1` and `JOY2`.
+**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the zeropage locations `JOY1` ($EF-$F1) and `JOY2` ($F2-$F4).
 
 Each of these symbols consist of 3 bytes with the following layout:
 
@@ -296,14 +296,34 @@ Each of these symbols consist of 3 bytes with the following layout:
               SNES | B | Y |SEL|STA|UP |DN |LT |RT |
       
       byte 1:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-              NES  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+              NES  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | X |
               SNES | A | X | L | R | 1 | 1 | 1 | 1 |
       byte 2:
               $00 = joystick present
               $FF = joystick not present
 
-* Presence can be detected by checking byte 2.
-* NES vs. SNES can be detected by checking bits 0-3 in byte 1.
+If joystick 1 is not present, it will fall back to returning the state of the keyboard, if present:
+
+|Keyboard Key  | NES Equivalent |
+|--------------|----------------|
+|Ctrl          | A 		|
+|Alt 	       | B		|
+|Space         | SELECT         |
+|Enter         | START		|
+|Cursor Up     | UP		|
+|Cursor Down   | DOWN		|
+|Cursor Left   | LEFT		|
+|Cursor Right  | RIGHT		|
+
+* Presence of a joystick can be detected by checking byte 2.
+* The type of controller is encoded in bits 0-3 in byte 1:
+
+|Value|Type               |
+|-----|-------------------|
+|0000 |NES		  |
+|0001 |keyboard (NES-like)|
+|1111 |SNES		  |
+
 * If a button is pressed, the corresponding bit is zero.
 * Note that bits 6 and 7 in byte 0 map to different buttons on NES and SNES.
 
