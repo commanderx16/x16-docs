@@ -399,8 +399,8 @@ The following additions have been made:
 
 * The `OV` command takes a 4 bit hex value as an argument and sets it as the bank in the video address space for reading and writing memory contents. The following example shows the character ROM in the video controller's address space:
 
-      OV2
-      EC0000 000F
+      OV1
+      ECF000 F00F
 
 *[TODO: Full documentation]*
 
