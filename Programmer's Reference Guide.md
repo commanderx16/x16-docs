@@ -384,6 +384,8 @@ Registers affected: Does not return
 
 The built-in machine language monitor can be started with the `MON` BASIC command. It is based on the monitor of the Final Cartridge III and supports all its features. See the [Final Cartridge III Manual](https://rr.pokefinder.org/rrwiki/images/7/70/Final_Cartridge_III_english_Manual.pdf) more more information.
 
+If you invoke the monitor by mistake, you can exit with by typing `X`, followed by the `RETURN` key.
+
 Some features specific to this monitor are:
 * The `I` command prints a CBM-ASCII-encoded memory dump.
 * The `EC` command prints a binary memory dump. This is also useful for character sets.
