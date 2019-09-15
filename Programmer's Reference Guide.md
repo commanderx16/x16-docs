@@ -51,6 +51,7 @@ The Commander X16 BASIC interpreter is 100% backwards-compatible with the Commod
 	* `CHR$(5)`: white text
 	* `CHR$(18)`: reverse
 	* `CHR$(14)`: switch to upper/lowercase font
+	* `CHR$(142)`: switch to uppercase/graphics font
 
 Because of the differences in hardware, the following functions and statements are incompatible between C64 and X16 BASIC programs.
 
