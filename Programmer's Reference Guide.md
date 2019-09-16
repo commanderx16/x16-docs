@@ -444,7 +444,7 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 |-----------|----------------------------------------------------------------|
 |$0000-$00FF|KERNAL and BASIC zero page variables                            |
 |$0100-$01FF|CPU stack                                                       |
-|$0000-$03FF|KERNAL and BASIC variables                                      |
+|$0000-$07FF|KERNAL and BASIC variables                                      |
 |$0800-$9EFF|BASIC program/variables; available to the user                  |
 
 The following zero page locations are unused by KERNAL/BASIC and are available to the user:
