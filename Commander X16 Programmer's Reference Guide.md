@@ -473,12 +473,16 @@ The RAM bank (0-255) defaults to 255, and the ROM bank (0-7) defaults to 7 on RE
 
 The fixed ROM at $E000-$FFFF contains the KERNAL. This is the allocation of the banks of banked ROM:
 
-|Bank|Name |Description                                            |
-|----|-----|-------------------------------------------------------|
-|0   |BASIC|The BASIC interpreter                                  |
-|1   |UTIL |Utilities like the machine language monitor            |
-|2   |DOS  |The computer-based CBM-DOS for FAT32 SD cards          |
-|3-7 |–    |*[Currently unassigned]*                               |
+|Bank|Name   |Description                                            |
+|----|-------|-------------------------------------------------------|
+|0   |BASIC  |The BASIC interpreter                                  |
+|1   |UTIL   |Utilities like the machine language monitor            |
+|2   |DOS    |The computer-based CBM-DOS for FAT32 SD cards          |
+|3-4 |KEYMAP |Keyboard layouts                                       |
+|5   |CHARSET|The character sets that are uploaded into video RAM    |
+|3-7 |–      |*[Currently unassigned]*                               |
+
+**Important**: The layout of the banks is still constantly changing.
 
 ### RAM Contents
 
