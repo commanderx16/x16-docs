@@ -94,7 +94,7 @@ This is the encoding:
 ISO mode can be enabled and disabled using two new control codes:
 
 * `CHR$($0F)`: enable ISO mode
-* `CHR$($0F)`: disable ISO mode (default)
+* `CHR$($8F)`: disable ISO mode (default)
 
 You can also enable ISO mode in direct mode by pressing Ctrl+`O`.
 
