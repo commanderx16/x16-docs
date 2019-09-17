@@ -1,4 +1,4 @@
-# VERA module
+# VERA Programmer's Reference
 
 Version 0.8
 
@@ -31,13 +31,13 @@ This document describes the **V**ideo **E**nhanced **R**etro **A**dapter video-m
 		<td colspan="8">Address (7:0)</td>
 	</tr>
 	<tr>
-		<td>2</td>
+		<td>1</td>
 		<td>$9F21</td>
 		<td>VERA_ADDR_MID</td>
 		<td colspan="8">Address (15:8)</td>
 	</tr>
 	<tr>
-		<td>1</td>
+		<td>2</td>
 		<td>$9F22</td>
 		<td>VERA_ADDR_HI</td>
 		<td colspan="4">Increment</td>

@@ -1,4 +1,4 @@
-These is the Commander X16 documentation.
+This is the Commander X16 documentation.
 
-* [Programmer's Reference Guide](https://github.com/commanderx16/x16-docs/blob/master/Programmer's%20Reference%20Guide.md)
-* ...
+* [Commander X16 Programmer's Reference Guide](Commander%20X16%20Programmer's%20Reference%20Guide.md)
+* [VERA Programmer’s Reference](VERA%20Programmer's%20Reference.md)
