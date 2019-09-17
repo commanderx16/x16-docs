@@ -492,6 +492,13 @@ See [vera-module v0.8.pdf](https://github.com/commanderx16/x16-docs/blob/master/
 
 **IMPORTANT**: The VERA register layout has changed between 0.7 and 0.8. Here is the old documentation: [vera-module v0.7.pdf](https://github.com/commanderx16/x16-docs/blob/master/vera-module%20v0.7.pdf)
 
+The KERNAL uploads the two character sets to:
+
+* $1F000: PETSCII upper case/graphics (2 KB)
+* $1F800: PETSCII upper/lower case (2 KB)
+
+Application software is free to reuse this part of video RAM if it does not need the character sets. If it needs them again later, it can use the KERNAL call `CINT` ($FF81), which initializes the VERA chip and uploads the character sets.
+
 ## Sound Programming
 
 *[TODO]*
