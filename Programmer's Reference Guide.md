@@ -10,6 +10,7 @@
 
 * [BASIC Programming](#basic-programming)
 	* [Commodore 64 Compatibility](#commodore-64-compatibility)
+	* [ISO Mode](#iso-mode)
 	* [New Statements and Functions](#new-statements-and-functions)
 		* [DOS](#dos)
 		* [MON](#mon)
@@ -61,6 +62,49 @@ Because of the differences in hardware, the following functions and statements a
 * `SYS`: execute machine language code
 
 The BASIC interpreter also currently shares all problems of the C64 version, like the slow garbage collector.
+
+### ISO Mode
+
+In addition to PETSCII, the X16 also supports the ISO-8859-15 character encoding. In ISO-8859-15 mode ("ISO mode"):
+
+* The character set is switched from Commodore-style (with PETSCII drawing characters) to a new ASCII/ISO-8859-15 compatible set, which covers most Western European writing systems.
+* The encoding (`CHR$()` in BASIC and `BSOUT` in machine language) now complies with ASCII and ISO-8859-15.
+* The keyboard driver will return ASCII/ISO-8859-15 codes.
+
+This is the encoding:
+
+	   0123456789ABCDEF
+	0x|                |
+	1x|                |
+	2x| !"#$%&'()*+,-./|
+	3x|0123456789:;<=>?|
+	4x|@ABCDEFGHIJKLMNO|
+	5x|PQRSTUVWXYZ[\]^_|
+	6x|`abcdefghijklmno|
+	7x|pqrstuvwxyz{|}~ |
+	8x|                |
+	9x|                |
+	Ax| ¡¢£€¥Š§š©ª«¬ ®¯|
+	Bx|°±²³Žµ¶·ž¹º»ŒœŸ¿|
+	Cx|ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ|
+	Dx|ÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß|
+	Ex|àáâãäåæçèéêëìíîï|
+	Fx|ðñòóôõö÷øùúûüýþÿ|
+
+ISO mode can be enabled and disabled using two new control codes:
+
+* `CHR$($0F)`: enable ISO mode
+* `CHR$($0F)`: disable ISO mode (default)
+
+You can also enable ISO mode in direct mode by pressing Ctrl+`O`.
+
+**Important:** In ISO mode, BASIC keywords need to be written in upper case, that is, they have to be entered with the Shift key down, and abbreviating keywords is no longer possible.
+
+
+### Keyboard Layouts
+
+Pressing the `F9` key cycles through the available keyboard layouts.
+
 
 ### New Statements and Functions
 
