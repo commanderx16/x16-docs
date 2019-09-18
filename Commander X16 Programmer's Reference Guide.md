@@ -100,11 +100,28 @@ You can also enable ISO mode in direct mode by pressing Ctrl+`O`.
 
 **Important:** In ISO mode, BASIC keywords need to be written in upper case, that is, they have to be entered with the Shift key down, and abbreviating keywords is no longer possible.
 
+### New Control Characters
+
+The following PETSCII control characters have been added compared to the C64:
+
+| Code | Descrption             |
+|------|------------------------|
+| $09  | TAB [C128/C65]         |
+| $0F  | enable ISO mode        |
+| $10  | F9 [C65]               |
+| $18  | Shift + TAB [C128/C65] |
+| $16  | F10 [C65]              |
+| $16  | F11 [C65]              |
+| $17  | F12 [C65]              |
+| $83  | RUN [C65]              |
+| $84  | HELP [C65]             |
+| $8F  | disable ISO mode       |
+
+Some of these codes are also supported on the C128 or the C65.
 
 ### Keyboard Layouts
 
 Pressing the `F9` key cycles through the available keyboard layouts.
-
 
 ### New Statements and Functions
 
@@ -214,6 +231,26 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 * simple memory management
 * timekeeping
 
+### KERNAL Version
+
+The KERNAL version can be read from location $FF80 in ROM. A value of $FF indicates a custom build. All other values encode the build number. Positive numbers are release versions ($02 = release version 2), two's complement negative numbers are prerelease versions ($FE = $100 - 2 = prerelease version 2).
+
+### Compatibility Considerations
+
+For applications to remain compatible between different versions of the ROM, they can rely upon:
+
+* the KERNAL API
+
+The following is guaranteed to remain mostly stable:
+
+* the $0000-$03FF memory layout
+
+And the following features must not be relied upon:
+
+* direct function offsets in the ROM
+
+That is, don't jump into undocumented ROM code directly, or reuse undocumented data constants in ROM.
+
 ### Commodore 64 API Compatibility
 
 The KERNAL fully supports the C64 KERNAL API.
@@ -301,26 +338,6 @@ There are a few new APIs. Please note that their addresses and their behavior is
 $FF00: `MONITOR` – enter montior
 $FF06: `GETJOY` – query joysticks
 $FF6E: `JSRFAR` – gosub in another bank
-
-### KERNAL Version
-
-The KERNAL version can be read from location $FF80 in ROM. A value of $FF indicates a custom build. All other values encode the build number. Positive numbers are release versions ($02 = release version 2), two's complement negative numbers are prerelease versions ($FE = $100 - 2 = prerelease version 2).
-
-### Compatibility Considerations
-
-For applications to remain compatible between different versions of the ROM, they can rely upon:
-
-* the KERNAL API
-
-The following is guaranteed to remain mostly stable:
-
-* the $0000-$03FF memory layout
-
-And the following features must not be relied upon:
-
-* direct function offsets in the ROM
-
-That is, don't jump into undocumented ROM code directly, or reuse undocumented data constants in ROM.
 
 #### Function Name: GETJOY
 
