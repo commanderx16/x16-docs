@@ -59,6 +59,7 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 	* PS/2 keyboard and mouse
 	* 2 NES/SNES controllers
 	* SD card
+	* Commodore Serial Bus ("IEC")
 	* several free GPIOs ("user port")
 
 As a modern sibling of the line of Commodore home computers, the Commander X16 is resaonably compatible with computers of that line.
