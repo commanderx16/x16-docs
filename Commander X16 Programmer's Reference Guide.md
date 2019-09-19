@@ -8,6 +8,7 @@
 
 <!-- generated with https://github.com/ekalinin/github-markdown-toc -->
 
+* [Overview](#overview)
 * [BASIC Programming](#basic-programming)
 	* [Commodore 64 Compatibility](#commodore-64-compatibility)
 	* [ISO Mode](#iso-mode)
@@ -38,6 +39,34 @@
 * [Sound Programming](#sound-programming)
 * [I/O Programming](#io-programming)
 
+
+## Overview
+
+The Commander X16 is a modern home computer in the philosophy of Commodore computers like the VIC-20 and the C64.
+
+**Features:**
+
+* 8-bit 65C02 CPU at 8 MHz
+* 2 MB RAM
+* 128 KB ROM
+* VERA video controller
+	* up to 640x480 resolution
+	* 256 colors from a palette of 4096
+	* 128 sprites
+	* VGA, NTSC and RGB output
+* *[sound controller TBD]*
+* Connectivity:
+	* PS/2 keyboard and mouse
+	* 2 NES/SNES controllers
+	* SD card
+	* several free GPIOs ("user port")
+
+As a modern sibling of the line of Commodore home computers, the Commander X16 is resaonably compatible with computers of that line.
+
+* Pure BASIC programs are fully backwards compatible with the VIC-20 and the C64.
+* Most PEEKs and POKEs of addresses in the $0000-$0340 area are compatible with the C64.
+* POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID controllers, for example.)
+* Pure machine language programs ($FF81+ KERNAL API) are compatible with Commodore computers.
 
 ## BASIC Programming
 
