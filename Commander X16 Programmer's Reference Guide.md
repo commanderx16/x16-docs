@@ -11,6 +11,7 @@
 * [BASIC Programming](#basic-programming)
 	* [Commodore 64 Compatibility](#commodore-64-compatibility)
 	* [ISO Mode](#iso-mode)
+	* [New Control Characters](#new-control-characters)
 	* [New Statements and Functions](#new-statements-and-functions)
 		* [DOS](#dos)
 		* [MON](#mon)
