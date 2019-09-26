@@ -172,9 +172,9 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 **EXAMPLES of DOS Statement:**
 
-      DOS"$" : REM SHOWS DIRECTORY
+      DOS"$"          : REM SHOWS DIRECTORY
       DOS"S:BAD_FILE" : REM DELETES "BAD_FILE"
-      DOS : PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
+      DOS             : REM PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
 
 #### OLD
 
@@ -207,7 +207,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 **EXAMPLE of VPEEK Statement:**
 
-      PRINT (VPEEK(4,0) AND $E0) / 32 : REM PRINTS THE CURRENT MODE (0-7)
+      PRINT (VPEEK($F,$2000) AND $E0) / 32 : REM PRINTS THE CURRENT MODE (0-7)
 
 #### VPOKE
 
@@ -219,7 +219,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 **EXAMPLE of VPOKE Statement:**
 
       VPOKE 0,1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
-      REM AT 0/0 TO RED ON WHITE
+                             REM AT 0/0 TO RED ON WHITE
 
 ### Other New Features
 

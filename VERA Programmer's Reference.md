@@ -28,60 +28,60 @@ This document describes the **V**ideo **E**nhanced **R**etro **A**dapter video-m
 		<td>0</td>
 		<td>$9F20</td>
 		<td>VERA_ADDR_LO</td>
-		<td colspan="8">Address (7:0)</td>
+		<td colspan="8" align="center">Address (7:0)</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>$9F21</td>
 		<td>VERA_ADDR_MID</td>
-		<td colspan="8">Address (15:8)</td>
+		<td colspan="8" align="center">Address (15:8)</td>
 	</tr>
 	<tr>
 		<td>2</td>
 		<td>$9F22</td>
 		<td>VERA_ADDR_HI</td>
-		<td colspan="4">Increment</td>
-		<td colspan="4">Address (19:16)</td>
+		<td colspan="4" align="center">Increment</td>
+		<td colspan="4" align="center">Address (19:16)</td>
 	</tr>
 	<tr>
 		<td>3</td>
 		<td>$9F23</td>
 		<td>VERA_DATA0</td>
-		<td colspan="8">Data port 0</td>
+		<td colspan="8" align="center">Data port 0</td>
 	</tr>
 	<tr>
 		<td>4</td>
 		<td>$9F24</td>
 		<td>VERA_DATA1</td>
-		<td colspan="8">Data port 1</td>
+		<td colspan="8" align="center">Data port 1</td>
 	</tr>
 	<tr>
 		<td>5</td>
 		<td>$9F25</td>
 		<td>VERA_CTRL</td>
-		<td>RESET</td>
-		<td colspan="6">-</td>
-		<td>ADDRSEL</td>
+		<td align="center">RESET</td>
+		<td colspan="6" align="center">-</td>
+		<td align="center">ADDRSEL</td>
 	</tr>
 	<tr>
 		<td>6</td>
 		<td>$9F26</td>
 		<td>VERA_IEN</td>
-		<td colspan="4">-</td>
-		<td>UART</td>
-		<td>SPRCOL</td>
-		<td>LINE</td>
-		<td>VSYNC</td>
+		<td colspan="4" align="center">-</td>
+		<td align="center">UART</td>
+		<td align="center">SPRCOL</td>
+		<td align="center">LINE</td>
+		<td align="center">VSYNC</td>
 	</tr>
 	<tr>
 		<td>7</td>
 		<td>$9F27</td>
 		<td>VERA_ISR</td>
-		<td colspan="4">-</td>
-		<td>UART</td>
-		<td>SPRCOL</td>
-		<td>LINE</td>
-		<td>VSYNC</td>
+		<td colspan="4" align="center">-</td>
+		<td align="center">UART</td>
+		<td align="center">SPRCOL</td>
+		<td align="center">LINE</td>
+		<td align="center">VSYNC</td>
 	</tr>
 </table>
 
@@ -145,65 +145,65 @@ Interrupts will be generated for the interrupt sources set in VERA_IEN. VERA_ISR
 	<tr>
 		<td>0</td>
 		<td>DC_VIDEO</td>
-		<td>CURRENT_FIELD (RO)</td>
-		<td colspan="4">-</td>
-		<td>CHROMA_DISABLE</td>
-		<td colspan="2">OUT_MODE</td>
+		<td align="center">CURRENT_FIELD (RO)</td>
+		<td align="center" colspan="4">-</td>
+		<td align="center">CHROMA_DISABLE</td>
+		<td align="center" colspan="2">OUT_MODE</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>DC_HSCALE</td>
-		<td colspan="8">HSCALE</td>
+		<td align="center" colspan="8">HSCALE</td>
 	</tr>
 	<tr>
 		<td>2</td>
 		<td>DC_VSCALE</td>
-		<td colspan="8">VSCALE</td>
+		<td align="center" colspan="8">VSCALE</td>
 	</tr>
 	<tr>
 		<td>3</td>
 		<td>DC_BORDER_COLOR</td>
-		<td colspan="8">BORDER_COLOR</td>
+		<td align="center" colspan="8">BORDER_COLOR</td>
 	</tr>
 	<tr>
 		<td>4</td>
 		<td>DC_HSTART_L</td>
-		<td colspan="8">HSTART (7:0)</td>
+		<td align="center" colspan="8">HSTART (7:0)</td>
 	</tr>
 	<tr>
 		<td>5</td>
 		<td>DC_HSTOP_L</td>
-		<td colspan="8">HSTOP (7:0)</td>
+		<td align="center" colspan="8">HSTOP (7:0)</td>
 	</tr>
 	<tr>
 		<td>6</td>
 		<td>DC_VSTART_L</td>
-		<td colspan="8">VSTART (7:0)</td>
+		<td align="center" colspan="8">VSTART (7:0)</td>
 	</tr>
 	<tr>
 		<td>7</td>
 		<td>DC_VSTOP_L</td>
-		<td colspan="8">VSTOP (7:0)</td>
+		<td align="center" colspan="8">VSTOP (7:0)</td>
 	</tr>
 	<tr>
 		<td>8</td>
 		<td>DC_STARTSTOP_H</td>
-		<td colspan="2">-</td>
-		<td>VSTOP (8)</td>
-		<td>VSTART (8)</td>
-		<td colspan="2">HSTOP (9:8)</td>
-		<td colspan="2">HSTART (9:8)</td>
+		<td align="center" colspan="2">-</td>
+		<td align="center">VSTOP (8)</td>
+		<td align="center">VSTART (8)</td>
+		<td align="center" colspan="2">HSTOP (9:8)</td>
+		<td align="center" colspan="2">HSTART (9:8)</td>
 	</tr>
 	<tr>
 		<td>9</td>
 		<td>DC_IRQ_LINE_L</td>
-		<td colspan="8">IRQ_LINE (7:0)</td>
+		<td align="center" colspan="8">IRQ_LINE (7:0)</td>
 	</tr>
 	<tr>
 		<td>10</td>
 		<td>DC_IRQ_LINE_H</td>
-		<td colspan="7">-</td>
-		<td>IRQ_LINE (8)</td>
+		<td align="center" colspan="7">-</td>
+		<td align="center">IRQ_LINE (8)</td>
 	</tr>
 </table>
 
@@ -252,13 +252,13 @@ The palette translates 8-bit color indexes into 12-bit output colors. The palett
 	</tr>
 	<tr>
 		<td>0</td>
-		<td colspan="4">Green</td>
-		<td colspan="4">Blue</td>
+		<td align="center" colspan="4">Green</td>
+		<td align="center" colspan="4">Blue</td>
 	</tr>
 	<tr>
 		<td>1</td>
-		<td colspan="4">-</td>
-		<td colspan="4">Red</td>
+		<td align="center" colspan="4">-</td>
+		<td align="center" colspan="4">Red</td>
 	</tr>
 </table>
 
@@ -286,60 +286,60 @@ At reset, the palette will contain a predefined palette:
 	<tr>
 		<td>0</td>
 		<td>Ln_CTRL0</td>
-		<td colspan="3">MODE</td>
-		<td colspan="4">-</td>
-		<td>EN</td>
+		<td align="center" colspan="3">MODE</td>
+		<td align="center" colspan="4">-</td>
+		<td align="center">EN</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>Ln_CTRL1</td>
-		<td colspan="2">-</td>
-		<td>TILEH</td>
-		<td>TILEW</td>
-		<td colspan="2">MAPH</td>
-		<td colspan="2">MAPW</td>
+		<td align="center" colspan="2">-</td>
+		<td align="center">TILEH</td>
+		<td align="center">TILEW</td>
+		<td align="center" colspan="2">MAPH</td>
+		<td align="center" colspan="2">MAPW</td>
 	</tr>
 	<tr>
 		<td>2</td>
 		<td>Ln_MAP_BASE_L</td>
-		<td colspan="8">MAP_BASE (9:2)</td>
+		<td align="center" colspan="8">MAP_BASE (9:2)</td>
 	</tr>
 	<tr>
 		<td>3</td>
 		<td>Ln_MAP_BASE_H</td>
-		<td colspan="8">MAP_BASE (17:10)</td>
+		<td align="center" colspan="8">MAP_BASE (17:10)</td>
 	</tr>
 	<tr>
 		<td>4</td>
 		<td>Ln_TILE_BASE_L</td>
-		<td colspan="8">TILE_BASE (9:2)</td>
+		<td align="center" colspan="8">TILE_BASE (9:2)</td>
 	</tr>
 	<tr>
 		<td>5</td>
 		<td>Ln_TILE_BASE_H</td>
-		<td colspan="8">TILE_BASE (17:10)</td>
+		<td align="center" colspan="8">TILE_BASE (17:10)</td>
 	</tr>
 	<tr>
 		<td>6</td>
 		<td>Ln_HSCROLL_L</td>
-		<td colspan="8">HSCROLL (7:0)</td>
+		<td align="center" colspan="8">HSCROLL (7:0)</td>
 	</tr>
 	<tr>
 		<td>7</td>
 		<td>Ln_HSCROLL_H</td>
-		<td colspan="4">-</td>
-		<td colspan="4">HSCROLL (11:8)</td>
+		<td align="center" colspan="4">-</td>
+		<td align="center" colspan="4">HSCROLL (11:8)</td>
 	</tr>
 	<tr>
 		<td>8</td>
 		<td>Ln_VSCROLL_L</td>
-		<td colspan="8">VSCROLL (7:0)</td>
+		<td align="center" colspan="8">VSCROLL (7:0)</td>
 	</tr>
 	<tr>
 		<td>9</td>
 		<td>Ln_VSCROLL_H</td>
-		<td colspan="4">-</td>
-		<td colspan="4">VSCROLL (11:8)</td>
+		<td align="center" colspan="4">-</td>
+		<td align="center" colspan="4">VSCROLL (11:8)</td>
 	</tr>
 </table>
 
@@ -361,8 +361,8 @@ In bitmap modes (5/6/7), the following changes apply:
 	<tr>
 		<td>7</td>
 		<td>Ln_BM_PAL_OFFS</td>
-		<td colspan="4">-</td>
-		<td colspan="4">BM_PALETTE_OFFSET</td>
+		<td align="center" colspan="4">-</td>
+		<td align="center" colspan="4">BM_PALETTE_OFFSET</td>
 	</tr>
 </table>
 
@@ -425,12 +425,12 @@ Each layer supports a few different display modes, which can be selected using t
 	</tr>
 	<tr>
 		<td>0</td>
-		<td colspan="8">Character index</td>
+		<td align="center" colspan="8">Character index</td>
 	</tr>
 	<tr>
 		<td>1</td>
-		<td colspan="4">Background color</td>
-		<td colspan="4">Foreground color</td>
+		<td align="center" colspan="4">Background color</td>
+		<td align="center" colspan="4">Foreground color</td>
 	</tr>
 </table>
 
@@ -454,11 +454,11 @@ Each layer supports a few different display modes, which can be selected using t
 	</tr>
 	<tr>
 		<td>0</td>
-		<td colspan="8">Character index</td>
+		<td align="center" colspan="8">Character index</td>
 	</tr>
 	<tr>
 		<td>1</td>
-		<td colspan="8">Foreground color</td>
+		<td align="center" colspan="8">Foreground color</td>
 	</tr>
 </table>
 
@@ -482,14 +482,14 @@ Each layer supports a few different display modes, which can be selected using t
 	</tr>
 	<tr>
 		<td>0</td>
-		<td colspan="8">Tile index (7:0)</td>
+		<td align="center" colspan="8">Tile index (7:0)</td>
 	</tr>
 	<tr>
 		<td>1</td>
-		<td colspan="4">Palette offset</td>
-		<td>V-flip</td>
-		<td>H-flip</td>
-		<td colspan="2">Tile index (9:8)</td>
+		<td align="center" colspan="4">Palette offset</td>
+		<td align="center">V-flip</td>
+		<td align="center">H-flip</td>
+		<td align="center" colspan="2">Tile index (9:8)</td>
 	</tr>
 </table>
 
@@ -530,23 +530,14 @@ TODO: explanation of bitmap data memory organization
 	<tr>
 		<td>0</td>
 		<td>SPR_CTRL</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>EN</td>
+		<td align="center" colspan="7">-</td>
+		<td align="center">EN</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>SPR_COLLISION</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td colspan="4">Collision mask</td>
+		<td align="center" colspan="4">-</td>
+		<td align="center" colspan="4">Collision mask</td>
 	</tr>
 </table>
 
@@ -572,44 +563,44 @@ Collisions are only detected on lines that are actually rendered.
 	</tr>
 	<tr>
 		<td>0</td>
-		<td colspan="8">Address (12:5)</td>
+		<td align="center" colspan="8">Address (12:5)</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>Mode</td>
-		<td colspan="3">-</td>
-		<td colspan="4">Address (16:13)</td>
+		<td align="center" colspan="3">-</td>
+		<td align="center" colspan="4">Address (16:13)</td>
 	</tr>
 	<tr>
 		<td>2</td>
-		<td colspan="8">X (7:0)</td>
+		<td align="center" colspan="8">X (7:0)</td>
 	</tr>
 	<tr>
 		<td>3</td>
-		<td colspan="6">-</td>
-		<td colspan="2">X (9:8)</td>
+		<td align="center" colspan="6">-</td>
+		<td align="center" colspan="2">X (9:8)</td>
 	</tr>
 	<tr>
 		<td>4</td>
-		<td colspan="8">Y (7:0)</td>
+		<td align="center" colspan="8">Y (7:0)</td>
 	</tr>
 	<tr>
 		<td>5</td>
-		<td colspan="6">-</td>
-		<td colspan="2">Y (9:8)</td>
+		<td align="center" colspan="6">-</td>
+		<td align="center" colspan="2">Y (9:8)</td>
 	</tr>
 	<tr>
 		<td>6</td>
-		<td colspan="4">Collision mask</td>
-		<td colspan="2">Z-depth</td>
-		<td>V-flip</td>
-		<td>H-flip</td>
+		<td align="center" colspan="4">Collision mask</td>
+		<td align="center" colspan="2">Z-depth</td>
+		<td align="center">V-flip</td>
+		<td align="center">H-flip</td>
 	</tr>
 	<tr>
 		<td>7</td>
-		<td colspan="2">Sprite height</td>
-		<td colspan="2">Sprite width</td>
-		<td colspan="4">Palette offset</td>
+		<td align="center" colspan="2">Sprite height</td>
+		<td align="center" colspan="2">Sprite width</td>
+		<td align="center" colspan="4">Palette offset</td>
 	</tr>
 </table>
 
@@ -653,14 +644,14 @@ Collisions are only detected on lines that are actually rendered.
 	<tr>
 		<td>0</td>
 		<td>SPI_DATA</td>
-		<td colspan="8">DATA</td>
+		<td align="center" colspan="8">DATA</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>SPI_CTRL</td>
-		<td colspan="6">-</td>
-		<td>BUSY</td>
-		<td>SELECT</td>
+		<td align="center" colspan="6">-</td>
+		<td align="center">BUSY</td>
+		<td align="center">SELECT</td>
 	</tr>
 </table>
 
@@ -688,24 +679,24 @@ The chip select can be controlled by writing the SELECT bit. Writing 1 will asse
 	<tr>
 		<td>0</td>
 		<td>UART_DATA</td>
-		<td colspan="8">DATA</td>
+		<td align="center" colspan="8">DATA</td>
 	</tr>
 	<tr>
 		<td>1</td>
 		<td>UART_STATUS</td>
-		<td colspan="6">-</td>
-		<td>TXBUSY</td>
-		<td>RXFIFO not empty</td>
+		<td align="center" colspan="6">-</td>
+		<td align="center">TXBUSY</td>
+		<td align="center">RXFIFO not empty</td>
 	</tr>
 	<tr>
 		<td>2</td>
 		<td>UART_BAUDDIV_L</td>
-		<td colspan="8">BAUDDIV (7:0)</td>
+		<td align="center" colspan="8">BAUDDIV (7:0)</td>
 	</tr>
 	<tr>
 		<td>3</td>
 		<td>UART_BAUDDIV_H</td>
-		<td colspan="8">BAUDDIV (15:8)</td>
+		<td align="center" colspan="8">BAUDDIV (15:8)</td>
 	</tr>
 </table>
 
