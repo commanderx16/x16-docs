@@ -135,18 +135,18 @@ You can also enable ISO mode in direct mode by pressing Ctrl+`O`.
 
 The following PETSCII control characters have been added compared to the C64:
 
-| Code | Descrption             |
-|------|------------------------|
-| $09  | TAB [C128/C65]         |
-| $0F  | enable ISO mode        |
-| $10  | F9 [C65]               |
-| $18  | Shift + TAB [C128/C65] |
-| $16  | F10 [C65]              |
-| $16  | F11 [C65]              |
-| $17  | F12 [C65]              |
-| $83  | RUN [C65]              |
-| $84  | HELP [C65]             |
-| $8F  | disable ISO mode       |
+| Code | Descrption             | Comment                            |
+|------|------------------------|------------------------------------|
+| $09  | TAB                    | same as on C128/C65; key code only |
+| $0F  | enable ISO mode        |                                    |
+| $10  | F9                     | same as on C65                     |
+| $18  | Shift + TAB            | same as on C128/C65; key code only |
+| $16  | F10                    | same as on C65                     |
+| $16  | F11                    | same as on C65                     |
+| $17  | F12                    | same as on C65                     |
+| $83  | RUN                    | same as on C65                     |
+| $84  | HELP                   | same as on C65                     |
+| $8F  | disable ISO mode       |                                    |
 
 Some of these codes are also supported on the C128 or the C65.
 
@@ -175,6 +175,17 @@ There are several new statement and functions. Note that all BASIC keywords (suc
       DOS"$" : REM SHOWS DIRECTORY
       DOS"S:BAD_FILE" : REM DELETES "BAD_FILE"
       DOS : PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
+
+#### OLD
+
+**TYPE: Command**
+**FORMAT: OLD**	
+
+**Action:** This command recovers the BASIC program in RAM that has been previously deleted using the `NEW` command or through a RESET.
+
+**EXAMPLE of OLD Statement:**
+
+      OLD
 
 #### MON
 
@@ -489,7 +500,7 @@ The following additions have been made:
 * The instruction set extensions of the 65C02 are supported.
 * The `O` command takes an 8 bit hex value as an argument and sets it as the ROM and RAM bank for reading and writing memory contents. The following example disassembles the beginning of the DOS ROM on bank 2:
 
-      O02
+      O05
       DC000 C015
 
 * The `OV` command takes a 4 bit hex value as an argument and sets it as the bank in the video address space for reading and writing memory contents. The following example shows the character ROM in the video controller's address space:
@@ -510,25 +521,23 @@ This is an overview of the X16 memory map:
 |$0000-$9EFF|Fixed RAM (40 KB minus 256 bytes)								   |
 |$9F00-$9FFF|I/O Area (256 bytes)											   |
 |$A000-$BFFF|Banked RAM (8 KB window into one of 256 banks for a total of 2 MB)|
-|$C000-$DFFF|Banked ROM (8 KB window into one of 8 banks for a total of 64 KB) |
-|$E000-$FFFF|Fixed ROM (KERNAL)												   |
+|$C000-$FFFF|Banked ROM (16 KB window into one of 8 banks for a total of 128 KB) |
 
 ### Banked Memory
 
-The RAM bank (0-255) defaults to 255, and the ROM bank (0-7) defaults to 7 on RESET. The RAM bank can be configured through VIA#1 PA0-7 ($9F61), and the ROM bank through VIA#1 PB0-2 ($9F60). The section  "I/O Programming" for more information.
+The RAM bank (0-255) defaults to 255, and the ROM bank (0-7) defaults to 7 on RESET. The RAM bank can be configured through VIA#1 PA0-7 ($9F61), and the ROM bank through VIA#1 PB0-2 ($9F60). See section "I/O Programming" for more information.
 
 ### ROM Allocations
 
-The fixed ROM at $E000-$FFFF contains the KERNAL. This is the allocation of the banks of banked ROM:
+This is the allocation of the banks of banked ROM:
 
 |Bank|Name   |Description                                            |
 |----|-------|-------------------------------------------------------|
-|0   |BASIC  |The BASIC interpreter                                  |
-|1   |UTIL   |Utilities like the machine language monitor            |
-|2   |DOS    |The computer-based CBM-DOS for FAT32 SD cards          |
-|3-4 |KEYMAP |Keyboard layouts                                       |
-|5   |CHARSET|The character sets that are uploaded into video RAM    |
-|3-7 |–      |*[Currently unassigned]*                               |
+|0   |BASIC  |BASIC interpreter                                      |
+|1-4 |–      |*[Currently unused]*                                   |
+|5   |CBDOS  |The computer-based CBM-DOS for FAT32 SD cards          |
+|6   |KEYMAP |Keyboard layout tables                                 |
+|7   |KERNAL |character sets (uploaded into VRAM), MONITOR, KERNAL   |
 
 **Important**: The layout of the banks is still constantly changing.
 
