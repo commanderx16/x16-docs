@@ -498,7 +498,7 @@ Some features specific to this monitor are:
 The following additions have been made:
 
 * The instruction set extensions of the 65C02 are supported.
-* The `O` command takes an 8 bit hex value as an argument and sets it as the ROM and RAM bank for reading and writing memory contents. The following example disassembles the beginning of the DOS ROM on bank 2:
+* The `O` command takes an 8 bit hex value as an argument and sets it as the ROM and RAM bank for reading and writing memory contents. The following example disassembles the beginning of the CBDOS ROM on bank 5:
 
       O05
       DC000 C015
