@@ -557,7 +557,7 @@ The following zero page locations are unused by KERNAL/BASIC and are available t
 
 |Addresses  |
 |-----------|
-|$0000-$0003|
+|$0000-$0002|
 |$00FB-$00FE|
 
 In a machine language application that only uses KERNAL, the following zero page locations are also available:
