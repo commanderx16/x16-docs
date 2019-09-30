@@ -141,7 +141,7 @@ The following PETSCII control characters have been added compared to the C64:
 | $0F  | enable ISO mode        |                                    |
 | $10  | F9                     | same as on C65                     |
 | $18  | Shift + TAB            | same as on C128/C65; key code only |
-| $16  | F10                    | same as on C65                     |
+| $15  | F10                    | same as on C65                     |
 | $16  | F11                    | same as on C65                     |
 | $17  | F12                    | same as on C65                     |
 | $83  | RUN                    | same as on C65                     |
