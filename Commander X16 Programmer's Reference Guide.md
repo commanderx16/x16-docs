@@ -533,12 +533,12 @@ This is the allocation of the banks of banked ROM:
 
 |Bank|Name   |Description                                            |
 |----|-------|-------------------------------------------------------|
-|0   |BASIC  |BASIC interpreter                                      |
-|1-3 |–      |*[Currently unused]*                                   |
-|4   |GEOS   |GEOS KERNAL                                            |
-|5   |CBDOS  |The computer-based CBM-DOS for FAT32 SD cards          |
-|6   |KEYMAP |Keyboard layout tables                                 |
-|7   |KERNAL |character sets (uploaded into VRAM), MONITOR, KERNAL   |
+|0   |KERNAL |character sets (uploaded into VRAM), MONITOR, KERNAL   |
+|1   |KEYBD  |Keyboard layout tables                                 |
+|2   |CBDOS  |The computer-based CBM-DOS for FAT32 SD cards          |
+|3   |GEOS   |GEOS KERNAL                                            |
+|4   |BASIC  |BASIC interpreter                                      |
+|5-7 |–      |*[Currently unused]*                                   |
 
 **Important**: The layout of the banks is still constantly changing.
 
