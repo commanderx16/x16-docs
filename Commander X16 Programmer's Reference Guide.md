@@ -161,14 +161,14 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 #### DOS
 
 **TYPE: Command**
-**FORMAT: DOS &lt;string&gt;**	
+**FORMAT: DOS &lt;string&gt;**
 
 **Action:** This command works with the command/status channel or the directory of a Commodore DOS device and has different functionality depending on the type of argument.
 
 * Without an argument, `DOS` prints the status string of the current device.
 * With a string argument of `"8"` or `"9"`, it switches the current device to the given number.
 * With an argument starting with `"$"`, it shows the directory of the device.
-* Any other argument will be sent as a DOS command. 
+* Any other argument will be sent as a DOS command.
 
 **EXAMPLES of DOS Statement:**
 
@@ -179,7 +179,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 #### OLD
 
 **TYPE: Command**
-**FORMAT: OLD**	
+**FORMAT: OLD**
 
 **Action:** This command recovers the BASIC program in RAM that has been previously deleted using the `NEW` command or through a RESET.
 
@@ -248,6 +248,17 @@ In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch 
 
       IF PEEK($D9)<>40 THEN SYS $FF5F : REM SWITCH TO 40 CHARACTER MODE
       IF PEEK($D9)<>80 THEN SYS $FF5F : REM SWITCH TO 80 CHARACTER MODE
+
+In BASIC, the contents of files can be directly loaded into VRAM with the `LOAD` statement. When a secondary address greater than one is used, the KERNAL will now load the file into the VERA's VRAM address space. The first two bytes of the file are used as lower 16 bits of the address. The upper 4 bits are `(SA-2) & 0x0ff` where `SA` is the secondary address.
+
+Examples:
+
+	  10 REM LOAD VERA SETTINGS
+	  20 LOAD"VERA.BIN",1,18 : REM SET ADDRESS TO $FXXXX
+	  30 REM LOAD TILES
+	  40 LOAD"TILES.BIN",1,3 : REM SET ADDRESS TO $1XXXX
+	  50 REM LOAD MAP
+      60 LOAD"MAP.BIN",1,2 : REM SET ADDRESS TO $0XXXX
 
 ### Internal Representation
 
@@ -398,7 +409,7 @@ Each of these symbols consist of 3 bytes with the following layout:
       byte 0:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
               NES  | A | B |SEL|STA|UP |DN |LT |RT |
               SNES | B | Y |SEL|STA|UP |DN |LT |RT |
-      
+
       byte 1:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
               NES  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | X |
               SNES | A | X | L | R | 1 | 1 | 1 | 1 |
