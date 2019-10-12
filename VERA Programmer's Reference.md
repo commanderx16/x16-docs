@@ -623,7 +623,7 @@ Collisions are only detected on lines that are actually rendered.
 | 2                     | 32 px       |
 | 3                     | 64 px       |
 
-**Rendering Priority** The sprite memory location dictates the order in which it is rendered.  The sprite whose attributes are at the lowest location, $F5000, will be rendered above all other sprites; the sprite at the highest location will be rendered below all other sprites, and so forth.
+**Rendering Priority** The sprite memory location dictates the order in which it is rendered.  The sprite whose attributes are at the lowest location, $F5000, will be rendered in front of all other sprites; the sprite at the highest location will be rendered behind all other sprites, and so forth.
 
 **Palette offset** works in the same way as with the layers.
 
