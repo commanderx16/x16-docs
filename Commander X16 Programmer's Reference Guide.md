@@ -375,7 +375,7 @@ $FF7D: `PRIMM` – print string following the caller’s code
 
 Some notes:
 
-* For `SWAPPER`, the user can detect the current mode by reading the zero page location `LLEN` ($02AE), which either holds a value of 40 or 80. This is different than on the C128.
+* For `SWAPPER`, the user can detect the current mode by reading the memory location `LLEN` ($02AE), which either holds a value of 40 or 80. This is different than on the C128.
 * `FETCH`, `STASH` and `CMPARE` require the caller to set the zero page location containing the address in memory beforehand. These are different than on the C128:
 
 |Call    |Label   |Address |
@@ -402,7 +402,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the zeropage locations `JOY1` ($02BC-$02BE) and `JOY2` ($02BF-$02C1).
+**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the memory locations `JOY1` ($02BC-$02BE) and `JOY2` ($02BF-$02C1).
 
 Each of these symbols consist of 3 bytes with the following layout:
 
