@@ -65,8 +65,7 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 As a modern sibling of the line of Commodore home computers, the Commander X16 is resaonably compatible with computers of that line.
 
 * Pure BASIC programs are fully backwards compatible with the VIC-20 and the C64.
-* Most PEEKs and POKEs of addresses in the $0000-$0340 area are compatible with the C64.
-* POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID controllers, for example.)
+** POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID controllers, for example.)
 * Pure machine language programs ($FF81+ KERNAL API) are compatible with Commodore computers.
 
 ## BASIC Programming
@@ -246,8 +245,8 @@ To set the background color of the complete screen, it just has to be cleared af
 
 In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch modes, use the following BASIC code:
 
-      IF PEEK($D9)<>40 THEN SYS $FF5F : REM SWITCH TO 40 CHARACTER MODE
-      IF PEEK($D9)<>80 THEN SYS $FF5F : REM SWITCH TO 80 CHARACTER MODE
+      IF PEEK($02AE)<>40 THEN SYS $FF5F : REM SWITCH TO 40 CHARACTER MODE
+      IF PEEK($02AE)<>80 THEN SYS $FF5F : REM SWITCH TO 80 CHARACTER MODE
 
 In BASIC, the contents of files can be directly loaded into VRAM with the `LOAD` statement. When a secondary address greater than one is used, the KERNAL will now load the file into the VERA's VRAM address space. The first two bytes of the file are used as lower 16 bits of the address. The upper 4 bits are `(SA-2) & 0x0ff` where `SA` is the secondary address.
 
@@ -356,7 +355,8 @@ Some notes:
 * For device #8, the Commodore Peripheral Bus calls first talk to the "Computer DOS" built into the ROM to detect an SD card, before falling back to the Commodore Serial Bus.
 * The `IOBASE` call returns $9F60, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
-* The layout of the zero page ($0000-$00FF), the KERNAL/BASIC variable space ($0200 -$02FF) and the vectors ($0300-$0333) are also fully compatible with the C64.
+* The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200-$02FF) are generally **not** compatible with the C64.
+* The vectors ($0300-$0333) are fully compatible with the C64.
 
 ### Commodore 128 API Compatibility
 
@@ -375,7 +375,7 @@ $FF7D: `PRIMM` – print string following the caller’s code
 
 Some notes:
 
-* For `SWAPPER`, the user can detect the current mode by reading the zero page location `LLEN` ($D9), which either holds a value of 40 or 80. This is different than on the C128.
+* For `SWAPPER`, the user can detect the current mode by reading the zero page location `LLEN` ($02AE), which either holds a value of 40 or 80. This is different than on the C128.
 * `FETCH`, `STASH` and `CMPARE` require the caller to set the zero page location containing the address in memory beforehand. These are different than on the C128:
 
 |Call    |Label   |Address |
@@ -402,7 +402,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the zeropage locations `JOY1` ($EF-$F1) and `JOY2` ($F2-$F4).
+**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the zeropage locations `JOY1` ($02BC-$02BE) and `JOY2` ($02BF-$02C1).
 
 Each of these symbols consist of 3 bytes with the following layout:
 
@@ -559,24 +559,23 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 
 |Addresses  |Description                                                     |
 |-----------|----------------------------------------------------------------|
-|$0000-$00FF|KERNAL and BASIC zero page variables                            |
+|$0000-$007F|User zero page                                                  |
+|$0080-$00FF|KERNAL and BASIC zero page variables                            |
 |$0100-$01FF|CPU stack                                                       |
-|$0000-$07FF|KERNAL and BASIC variables                                      |
+|$0200-$07FF|KERNAL and BASIC variables                                      |
 |$0800-$9EFF|BASIC program/variables; available to the user                  |
 
-The following zero page locations are unused by KERNAL/BASIC and are available to the user:
+The following zero page locations are completely unused by KERNAL/BASIC and are available to the user:
 
 |Addresses  |
 |-----------|
-|$0000-$0002|
-|$00FB-$00FE|
+|$0000-$007F|
 
 In a machine language application that only uses KERNAL, the following zero page locations are also available:
 
 |Addresses  |
 |-----------|
-|$0000-$008F|
-|$00FF|
+|$00A9-$00FF|
 
 This is the allocation of banked RAM in the KERNAL/BASIC environment.
 
@@ -609,13 +608,9 @@ See the [VERA Programmer's Reference](VERA%20Programmer's%20Reference.md) for th
 
 **IMPORTANT**: The VERA register layout has changed between 0.7 and 0.8. Here is the old documentation: [vera-module v0.7.pdf](https://github.com/commanderx16/x16-docs/blob/master/old/vera-module%20v0.7.pdf)
 
-The KERNAL uploads the three character sets to:
+The KERNAL uploads the current character sets (PETSCII graphics, PETSCII upper/lower or ISO-8859-15) to $0F800, i.e. the top of video RAM bank 0.
 
-* $1E800: ISO-8859-15 (2 KB)
-* $1F000: PETSCII upper case/graphics (2 KB)
-* $1F800: PETSCII upper/lower case (2 KB)
-
-Application software is free to reuse this part of video RAM if it does not need the character sets. If it needs them again later, it can use the KERNAL call `CINT` ($FF81), which initializes the VERA chip and uploads the character sets.
+Application software is free to reuse this part of video RAM if it does not need the character set. If it needs them again later, it can use the KERNAL call `CINT` ($FF81), which initializes the VERA chip and uploads the PETSCII graphics character set, or print character code $0E too trigger an upload of the PETSCII upper/lower chcracter set, or $0F for the ISO character set.
 
 ## Sound Programming
 
