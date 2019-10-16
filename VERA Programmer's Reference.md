@@ -434,7 +434,9 @@ Each layer supports a few different display modes, which can be selected using t
 	</tr>
 </table>
 
-**TILE_BASE** points to the character data. This data is organized as 8 bytes per character entry. Each byte represents 1 line of character data, where bit 7 represents the left-most pixel and bit 0 the right-most pixel. If the bit is set the foreground color is used, otherwise the background color.
+**TILE_BASE** points to the tile data.
+
+Each bit in the tile data specifies one pixel. If the bit is set the foreground color as specified in the map data is used, otherwise the background color as specified in the map data is used.
 
 ### Mode 1 – 256 color text mode
 
@@ -462,7 +464,9 @@ Each layer supports a few different display modes, which can be selected using t
 	</tr>
 </table>
 
-**TILE_BASE** points to the character data. This data is organized as 8 bytes per character entry. Each byte represents 1 line of character data, where bit 7 represents the left-most pixel and bit 0 the right-most pixel. If the bit is set the foreground color is used, otherwise color 0 is used.
+**TILE_BASE** points to the tile data.
+
+Each bit in the tile data specifies one pixel. If the bit is set the foreground color as specified in the map data is used, otherwise color 0 is used (transparent).
 
 ### Mode 2/3/4 – Tile mode 2/4/8bpp
 
