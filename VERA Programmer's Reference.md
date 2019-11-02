@@ -307,7 +307,8 @@ At reset, the palette will contain a predefined palette:
 	<tr>
 		<td>3</td>
 		<td>Ln_MAP_BASE_H</td>
-		<td align="center" colspan="8">MAP_BASE (17:10)</td>
+		<td align="center">-</td>
+		<td align="center" colspan="7">MAP_BASE (16:10)</td>
 	</tr>
 	<tr>
 		<td>4</td>
@@ -317,7 +318,8 @@ At reset, the palette will contain a predefined palette:
 	<tr>
 		<td>5</td>
 		<td>Ln_TILE_BASE_H</td>
-		<td align="center" colspan="8">TILE_BASE (17:10)</td>
+		<td align="center">-</td>
+		<td align="center" colspan="8">TILE_BASE (16:10)</td>
 	</tr>
 	<tr>
 		<td>6</td>
