@@ -47,7 +47,7 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 **Features:**
 
 * 8-bit 65C02 CPU at 8 MHz
-* 2 MB RAM
+* 512 KB or 2 MB RAM
 * 128 KB ROM
 * VERA video controller
 	* up to 640x480 resolution
@@ -65,7 +65,7 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 As a modern sibling of the line of Commodore home computers, the Commander X16 is resaonably compatible with computers of that line.
 
 * Pure BASIC programs are fully backwards compatible with the VIC-20 and the C64.
-** POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID controllers, for example.)
+* POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID controllers, for example.)
 * Pure machine language programs ($FF81+ KERNAL API) are compatible with Commodore computers.
 
 ## BASIC Programming
@@ -157,6 +157,44 @@ Pressing the `F9` key cycles through the available keyboard layouts.
 
 There are several new statement and functions. Note that all BASIC keywords (such as `FOR`) get converted into tokens (such as `$81`), and the tokens for the new keywords have not been finalized yet. Therefore, loading BASIC program saved from a different revision of BASIC may mix up keywords.
 
+
+#### GEOS
+
+**TYPE: Command**
+**FORMAT: GEOS**
+
+**Action:** Enter the GEOS UI.
+
+#### CHAR
+
+**TYPE: Command**
+**FORMAT: CHAR &lt;x&gt;,&lt;y&gt;,&lt;color&gt;,&lt;string&gt;**
+
+**Action:** This command draws a text string on the graphics screen in a given color.
+
+The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), as well as the following GEOS control codes:
+
+| Code | Description     |
+|------|-----------------|
+| 13   | Carriage Return |
+| 14   | Underline       |
+| 18   | Reverse         |
+| 24   | Bold            |
+| 25   | Italics         |
+| 26   | Outline         |
+| 27   | Plain text      |
+
+**EXAMPLE of CHAR Statement:**
+
+	10 SCREEN$80
+	20 A$="The quick brown fox jumps over the lazy dog."
+	24 CHAR0,6,0,A$
+	30 CHAR0,6+12,0,CHR$(14)+A$
+	40 CHAR0,6+12*2,0,CHR$(18)+A$
+	50 CHAR0,6+12*3,0,CHR$(24)+A$
+	60 CHAR0,6+12*4,0,CHR$(25)+A$
+	70 CHAR0,6+12*5,0,CHR$(26)+A$
+
 #### DOS
 
 **TYPE: Command**
@@ -175,16 +213,32 @@ There are several new statement and functions. Note that all BASIC keywords (suc
       DOS"S:BAD_FILE" : REM DELETES "BAD_FILE"
       DOS             : REM PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
 
-#### OLD
+#### FRAME
 
 **TYPE: Command**
-**FORMAT: OLD**
+**FORMAT: FRAME &lt;x1&gt;,&lt;y1&gt;,&lt;x2&gt;,&lt;y2&gt;,&lt;color&gt;**
 
-**Action:** This command recovers the BASIC program in RAM that has been previously deleted using the `NEW` command or through a RESET.
+**Action:** This command draws a rectangle frame on the graphics screen in a given color.
 
-**EXAMPLE of OLD Statement:**
+**EXAMPLE of FRAME Statement:**
 
-      OLD
+	10 SCREEN$80
+	20 FORI=1TO20:FRAMERND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*128:NEXT
+	30 GOTO20
+
+#### LINE
+
+**TYPE: Command**
+**FORMAT: LINE &lt;x1&gt;,&lt;y1&gt;,&lt;x2&gt;,&lt;y2&gt;,&lt;color&gt;**
+
+**Action:** This command draws a line on the graphics screen in a given color.
+
+**EXAMPLE of LINE Statement:**
+
+	10 SCREEN128
+	20 FORA=0TO2*\XFFSTEP2*\XFF/200
+	30 LINE100,100,100+SIN(A)*100,100+COS(A)*100
+	40 NEXT
 
 #### MON
 
@@ -197,6 +251,111 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
       MON
 
+#### MOUSE
+
+**TYPE: Command**
+**FORMAT: MOUSE &lt;mode&gt;**
+
+**Action:** This command configures the mouse pointer.
+
+| Mode | Description                              |
+|------|------------------------------------------|
+| 0    | Hide mouse                               |
+| 1    | Show mouse, set default mouse pointer    |
+| $FF  | Show mouse, don't configure mouse cursor |
+
+`MOUSE 1` turns on the mouse pointer and `MOUSE 0` turns it off. If the BASIC program has its own mouse pointer sprite configured, it can use `MOUSE $FF`, which will turn the mouse pointer on, but not set the default pointer sprite.
+
+**EXAMPLES of MOUSE Statement:**
+
+	MOUSE 1 : REM ENABLE MOUSE
+	MOUSE 0 : REM DISABLE MOUSE
+
+#### MX/MY/MB
+
+**TYPE: Integer Function**
+**FORMAT: MX**
+**FORMAT: MY**
+**FORMAT: MB**
+
+**Action:** Return the horizontal (`MX`) or vertical (`MY`) position of the mouse pointer, or the mouse button state (`MB`).
+
+`MB` returns the sum of the following values depending on the state of the buttons:
+
+| Value | Button |
+|-------|--------|
+| 0     | none   |
+| 1     | left   |
+| 2     | right  |
+| 4     | third  |
+
+**EXAMPLE of MX/MY/MB Functions:**
+
+	REM SIMPLE DRAWING PROGRAM
+	10 SCREEN$80
+	20 MOUSE1
+	25 OB=0
+	30 TX=MX:TY=MY:TB=MB
+	35 IFTB=0GOTO25
+	40 IFOBTHENLINEOX,OY,TX,TY,16
+	50 IFOB=0THENPSETTX,TY,16
+	60 OX=TX:OY=TY:OB=TB
+	70 GOTO30
+
+#### OLD
+
+**TYPE: Command**
+**FORMAT: OLD**
+
+**Action:** This command recovers the BASIC program in RAM that has been previously deleted using the `NEW` command or through a RESET.
+
+**EXAMPLE of OLD Statement:**
+
+      OLD
+
+#### PSET
+
+**TYPE: Command**
+**FORMAT: PSET &lt;x&gt;,&lt;y&gt;,&lt;color&gt;**
+
+**Action:** This command sets a pixel on the graphics screen to a given color.
+
+**EXAMPLE of PSET Statement:**
+
+	10 SCREEN$80
+	20 FORI=1TO20:PSETRND(1)*320,RND(1)*200,RND(1)*256:NEXT
+	30 GOTO20
+
+#### RECT
+
+**TYPE: Command**
+**FORMAT: RECT &lt;x1&gt;,&lt;y1&gt;,&lt;x2&gt;,&lt;y2&gt;,&lt;color&gt;**
+
+**Action:** This command draws a solid rectangle on the graphics screen in a given color.
+
+**EXAMPLE of RECT Statement:**
+
+	10 SCREEN$80
+	20 FORI=1TO20:RECTRND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*256:NEXT
+	30 GOTO20
+
+#### SCREEN
+
+**TYPE: Command**
+**FORMAT: SCREEN &lt;mode&gt;**
+
+**Action:** This command switches the screen mode. Modes $80 (128) and above are graphics modes.
+
+| Mode | Description | Comment |
+|------|-------------|---------|
+| $00  | 40x30 text  |         |
+| $01  | 80x30 text  | (currently unsupported) |
+| $02  | 80x60 text  |
+| $80  | 320x200@256c<br/>40x25 text | |
+| $81  | 640x400@16c | (currently unsupported) |
+
+The value of $FF (255) toggles between modes $00 and $02.
+
 #### VPEEK
 
 **TYPE: Integer Function**
@@ -204,7 +363,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 **Action:** Return a byte from the video address space. The video address space has 20 bit addresses, which is exposed as 16 banks of 65536 addresses each.
 
-**EXAMPLE of VPEEK Statement:**
+**EXAMPLE of VPEEK Function:**
 
       PRINT (VPEEK($F,$2000) AND $E0) / 32 : REM PRINTS THE CURRENT MODE (0-7)
 
@@ -219,6 +378,10 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
       VPOKE 0,1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
                              REM AT 0/0 TO RED ON WHITE
+
+#### VLOAD
+
+*TODO*
 
 ### Other New Features
 
