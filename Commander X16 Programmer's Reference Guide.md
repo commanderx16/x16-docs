@@ -439,6 +439,7 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 
 * a 40/80 character screen driver
 * a PS/2 keyboard driver
+* a PS/2 mouse driver
 * an NES/SNES controller driver
 * a Commodore Serial Bus ("IEC") driver *[not yet working]*
 * an RS-232 driver *[not yet working]*
@@ -529,7 +530,6 @@ $FF4A: `CLOSE_ALL` – close all files on a device
 $FF53: `BOOT_CALL` – boot load program from disk *[not yet implemented]*
 $FF8D: `LKUPLA` – search tables for given LA
 $FF8A: `LKUPSA` – search tables for given SA
-$FF5F: `SWAPPER` – switch between 40 and 80 columns
 $FF65: `PFKEY` – program a function key *[not yet implemented]*
 $FF74: `FETCH` – LDA (fetvec),Y from any bank
 $FF77: `STASH` – STA (stavec),Y to any bank
@@ -538,7 +538,6 @@ $FF7D: `PRIMM` – print string following the caller’s code
 
 Some notes:
 
-* For `SWAPPER`, the user can detect the current mode by reading the memory location `LLEN` ($02AE), which either holds a value of 40 or 80. This is different than on the C128.
 * `FETCH`, `STASH` and `CMPARE` require the caller to set the zero page location containing the address in memory beforehand. These are different than on the C128:
 
 |Call    |Label   |Address |
@@ -553,7 +552,9 @@ There are a few new APIs. Please note that their addresses and their behavior is
 
 $FF00: `MONITOR` – enter montior
 $FF06: `GETJOY` – query joysticks
+$FF09: `MOUSE` – control mouse
 $FF6E: `JSRFAR` – gosub in another bank
+$FF5F: `SCRMOD` – set screen mode
 
 #### Function Name: GETJOY
 
@@ -657,6 +658,45 @@ Registers affected: Does not return
 **EXAMPLE:**
 
       JMP MONITOR
+
+#### Function Name: MOUSE
+
+Purpose: Configure the mouse pointer
+Call address: $FF09 (hex) 65289 (decimal)
+Communication registers: .A, .X
+Preparatory routines: None
+Error returns: None
+Stack requirements: 0
+Registers affected: .A, .X, .Y
+
+**Description:** The routine `MOUSE` configures the mouse pointer.
+
+The argument in .A specifies whether the mouse pointer should be visible or not, and what shape it should have. For a list of possible values, see the basic statement `SCREEN`.
+
+The argument in .X specifies the scale. Use a scale of 1 for a 640x480 screen, and a scale of 2 for a 320x240 screen. A value of 0 does not change the scale.
+
+**EXAMPLE:**
+
+	LDA #1
+	JSR MOUSE ; show the default mouse pointer
+
+#### Function Name: SCRMOD
+
+Purpose: Set the screen mode
+Call address: $FF5F (hex) 65375 (decimal)
+Communication registers: .A
+Preparatory routines: None
+Error returns: .C = 1 in case of error
+Stack requirements: [?]
+Registers affected: .A, .X, .Y
+
+**Description:** The routine `SCRMOD` sets the current screen mode. For a list of possible values, see the basic statement `SCREEN`.
+
+**EXAMPLE:**
+
+	LDA #$80
+	JSR SCRMOD ; SET 320x200@256C MODE
+	BCS FAILURE
 
 ## Machine Language Monitor
 
@@ -805,7 +845,9 @@ The following tables describe the connections of the GPIO ports:
 |PA5  |JOY1/2 CLK      |
 |PA6  |JOY2 DATA       |
 |PA7  |*[TBD]*         |
-|PB0-7|*[TBD]*         |
+|PA0  |MOUSE PS/2 DAT  |
+|PA1  |MOUSE PS/2 CLK  |
+|PB2-7|*[TBD]*         |
 
 The GPIO connections for the Commodore Serial Bus and the mouse PS/2 connection have not been finalized.
 
