@@ -671,7 +671,7 @@ Registers affected: .A, .X, .Y
 
 **Description:** The routine `MOUSE` configures the mouse pointer.
 
-The argument in .A specifies whether the mouse pointer should be visible or not, and what shape it should have. For a list of possible values, see the basic statement `SCREEN`.
+The argument in .A specifies whether the mouse pointer should be visible or not, and what shape it should have. For a list of possible values, see the basic statement `MOUSE`.
 
 The argument in .X specifies the scale. Use a scale of 1 for a 640x480 screen, and a scale of 2 for a 320x240 screen. A value of 0 does not change the scale.
 
