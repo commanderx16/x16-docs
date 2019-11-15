@@ -554,7 +554,7 @@ $FF00: `MONITOR` – enter montior
 $FF06: `GETJOY` – query joysticks
 $FF09: `MOUSE` – control mouse
 $FF6E: `JSRFAR` – gosub in another bank
-$FF5F: `SCRMOD` – set screen mode
+$FF5F: `SCRMOD` – get/set screen mode
 
 #### Function Name: GETJOY
 
@@ -690,11 +690,13 @@ Error returns: .C = 1 in case of error
 Stack requirements: [?]
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `SCRMOD` sets the current screen mode. For a list of possible values, see the basic statement `SCREEN`.
+**Description:** A call to this routine, with the carry flag
+set, sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. A call with the carry bit clear returns the current mode in .A.
 
 **EXAMPLE:**
 
 	LDA #$80
+	SEC
 	JSR SCRMOD ; SET 320x200@256C MODE
 	BCS FAILURE
 
