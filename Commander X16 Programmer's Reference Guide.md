@@ -391,7 +391,7 @@ The numeric constants parser supports both hex (`$`) and binary (`%`) literals, 
 
 The size of hex and binary values is only restricted by the range that can be represented by BASIC's internal floating point representation.
 
-In regular BASIC text mode, the video controller supports 16 foreground colors and 16 background colors for each character on the screen. The foreground color can be changed with existing PETSCII control codes. The background color currently has to be set using a POKE statement. The current colors are accessible through memory location $0286 (decimal 646):
+In regular BASIC text mode, the video controller supports 16 foreground colors and 16 background colors for each character on the screen. The foreground color can be changed with existing PETSCII control codes. The background color currently has to be set using a POKE statement. The current colors are accessible through memory location $02C9 (decimal 713):
 
 |Bits |Description      |
 |-----|-----------------|
@@ -400,7 +400,7 @@ In regular BASIC text mode, the video controller supports 16 foreground colors a
 
 The following BASIC statement would set the current printing color to white on black, for example:
 
-      POKE 646, 0 * 16 + 1
+      POKE 713, 0 * 16 + 1
 
 To set the background color of the complete screen, it just has to be cleared after setting the color:
 
