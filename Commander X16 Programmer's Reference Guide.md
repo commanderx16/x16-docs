@@ -406,10 +406,11 @@ To set the background color of the complete screen, it just has to be cleared af
 
       PRINT CHR$(147)
 
-In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch modes, use the following BASIC code:
+In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch modes, use the BASIC statement `SCREEN`:
 
-      IF PEEK($02AE)<>40 THEN SYS $FF5F : REM SWITCH TO 40 CHARACTER MODE
-      IF PEEK($02AE)<>80 THEN SYS $FF5F : REM SWITCH TO 80 CHARACTER MODE
+      SCREEN 0 : REM SWITCH TO 40 CHARACTER MODE
+      SCREEN 2 : REM SWITCH TO 80 CHARACTER MODE
+      SCREEN 255 : REM SWITCH BETWEEN 40 and 80 CHARACTER MODE
 
 In BASIC, the contents of files can be directly loaded into VRAM with the `LOAD` statement. When a secondary address greater than one is used, the KERNAL will now load the file into the VERA's VRAM address space. The first two bytes of the file are used as lower 16 bits of the address. The upper 4 bits are `(SA-2) & 0x0ff` where `SA` is the secondary address.
 
