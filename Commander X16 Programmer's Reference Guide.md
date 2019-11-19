@@ -848,8 +848,8 @@ The following tables describe the connections of the GPIO ports:
 |PA5  |JOY1/2 CLK      |
 |PA6  |JOY2 DATA       |
 |PA7  |*[TBD]*         |
-|PA0  |MOUSE PS/2 DAT  |
-|PA1  |MOUSE PS/2 CLK  |
+|PB0  |MOUSE PS/2 DAT  |
+|PB1  |MOUSE PS/2 CLK  |
 |PB2-7|*[TBD]*         |
 
 The GPIO connections for the Commodore Serial Bus and the mouse PS/2 connection have not been finalized.
