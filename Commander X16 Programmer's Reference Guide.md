@@ -195,6 +195,18 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 	60 CHAR0,6+12*4,0,CHR$(25)+A$
 	70 CHAR0,6+12*5,0,CHR$(26)+A$
 
+#### COLOR
+
+**TYPE: Command**
+**FORMAT: COLOR &lt;fgcol&gt;[,&lt;bgcol&gt;]**
+
+**Action:** This command works sets the text mode foreground color, and optionally the background color.
+
+**EXAMPLES of COLOR Statement:**
+
+      COLOR 2   : SET FG COLOR TO RED, KEEP BG COLOR
+      COLOR 2,0 : SET FG COLOR TO RED, BG COLOR TO BLACK
+
 #### DOS
 
 **TYPE: Command**
@@ -391,16 +403,12 @@ The numeric constants parser supports both hex (`$`) and binary (`%`) literals, 
 
 The size of hex and binary values is only restricted by the range that can be represented by BASIC's internal floating point representation.
 
-In regular BASIC text mode, the video controller supports 16 foreground colors and 16 background colors for each character on the screen. The foreground color can be changed with existing PETSCII control codes. The background color currently has to be set using a POKE statement. The current colors are accessible through memory location $02C9 (decimal 713):
+In regular BASIC text mode, the video controller supports 16 foreground colors and 16 background colors for each character on the screen. The new `COLOR` statement (described above) allows changing the foreground color and optionally the background color. Machine code programs can currently write the to the `color` location ($02CC) in the KERNAL variables area, which has the following layout:
 
 |Bits |Description      |
 |-----|-----------------|
 |0-3  |Foreground color |
 |4-7  |Background color |
-
-The following BASIC statement would set the current printing color to white on black, for example:
-
-      POKE 713, 0 * 16 + 1
 
 To set the background color of the complete screen, it just has to be cleared after setting the color:
 
