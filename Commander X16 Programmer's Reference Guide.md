@@ -130,12 +130,29 @@ You can also enable ISO mode in direct mode by pressing Ctrl+`O`.
 
 **Important:** In ISO mode, BASIC keywords need to be written in upper case, that is, they have to be entered with the Shift key down, and abbreviating keywords is no longer possible.
 
+### Background Color
+
+In regular BASIC text mode, the video controller supports 16 foreground colors and 16 background colors for each character on the screen.
+
+The new "swap fg/bg color" code is useful to change the background color of the cursor, like this:
+
+	PRINT CHR$(2);   : REM SWAP FG/BG
+	PRINT CHR$($1C); : REM SET FG COLOR TO RED
+	PRINT CHR$(2);   : REM SWAP FG/BG
+
+The new BASIC instruction `COLOR` makes this easier, but the trick above can also be used from machine code programs.
+
+To set the background color of the complete screen, it just has to be cleared after setting the color:
+
+      PRINT CHR$(147);
+
 ### New Control Characters
 
 The following PETSCII control characters have been added compared to the C64:
 
-| Code | Descrption             | Comment                            |
+| Code | Description            | Comment                            |
 |------|------------------------|------------------------------------|
+| $02  | swap fg/bg color       |                                    |
 | $09  | TAB                    | same as on C128/C65; key code only |
 | $0F  | enable ISO mode        |                                    |
 | $10  | F9                     | same as on C65                     |
@@ -146,8 +163,6 @@ The following PETSCII control characters have been added compared to the C64:
 | $83  | RUN                    | same as on C65                     |
 | $84  | HELP                   | same as on C65                     |
 | $8F  | disable ISO mode       |                                    |
-
-Some of these codes are also supported on the C128 or the C65.
 
 ### Keyboard Layouts
 
@@ -402,17 +417,6 @@ The numeric constants parser supports both hex (`$`) and binary (`%`) literals, 
       PRINT $EA31 + %1010
 
 The size of hex and binary values is only restricted by the range that can be represented by BASIC's internal floating point representation.
-
-In regular BASIC text mode, the video controller supports 16 foreground colors and 16 background colors for each character on the screen. The new `COLOR` statement (described above) allows changing the foreground color and optionally the background color. Machine code programs can currently write the to the `color` location ($02CC) in the KERNAL variables area, which has the following layout:
-
-|Bits |Description      |
-|-----|-----------------|
-|0-3  |Foreground color |
-|4-7  |Background color |
-
-To set the background color of the complete screen, it just has to be cleared after setting the color:
-
-      PRINT CHR$(147)
 
 In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch modes, use the BASIC statement `SCREEN`:
 
