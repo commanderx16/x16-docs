@@ -575,7 +575,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the memory locations `JOY1` ($02BC-$02BE) and `JOY2` ($02BF-$02C1).
+**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the memory locations `JOY1` ($02BB-$02BD) and `JOY2` ($02BE-$02C0).
 
 Each of these symbols consist of 3 bytes with the following layout:
 
