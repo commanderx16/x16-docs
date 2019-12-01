@@ -148,20 +148,50 @@ To set the background color of the complete screen, it just has to be cleared af
 
 ### New Control Characters
 
-The following PETSCII control characters have been added compared to the C64:
+This is the set of all supported PETSCII control characters. Descriptions in bold indicate new codes compared to the C64:
 
-| Code | Description            | Comment                            |
-|------|------------------------|------------------------------------|
-| $01  | swap fg/bg color       |                                    |
-| $09  | TAB                    | same as on C128/C65; key code only |
-| $0F  | enable ISO mode        |                                    |
-| $10  | F9                     | same as on C65                     |
-| $15  | F10                    | same as on C65                     |
-| $16  | F11                    | same as on C65                     |
-| $17  | F12                    | same as on C65                     |
-| $18  | Shift + TAB            | same as on C128/C65; key code only |
-| $84  | HELP                   | same as on C65                     |
-| $8F  | disable ISO mode       |                                    |
+| Code |                            |                           | Code |
+|------|----------------------------|---------------------------|------|
+| $00  | NULL                       | -                         | $80  |
+| $01  | **SWAP COLORS**            | COLOR: ORANGE             | $81  |
+| $02  <td colspan=2 align="center"> -                          | $82  |
+| $03  <td colspan=2 align="center"> STOP/RUN                   | $83  |
+| $04  | **ATTRIBUTES: UNDERLINE**  | **HELP**                  | $84  |
+| $05  | COLOR: WHITE               | F1                        | $85  |
+| $06  | **ATTRIBUTES: BOLD**       | F3                        | $86  |
+| $07  | **BELL**                   | F5                        | $87  |
+| $08  | **BACKSPACE**              | F7                        | $88  |
+| $09  | **TAB**                    | F2                        | $89  |
+| $0A  | **LF**                     | F4                        | $8A  |
+| $0B  | **ATTRIBUTES: ITALICS**    | F6                        | $8B  |
+| $0C  | **ATTRIBUTES: OUTLINE**    | F8                        | $8C  |
+| $0D  <td colspan=2 align="center"> REGULAR/SHIFTED RETURN     | $8D  |
+| $0E  <td colspan=2 align="center"> CHARSET: LOWER/UPPER CASE  | $8E  |
+| $0F  <td colspan=2 align="center"> **CHARSET: ISO ON/OFF**    | $8F  |
+| $10  | **F9**                     | COLOR: BLACK              | $90  |
+| $11  <td colspan=2 align="center"> CURSOR: DOWN/UP            | $91  |
+| $12  | ATTRIBUTES: REVERSE        | ATTRIBUTES: CLEAR ALL     | $92  |
+| $13  <td colspan=2 align="center"> HOME/CLEAR                 | $93  |
+| $14  <td colspan=2 align="center"> DEL/INSERT                 | $94  |
+| $15  | **F10**                    | COLOR: BROWN              | $95  |
+| $16  | **F11**                    | COLOR: LIGHT RED          | $96  |
+| $17  | **F12**                    | COLOR: DARK GRAY          | $97  |
+| $18  | **SHIFT+TAB**              | COLOR: MIDDLE GRAY        | $98  |
+| $19  | -                          | COLOR: LIGHT GREEN        | $99  |
+| $1A  | -                          | COLOR: LIGHT BLUE         | $9A  |
+| $1B  | -                          | COLOR: LIGHT GRAY         | $9B  |
+| $1C  | COLOR: RED                 | COLOR: PURPLE             | $9C  |
+| $1D  | CURSOR: RIGHT              | CURSOR: LEFT              | $9D  |
+| $1E  | COLOR: GREEN               | COLOR: YELLOW             | $9E  |
+| $1F  | COLOR: BLUE                | COLOR: CYAN               | $9F  |
+
+**Notes:**
+
+* $01: SWAP COLORS swaps the foreground and background colors in text mode
+* $04/$06/$0B/$0C: the new attribute change codes only have an effect in graphics mode
+* $07/$08/$09/$0A/$18: have been added for ASCII compatibility [NYI]
+* $08/$09: Charset switch enable/disable not supported
+* F9-F12, HELP: these codes match the C65 additions
 
 ### Keyboard Layouts
 
