@@ -152,15 +152,14 @@ The following PETSCII control characters have been added compared to the C64:
 
 | Code | Description            | Comment                            |
 |------|------------------------|------------------------------------|
-| $02  | swap fg/bg color       |                                    |
+| $01  | swap fg/bg color       |                                    |
 | $09  | TAB                    | same as on C128/C65; key code only |
 | $0F  | enable ISO mode        |                                    |
 | $10  | F9                     | same as on C65                     |
-| $18  | Shift + TAB            | same as on C128/C65; key code only |
 | $15  | F10                    | same as on C65                     |
 | $16  | F11                    | same as on C65                     |
 | $17  | F12                    | same as on C65                     |
-| $83  | RUN                    | same as on C65                     |
+| $18  | Shift + TAB            | same as on C128/C65; key code only |
 | $84  | HELP                   | same as on C65                     |
 | $8F  | disable ISO mode       |                                    |
 
