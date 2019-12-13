@@ -26,9 +26,6 @@
 	* [New API for the Commander X16](#new-api-for-the-commander-x16)
 	* [KERNAL Version](#kernal-version)
 	* [Compatibility Considerations](#compatibility-considerations)
-		* [Function Name: GETJOY](#function-name-getjoy)
-		* [Function Name: JSRFAR](#function-name-jsrfar)
-		* [Function Name: MONITOR](#function-name-monitor)
 * [Machine Language Monitor](#machine-language-monitor)
 * [Memory Map](#memory-map)
 	* [Banked Memory](#banked-memory)
@@ -499,15 +496,10 @@ For applications to remain compatible between different versions of the ROM, the
 
 * the KERNAL API
 
-The following is guaranteed to remain mostly stable:
+The following features must not be relied upon:
 
 * the $0000-$03FF memory layout
-
-And the following features must not be relied upon:
-
 * direct function offsets in the ROM
-
-That is, don't jump into undocumented ROM code directly, or reuse undocumented data constants in ROM.
 
 ### Commodore 64 API Compatibility
 
@@ -569,9 +561,9 @@ Some notes:
 In addition, the X16 supports a subset of the C128 API additions:
 
 $FF4A: `CLOSE_ALL` – close all files on a device
-$FF53: `BOOT_CALL` – boot load program from disk *[not yet implemented]*
 $FF8D: `LKUPLA` – search tables for given LA
 $FF8A: `LKUPSA` – search tables for given SA
+$FF62: `DLCHR` - activate a text mode font in the video hardware *[not yet implemented]*
 $FF65: `PFKEY` – program a function key *[not yet implemented]*
 $FF74: `FETCH` – LDA (fetvec),Y from any bank
 $FF77: `STASH` – STA (stavec),Y to any bank
@@ -584,44 +576,89 @@ Some notes:
 
 |Call    |Label   |Address |
 |--------|--------|--------|
-|`FETCH` |`FETVEC`|$0384   |
-|`STASH` |`STAVEC`|$03A6   |
-|`CMPARE`|`CMPVEC`|$03C2   |
+|`FETCH` |`FETVEC`|$03AF   |
+|`STASH` |`STAVEC`|$XXXX   |
+|`CMPARE`|`CMPVEC`|$XXXX   |
+
+Note: `STASH` and `CMPARE` are currently non-functional.
 
 ### New API for the Commander X16
 
-There are a few new APIs. Please note that their addresses and their behavior is still prelimiary and can change between revisions.
+There are lots of new APIs. Please note that their addresses and their behavior is still prelimiary and can change between revisions.
 
-$FF00: `MONITOR` – enter montior
-$FF06: `GETJOY` – query joysticks
-$FF09: `MOUSE` – control mouse
-$FF6E: `JSRFAR` – gosub in another bank
-$FF5F: `SCRMOD` – get/set screen mode
+**Clock**
 
-#### Function Name: GETJOY
+$FF4D: `clock_set_date_time` - set date and time
+$FF50: `clock_get_date_time` - get date and time
 
-Purpose: Query the joysticks and store their state in the zeropage
-Call address: $FF06 (hex) 65286 (decimal)
+**Mouse**
+
+$FF68: `mouse_config` - configure mouse pointer
+$FF6B: `mouse_get` - get state of mouse
+
+**Joystick**
+
+$FF53: `joystick_scan` - query joysticks
+$FF56: `joystick_get` - get state of one joystick
+
+**Screen**
+
+$FF5F: `scrmod` - set screen mode
+
+**Graphics**
+$FF20: `GRAPH_init` - initialize graphics
+$FF23: `GRAPH_clear` - clear screen
+$FF26: `GRAPH_set_window` - set clipping region
+$FF29: `GRAPH_set_colors` - set stroke, fill and background colors
+$FF2C: `GRAPH_draw_line` - draw a line
+$FF2F: `GRAPH_draw_rect` - draw a rectangle (optionally filled)
+$FF32: `GRAPH_move_rect` - move pixels
+$FF35: `GRAPH_draw_oval` - draw an oval or circle
+$FF38: `GRAPH_draw_image` - draw a rectangular image
+$FF3B: `GRAPH_set_font` - set the current font
+$FF3E: `GRAPH_get_char_size` - get size and baseline of a character
+$FF41: `GRAPH_put_char` - print a character
+
+**Misc**
+
+$FF44: `monitor`
+$FF47: `restore_basic`
+
+
+#### Function Name: joystick_scan
+
+Purpose: Query the joysticks and save their state
+Call address: $FF53
 Communication registers: None
 Preparatory routines: None
 Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `GETJOY` retrieves all state from the two joysticks and stores it in the memory locations `JOY1` ($02BB-$02BD) and `JOY2` ($02BE-$02C0).
+**Description:** The routine `joystick_scan` retrieves all state from the two joysticks and saves it. It can then be retrieved using `joystick_get`.
 
-Each of these symbols consist of 3 bytes with the following layout:
+#### Function Name: joystick_get
 
-      byte 0:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-              NES  | A | B |SEL|STA|UP |DN |LT |RT |
-              SNES | B | Y |SEL|STA|UP |DN |LT |RT |
+Purpose: Get the state of one of the joysticks
+Call address: $FF56
+Communication registers: .A
+Preparatory routines: `joystick_scan`
+Error returns: None
+Stack requirements: 0
+Registers affected: .A, .X, .Y
 
-      byte 1:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-              NES  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | X |
-              SNES | A | X | L | R | 1 | 1 | 1 | 1 |
-      byte 2:
-              $00 = joystick present
-              $FF = joystick not present
+**Description:** The routine `joystick_get` retrieves all state from one of the joysticks. The number of the joystick is passed in .X (0 or 1), and the state is returned in .A, .X and .Y.
+
+      .A, byte 0:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+                  NES  | A | B |SEL|STA|UP |DN |LT |RT |
+                  SNES | B | Y |SEL|STA|UP |DN |LT |RT |
+
+      .X, byte 1:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+                  NES  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | X |
+                  SNES | A | X | L | R | 1 | 1 | 1 | 1 |
+      .Y, byte 2:
+                  $00 = joystick present
+                  $FF = joystick not present
 
 If joystick 1 is not present, it will fall back to returning the state of the keyboard, if present:
 
@@ -649,20 +686,21 @@ If joystick 1 is not present, it will fall back to returning the state of the ke
 * Note that bits 6 and 7 in byte 0 map to different buttons on NES and SNES.
 
 **How to Use:**
-1) Call this routine.
-2) Read joystick state from `JOY1` and `JOY2`.
+1) Call `joystick_scan` to have the system query the joysticks.
+2) Call this routine.
 
 **EXAMPLE:**
 
-      JSR GETJOY
-      LDA JOY1
+      JSR joystick_scan
+      LDX #0
+      JSR joystick_get
       AND #128
       BEQ NES_A_PRESSED
 
 #### Function Name: JSRFAR
 
 Purpose: Execute a routine on another RAM or ROM bank
-Call address: $FF6E (hex) 65390 (decimal)
+Call address: $FF6E
 Communication registers: None
 Preparatory routines: None
 Error returns: None
@@ -685,7 +723,7 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
 #### Function Name: MONITOR
 
 Purpose: Enter the machine language monitor
-Call address: $FF00 (hex) 65280 (decimal)
+Call address: $FF44
 Communication registers: None
 Preparatory routines: None
 Error returns: Does not return
@@ -701,17 +739,17 @@ Registers affected: Does not return
 
       JMP MONITOR
 
-#### Function Name: MOUSE
+#### Function Name: mouse_config
 
 Purpose: Configure the mouse pointer
-Call address: $FF09 (hex) 65289 (decimal)
+Call address: $FF68
 Communication registers: .A, .X
 Preparatory routines: None
 Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `MOUSE` configures the mouse pointer.
+**Description:** The routine `mouse_config` configures the mouse pointer.
 
 The argument in .A specifies whether the mouse pointer should be visible or not, and what shape it should have. For a list of possible values, see the basic statement `MOUSE`.
 
@@ -720,12 +758,46 @@ The argument in .X specifies the scale. Use a scale of 1 for a 640x480 screen, a
 **EXAMPLE:**
 
 	LDA #1
-	JSR MOUSE ; show the default mouse pointer
+	JSR mouse_config ; show the default mouse pointer
+
+#### Function Name: mouse_get
+
+Purpose: Get the mouse state
+Call address: $FF6B
+Communication registers: .X
+Preparatory routines: `mouse_config`
+Error returns: None
+Stack requirements: 0
+Registers affected: .A
+
+**Description:** The routine `mouse_get` returns the state of the mouse. The caller passes the offset of a zero-page location in .X, which the routine will populate with the mouse position in 4 consecutive bytes:
+
+| Offset | Size | Description |
+|--------|------|-------------|
+| 0      | 2    | X Position  |
+| 2      | 2    | Y Position  |
+
+The state of the mouse buttons is returned in the .A register:
+
+| Bit | Description   |
+|-----|---------------|
+| 0   | Left Button   |
+| 1   | Right Button  |
+| 2   | Middle Button |
+
+If a button is pressed, the corresponding bit is set.
+
+**EXAMPLE:**
+
+	LDX #$70
+	JSR mouse_get ; get mouse position in $70/$71 (X) and $72/$73 (Y)
+	AND #1
+	BNE BUTTON_PRESSED
 
 #### Function Name: SCRMOD
 
 Purpose: Set the screen mode
-Call address: $FF5F (hex) 65375 (decimal)
+Call address: $FF5F
 Communication registers: .A
 Preparatory routines: None
 Error returns: .C = 1 in case of error
