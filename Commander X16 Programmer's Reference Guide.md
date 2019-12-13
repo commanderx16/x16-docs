@@ -769,6 +769,8 @@ If joystick 1 is not present, it will fall back to returning the state of the ke
 
 #### Graphics
 
+The graphics command work on a screen with a resolution of 320x200 and 256 colors.
+
 $FF20: `GRAPH_init` - initialize graphics
 $FF23: `GRAPH_clear` - clear screen
 $FF26: `GRAPH_set_window` - set clipping region
@@ -781,7 +783,6 @@ $FF38: `GRAPH_draw_image` - draw a rectangular image
 $FF3B: `GRAPH_set_font` - set the current font
 $FF3E: `GRAPH_get_char_size` - get size and baseline of a character
 $FF41: `GRAPH_put_char` - print a character
-
 
 ##### Function Name: GRAPH_init
 
@@ -904,6 +905,127 @@ Notes:
 * All 16 PETSCII color codes are supported. Code $01 to swap the colors will swap the stroke and fill colors.
 * The stroke color is used to draw the characters, and the underline is drawn using the fill color. In reverse text mode, the text background is filled with the fill color.
 * [BELL ($07), TAB ($09) and SHIFT+TAB ($18) are not yet implemented.]
+
+#### Low-Level Graphics
+
+The low-level graphics API exposes high-performance functions that allow implementing higher-level functionality.
+
+$FEF9: `GRAPH_LL_init` - enable graphics mode
+$FEFC: `GRAPH_LL_get_info` - get screen size and color depth
+$FEFF: `GRAPH_LL_cursor_position` - position the direct-access cursor
+$FF02: `GRAPH_LL_cursor_next_line` - move direct-access cursor to next line
+$FF05: `GRAPH_LL_get_pixel` - read one pixel, update cursor
+$FF08: `GRAPH_LL_get_pixels` - copy pixels into RAM, update cursor
+$FF0B: `GRAPH_LL_set_pixel` - set one pixel, update cursor
+$FF0E: `GRAPH_LL_set_pixels` - copy pixels from RAM, update cursor
+$FF11: `GRAPH_LL_set_8_pixels` - set 8 pixels from bit mask (transparent), update cursor
+$FF14: `GRAPH_LL_set_8_pixels_opaque` - set 8 pixels from bit mask (opaque), update cursor
+$FF17: `GRAPH_LL_fill_pixels` - fill pixels with constant color, update cursor
+$FF1A: `GRAPH_LL_filter_pixels` - apply transform to pixels, update cursor
+$FF1D: `GRAPH_LL_move_pixels` - copy horizontally consecutive pixels to a different position
+
+All calls are vectored, which allows installing a replacement graphics driver. The high-level graphics API will automatically pick up the new driver.
+
+$02E6: I_GRAPH_LL_init
+$02E8: I_GRAPH_LL_get_info
+$02EA: I_GRAPH_LL_cursor_position
+$02EC: I_GRAPH_LL_cursor_next_line
+$02EE: I_GRAPH_LL_get_pixel
+$02F0: I_GRAPH_LL_get_pixels
+$02F2: I_GRAPH_LL_set_pixel
+$02F4: I_GRAPH_LL_set_pixels
+$02F6: I_GRAPH_LL_set_8_pixels
+$02F8: I_GRAPH_LL_set_8_pixels_opaque
+$02FA: I_GRAPH_LL_fill_pixels
+$02FC: I_GRAPH_LL_filter_pixels
+$02FE: I_GRAPH_LL_move_pixels
+
+The model of this API is based on the direct-access cursor. In order to read and write pixels, the cursor has to be set to a specific x/y-location, and all subsequent calls will access consecutive pixels at the cursor position and update the cursor.
+
+##### Function Name: GRAPH_LL_init
+
+Signature: void GRAPH_LL_init();
+Purpose: Enter graphics mode.
+
+##### Function Name: GRAPH_LL_get_info
+
+Signature: void GRAPH_LL_get_info(out word width: r0, out word height: r0, out byte color_depth: .a);
+Purpose: Return the resolution and color depth
+
+##### Function Name: GRAPH_LL_cursor_position
+
+Signature: void GRAPH_LL_cursor_position(word x: r0, word y: r1);
+Purpose: Position the direct-access cursor
+
+**Description:** `GRAPH_LL_cursor_position` sets the direct-access cursor to the given screen coordinate. Future operations will access pixels at the cursor location and update the cursor.
+
+##### Function Name: GRAPH_LL_cursor_next_line
+
+Signature: void GRAPH_LL_cursor_next_line(word x: r0);
+Purpose: Move the direct-access cursor to next line
+
+**Description:** `GRAPH_LL_cursor_next_line` increments the y position of the direct-access cursor, and sets the x position to the same one that was passed to the previous `GRAPH_LL_cursor_position` call. This is useful for drawing rectangular shapes, and faster than explicitly positioning the cursor.
+
+##### Function Name: GRAPH_LL_get_pixel
+
+Signature: byte GRAPH_LL_get_pixel();
+Purpose: Read one pixel, update cursor
+
+##### Function Name: GRAPH_LL_get_pixels
+
+Signature: void GRAPH_LL_get_pixels(word ptr: r0, word count: r1);
+Purpose: Copy pixels into RAM, update cursor
+
+**Description:** This function copies pixels into an array in RAM. The array consists of one byte per pixel.
+
+##### Function Name: GRAPH_LL_set_pixel
+
+Signature: void GRAPH_LL_set_pixel(byte color: .a);
+Purpose: Set one pixel, update cursor
+
+##### Function Name: GRAPH_LL_set_pixels
+
+Signature: void GRAPH_LL_set_pixels(word ptr: r0, word count: r1);
+Purpose: Copy pixels from RAM, update cursor
+
+**Description:** This function sets pixels from an array of pixels in RAM. The array consists of one byte per pixel.
+
+##### Function Name: GRAPH_LL_set_8_pixels
+
+Signature: void GRAPH_LL_set_8_pixels(byte pattern: .a, byte color: .x);
+Purpose: Set 8 pixels from bit mask (transparent), update cursor
+
+**Description:** This function sets all 1-bits of the pattern to a given color and skips a pixel for every 0 bit. The order is MSB to LSB. The cursor will be moved by 8 pixels.
+
+##### Function Name: GRAPH_LL_set_8_pixels_opaque
+
+Signature: void GRAPH_LL_set_8_pixels_opaque(byte pattern: .a, byte mask: r0L, byte color1: .x, byte color2: .y);
+Purpose: Set 8 pixels from bit mask (opaque), update cursor
+
+**Description:** For every 1-bit in the mask, this function sets the pixel to color1 if the corresponding bit in the pattern is 1, and to color2 otherwise. For every 0-bit in the mask, it skips a pixel. The order is MSB to LSB. The cursor will be moved by 8 pixels.
+
+##### Function Name: GRAPH_LL_fill_pixels
+
+Signature: void GRAPH_LL_fill_pixels(word count: r0, word step: r1, byte color: .a);
+Purpose: Fill pixels with constant color, update cursor
+
+**Description:** `GRAPH_LL_fill_pixels` sets pixels with a constant color. The argument `step` specifies the increment between pixels. A value of 0 or 1 will cause consecutive pixels to be set. Passing a `step` value of the screen width will set vertically adjacent pixels going top down. Smaller values allow drawing dotted horizontal lines, and multiples of the screen width allow drawig dotted vertical lines.
+
+[Note: Only the values 0/1 and screen width are currently supported.]
+
+##### Function Name: GRAPH_LL_filter_pixels
+
+Signature: void GRAPH_LL_filter_pixels(word ptr: r0, word count: r1);
+Purpose: Apply transform to pixels, update cursor
+
+**Description:** This function allows modifying consecutive pixels. The function pointer will be called for every pixel, with the color in .a, and it needs to return the new color in .a.
+
+##### Function Name: GRAPH_LL_move_pixels
+
+Signature: void GRAPH_LL_move_pixels(word sx: r0, word sy: r1, word tx: r2, word ty: r3, word count: r4);
+Purpose: Copy horizontally consecutive pixels to a different position
+
+[Note: Overlapping regions are not yet supported.]
 
 #### Other
 
