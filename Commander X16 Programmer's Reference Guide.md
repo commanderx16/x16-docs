@@ -586,46 +586,116 @@ Note: `STASH` and `CMPARE` are currently non-functional.
 
 There are lots of new APIs. Please note that their addresses and their behavior is still prelimiary and can change between revisions.
 
-**Clock**
+Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc.
+
+#### Clock
 
 $FF4D: `clock_set_date_time` - set date and time
 $FF50: `clock_get_date_time` - get date and time
 
-**Mouse**
+##### Function Name: clock_set_date_time
+
+Purpose: Set the date and time
+Call address: $FF4D
+Communication registers: r0, r1, r2, r3L
+Preparatory routines: None
+Error returns: None
+Stack requirements: 0
+Registers affected: .A, .X, .Y
+
+**Description:** The routine `clock_set_date_time` sets the system's real-time-clock.
+
+| Register | Contents          |
+|----------|-------------------|
+| r0L      | year (1900-based) |
+| r0H      | month (1-12)	   |
+| r1L      | day (1-31)		   |
+| r1H      | hours (0-23)	   |
+| r2L      | minutes (0-59)	   |
+| r2H      | seconds (0-59)	   |
+| r3L      | jiffies (0-59)    |
+
+Jiffies are 1/60th seconds.
+
+##### Function Name: clock_get_date_time
+
+Purpose: Get the date and time
+Call address: $FF50
+Communication registers: r0, r1, r2, r3L
+Preparatory routines: None
+Error returns: None
+Stack requirements: 0
+Registers affected: .A, .X, .Y
+
+**Description:** The routine `clock_get_date_time` returns the state of the system's real-time-clock. The register assignment is identical to `clock_set_date_time`.
+
+#### Mouse
 
 $FF68: `mouse_config` - configure mouse pointer
 $FF6B: `mouse_get` - get state of mouse
 
-**Joystick**
+##### Function Name: mouse_config
+
+Purpose: Configure the mouse pointer
+Call address: $FF68
+Communication registers: .A, .X
+Preparatory routines: None
+Error returns: None
+Stack requirements: 0
+Registers affected: .A, .X, .Y
+
+**Description:** The routine `mouse_config` configures the mouse pointer.
+
+The argument in .A specifies whether the mouse pointer should be visible or not, and what shape it should have. For a list of possible values, see the basic statement `MOUSE`.
+
+The argument in .X specifies the scale. Use a scale of 1 for a 640x480 screen, and a scale of 2 for a 320x240 screen. A value of 0 does not change the scale.
+
+**EXAMPLE:**
+
+	LDA #1
+	JSR mouse_config ; show the default mouse pointer
+
+##### Function Name: mouse_get
+
+Purpose: Get the mouse state
+Call address: $FF6B
+Communication registers: .X
+Preparatory routines: `mouse_config`
+Error returns: None
+Stack requirements: 0
+Registers affected: .A
+
+**Description:** The routine `mouse_get` returns the state of the mouse. The caller passes the offset of a zero-page location in .X, which the routine will populate with the mouse position in 4 consecutive bytes:
+
+| Offset | Size | Description |
+|--------|------|-------------|
+| 0      | 2    | X Position  |
+| 2      | 2    | Y Position  |
+
+The state of the mouse buttons is returned in the .A register:
+
+| Bit | Description   |
+|-----|---------------|
+| 0   | Left Button   |
+| 1   | Right Button  |
+| 2   | Middle Button |
+
+If a button is pressed, the corresponding bit is set.
+
+**EXAMPLE:**
+
+	LDX #$70
+	JSR mouse_get ; get mouse position in $70/$71 (X) and $72/$73 (Y)
+	AND #1
+	BNE BUTTON_PRESSED
+
+
+#### Joystick
 
 $FF53: `joystick_scan` - query joysticks
 $FF56: `joystick_get` - get state of one joystick
 
-**Screen**
-
-$FF5F: `scrmod` - set screen mode
-
-**Graphics**
-$FF20: `GRAPH_init` - initialize graphics
-$FF23: `GRAPH_clear` - clear screen
-$FF26: `GRAPH_set_window` - set clipping region
-$FF29: `GRAPH_set_colors` - set stroke, fill and background colors
-$FF2C: `GRAPH_draw_line` - draw a line
-$FF2F: `GRAPH_draw_rect` - draw a rectangle (optionally filled)
-$FF32: `GRAPH_move_rect` - move pixels
-$FF35: `GRAPH_draw_oval` - draw an oval or circle
-$FF38: `GRAPH_draw_image` - draw a rectangular image
-$FF3B: `GRAPH_set_font` - set the current font
-$FF3E: `GRAPH_get_char_size` - get size and baseline of a character
-$FF41: `GRAPH_put_char` - print a character
-
-**Misc**
-
-$FF44: `monitor`
-$FF47: `restore_basic`
-
-
-#### Function Name: joystick_scan
+##### Function Name: joystick_scan
 
 Purpose: Query the joysticks and save their state
 Call address: $FF53
@@ -637,7 +707,7 @@ Registers affected: .A, .X, .Y
 
 **Description:** The routine `joystick_scan` retrieves all state from the two joysticks and saves it. It can then be retrieved using `joystick_get`.
 
-#### Function Name: joystick_get
+##### Function Name: joystick_get
 
 Purpose: Get the state of one of the joysticks
 Call address: $FF56
@@ -697,6 +767,191 @@ If joystick 1 is not present, it will fall back to returning the state of the ke
       AND #128
       BEQ NES_A_PRESSED
 
+#### Graphics
+
+$FF20: `GRAPH_init` - initialize graphics
+$FF23: `GRAPH_clear` - clear screen
+$FF26: `GRAPH_set_window` - set clipping region
+$FF29: `GRAPH_set_colors` - set stroke, fill and background colors
+$FF2C: `GRAPH_draw_line` - draw a line
+$FF2F: `GRAPH_draw_rect` - draw a rectangle (optionally filled)
+$FF32: `GRAPH_move_rect` - move pixels
+$FF35: `GRAPH_draw_oval` - draw an oval or circle
+$FF38: `GRAPH_draw_image` - draw a rectangular image
+$FF3B: `GRAPH_set_font` - set the current font
+$FF3E: `GRAPH_get_char_size` - get size and baseline of a character
+$FF41: `GRAPH_put_char` - print a character
+
+
+##### Function Name: GRAPH_init
+
+Signature: void GRAPH_init();
+Purpose: Enter and initialize graphics mode
+
+**Description**: This call switches the video hardware into graphics mode, sets the window to full screen, initializes the colors and activates the system font.
+
+##### Function Name: GRAPH_clear
+
+Signature: void GRAPH_clear();
+Purpose: Clear the current window with the current background color.
+
+##### Function Name: GRAPH_set_window
+
+Signature: void GRAPH_set_window(word x: r0, word y: r1, word width: r2, word height: r3);
+Purpose: Set the clipping region
+
+**Description:** All graphics commands are clipped to the window. This function configures the origin and size of the window.
+
+[Note: Only text output is currently clipped.]
+
+##### Function Name: GRAPH_set_colors
+
+Signature: void GRAPH_set_colors(byte stroke: .a, byte fill: .x, byte background: .y);
+Purpose: Set the three colors
+
+**Description:** This function sets the three colors: The stroke color, the fill color and the background color.
+
+##### Function Name: GRAPH_draw_line
+
+Signature: void GRAPH_draw_line(word x1: r0, word y1: r1, word x2: r2, word y2: r3);
+Purpose: Draw a line using the stroke color
+
+##### Function Name: GRAPH_draw_rect
+
+Signature: void GRAPH_draw_rect(word x: r0, word y: r1, word width: r2, word height: r3, word corner_radius: r4, bool fill: .c);
+Purpose: Draw a rectangle.
+
+**Description:** This function will draw the frame of a rectangle using the stroke color. If `fill` is `true`, it will also fill the area using the fill color. To only fill a rectangle, set the stroke color to the same value as the fill color.
+
+[Note: The border radius is currently unimplemented.]
+
+##### Function Name: GRAPH_move_rect
+
+Signature: void GRAPH_move_rect(word sx: r0, word sy: r1, word tx: r2, word ty: r3, word width: r4, word height: r5);
+Purpose: Copy a rectangular screen area to a different location
+
+**Description:** `GRAPH_move_rect` coll copy a rectangular area of the screen to a different location. The two areas may overlap.
+
+[Note: Support for overlapping is not currently implemented.]
+
+##### Function Name: GRAPH_draw_oval
+
+Signature: void GRAPH_draw_oval(word x: r0, word y: r1, word width: r2, word height: r3, bool fill: .c);
+Purpose: Draw an oval or a circle
+
+**Description:** This function draws an oval filling the given bounding box. If width equals height, the resulting shape is a circle. The oval will be outlined by the stroke color. If `fill` is `true`, it will be filled using the fill color. To only fill an oval, set the stroke color to the same value as the fill color.
+
+##### Function Name: GRAPH_draw_image
+
+Signature: void GRAPH_draw_image(word x: r0, word y: r1, word ptr: r2, word width: r3, word height: r4);
+Purpose: Draw a rectangular image from data in memory
+
+**Description:** This function copies pixel data from memory onto the screen. The representation of the data in memory has to have one byte per pixel, with the pixels organized line by line top to bottom, and within the line left to right.
+
+##### Function Name: GRAPH_set_font
+
+Signature: void GRAPH_set_font(void ptr: r0);
+Purpose: Set the current font
+
+**Description:** This function sets the current font to be used for the remaining font-related functions. The argument is a pointer to the font data structure in memory, which must be in the format of a single point size GEOS font (i.e. one GEOS font file VLIR chunk). An argument of 0 will activate the built-in system font.
+
+##### Function Name: GRAPH_get_char_size
+
+Signature: (byte baseline: .a, byte width: .x, byte height: .y) GRAPH_get_char_size(byte c: .a, byte format: .x);
+Purpose: Get the size and baseline of a character
+
+**Description:** This function returns the metrics of a character in a given format. The format value is a bit mask combining the following values:
+
+| Value | Description |
+|-------|-------------|
+| $80   | underlined  |
+| $40   | bold        |
+| $20   | reversed    |
+| $10   | italics     |
+| $08   | outline     |
+
+The resulting values are measured in pixels. The basline is measured from the top.
+
+##### Function Name: GRAPH_put_char
+
+Signature: void GRAPH_put_char(inout word x: r0, inout word y: r1, byte c: .a);
+Purpose: Print a character onto the graphics screen
+
+**Description:** This function prints a single character at a given location on the graphics screen. The location is then updated. The following control codes are supported:
+
+* $01: SWAP COLORS
+* $04: ATTRIBUTES: UNDERLINE
+* $06: ATTRIBUTES: BOLD
+* $07: BELL
+* $08: BACKSPACE
+* $09: TAB
+* $0A: LF
+* $0B: ATTRIBUTES: ITALICS
+* $0C: ATTRIBUTES: OUTLINE
+* $0D/$8D: REGULAR/SHIFTED RETURN
+* $11/$91: CURSOR: DOWN/UP
+* $12: ATTRIBUTES: REVERSE
+* $13/$93: HOME/CLEAR
+* $14 DEL
+* $92: ATTRIBUTES: CLEAR ALL
+* all color codes
+
+Notes:
+
+* CR ($0D) SHIFT+CR ($8D) and LF ($0A) all set the cursor to the beginning of the next line. The only difference is that CR and SHIFT+CR reset the attributes, and LF does not.
+* BACKSPACE ($08) and DEL ($14) move the cursor to the beginning of the previous character but does not actually clear it. Multiple consecutive BACKSPACE/DEL characters are not supported.
+* There is no way to individually disable attributes (underlined, bold, reversed, italics, outline). The only way to disable them is to reset the attributes using code $92, which switches to plain text.
+* All 16 PETSCII color codes are supported. Code $01 to swap the colors will swap the stroke and fill colors.
+* The stroke color is used to draw the characters, and the underline is drawn using the fill color. In reverse text mode, the text background is filled with the fill color.
+* [BELL ($07), TAB ($09) and SHIFT+TAB ($18) are not yet implemented.]
+
+#### Other
+
+$FF44: `monitor` - enter machine language monitor
+$FF47: `restore_basic` - enter BASIC
+$FF5F: `scrmod` - set screen mode
+
+#### Function Name: monitor
+
+Purpose: Enter the machine language monitor
+Call address: $FF44
+Communication registers: None
+Preparatory routines: None
+Error returns: Does not return
+Stack requirements: Does not return
+Registers affected: Does not return
+
+**Description:** This routine switches from BASIC to machine language monitor mode. It does not return to the caller. When the user quits the monitor, it will restart BASIC.
+
+**How to Use:**
+1) Call this routine.
+
+**EXAMPLE:**
+
+      JMP monitor
+
+##### Function Name: scrmod
+
+Purpose: Set the screen mode
+Call address: $FF5F
+Communication registers: .A
+Preparatory routines: None
+Error returns: .C = 1 in case of error
+Stack requirements: [?]
+Registers affected: .A, .X, .Y
+
+**Description:** A call to this routine, with the carry flag
+set, sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. A call with the carry bit clear returns the current mode in .A.
+
+**EXAMPLE:**
+
+	LDA #$80
+	SEC
+	JSR scrmod ; SET 320x200@256C MODE
+	BCS FAILURE
+
+
+
 #### Function Name: JSRFAR
 
 Purpose: Execute a routine on another RAM or ROM bank
@@ -719,100 +974,6 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
       JSR JSRFAR
       .WORD $C000 ; ADDRESS
       .BYTE 1     ; BANK
-
-#### Function Name: MONITOR
-
-Purpose: Enter the machine language monitor
-Call address: $FF44
-Communication registers: None
-Preparatory routines: None
-Error returns: Does not return
-Stack requirements: Does not return
-Registers affected: Does not return
-
-**Description:** This routine switches from BASIC to machine language monitor mode. It does not return to the caller. When the user quits the monitor, it will restart BASIC.
-
-**How to Use:**
-1) Call this routine.
-
-**EXAMPLE:**
-
-      JMP MONITOR
-
-#### Function Name: mouse_config
-
-Purpose: Configure the mouse pointer
-Call address: $FF68
-Communication registers: .A, .X
-Preparatory routines: None
-Error returns: None
-Stack requirements: 0
-Registers affected: .A, .X, .Y
-
-**Description:** The routine `mouse_config` configures the mouse pointer.
-
-The argument in .A specifies whether the mouse pointer should be visible or not, and what shape it should have. For a list of possible values, see the basic statement `MOUSE`.
-
-The argument in .X specifies the scale. Use a scale of 1 for a 640x480 screen, and a scale of 2 for a 320x240 screen. A value of 0 does not change the scale.
-
-**EXAMPLE:**
-
-	LDA #1
-	JSR mouse_config ; show the default mouse pointer
-
-#### Function Name: mouse_get
-
-Purpose: Get the mouse state
-Call address: $FF6B
-Communication registers: .X
-Preparatory routines: `mouse_config`
-Error returns: None
-Stack requirements: 0
-Registers affected: .A
-
-**Description:** The routine `mouse_get` returns the state of the mouse. The caller passes the offset of a zero-page location in .X, which the routine will populate with the mouse position in 4 consecutive bytes:
-
-| Offset | Size | Description |
-|--------|------|-------------|
-| 0      | 2    | X Position  |
-| 2      | 2    | Y Position  |
-
-The state of the mouse buttons is returned in the .A register:
-
-| Bit | Description   |
-|-----|---------------|
-| 0   | Left Button   |
-| 1   | Right Button  |
-| 2   | Middle Button |
-
-If a button is pressed, the corresponding bit is set.
-
-**EXAMPLE:**
-
-	LDX #$70
-	JSR mouse_get ; get mouse position in $70/$71 (X) and $72/$73 (Y)
-	AND #1
-	BNE BUTTON_PRESSED
-
-#### Function Name: SCRMOD
-
-Purpose: Set the screen mode
-Call address: $FF5F
-Communication registers: .A
-Preparatory routines: None
-Error returns: .C = 1 in case of error
-Stack requirements: [?]
-Registers affected: .A, .X, .Y
-
-**Description:** A call to this routine, with the carry flag
-set, sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. A call with the carry bit clear returns the current mode in .A.
-
-**EXAMPLE:**
-
-	LDA #$80
-	SEC
-	JSR SCRMOD ; SET 320x200@256C MODE
-	BCS FAILURE
 
 ## Machine Language Monitor
 
