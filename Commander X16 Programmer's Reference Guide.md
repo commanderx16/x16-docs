@@ -133,9 +133,9 @@ In regular BASIC text mode, the video controller supports 16 foreground colors a
 
 The new "swap fg/bg color" code is useful to change the background color of the cursor, like this:
 
-	PRINT CHR$(2);   : REM SWAP FG/BG
+	PRINT CHR$(1);   : REM SWAP FG/BG
 	PRINT CHR$($1C); : REM SET FG COLOR TO RED
-	PRINT CHR$(2);   : REM SWAP FG/BG
+	PRINT CHR$(1);   : REM SWAP FG/BG
 
 The new BASIC instruction `COLOR` makes this easier, but the trick above can also be used from machine code programs.
 
