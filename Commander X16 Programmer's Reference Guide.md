@@ -8,33 +8,88 @@
 
 <!-- generated with https://github.com/ekalinin/github-markdown-toc -->
 
-* [Overview](#overview)
-* [BASIC Programming](#basic-programming)
-	* [Commodore 64 Compatibility](#commodore-64-compatibility)
-	* [ISO Mode](#iso-mode)
-	* [New Control Characters](#new-control-characters)
-	* [New Statements and Functions](#new-statements-and-functions)
-		* [DOS](#dos)
-		* [MON](#mon)
-		* [VPEEK](#vpeek)
-		* [VPOKE](#vpoke)
-	* [Other New Features](#other-new-features)
-	* [Internal Representation](#internal-representation)
-* [KERNAL](#kernal)
-	* [Commodore 64 API Compatibility](#commodore-64-api-compatibility)
-	* [Commodore 128 API Compatibility](#commodore-128-api-compatibility)
-	* [New API for the Commander X16](#new-api-for-the-commander-x16)
-	* [KERNAL Version](#kernal-version)
-	* [Compatibility Considerations](#compatibility-considerations)
-* [Machine Language Monitor](#machine-language-monitor)
-* [Memory Map](#memory-map)
-	* [Banked Memory](#banked-memory)
-	* [ROM Allocations](#rom-allocations)
-	* [RAM Contents](#ram-contents)
-	* [I/O Area](#io-area)
-* [Video Programming](#video-programming)
-* [Sound Programming](#sound-programming)
-* [I/O Programming](#io-programming)
+   * [Overview](#overview)
+   * [BASIC Programming](#basic-programming)
+      * [Commodore 64 Compatibility](#commodore-64-compatibility)
+      * [ISO Mode](#iso-mode)
+      * [Background Color](#background-color)
+      * [New Control Characters](#new-control-characters)
+      * [Keyboard Layouts](#keyboard-layouts)
+      * [New Statements and Functions](#new-statements-and-functions)
+         * [CHAR](#char)
+         * [COLOR](#color)
+         * [DOS](#dos)
+         * [FRAME](#frame)
+         * [GEOS](#geos)
+         * [JOY](#joy)
+         * [LINE](#line)
+         * [MON](#mon)
+         * [MOUSE](#mouse)
+         * [MX/MY/MB](#mxmymb)
+         * [OLD](#old)
+         * [PSET](#pset)
+         * [RECT](#rect)
+         * [SCREEN](#screen)
+         * [VPEEK](#vpeek)
+         * [VPOKE](#vpoke)
+         * [VLOAD](#vload)
+      * [Other New Features](#other-new-features)
+      * [Internal Representation](#internal-representation)
+   * [KERNAL](#kernal)
+      * [KERNAL Version](#kernal-version)
+      * [Compatibility Considerations](#compatibility-considerations)
+      * [Commodore 64 API Compatibility](#commodore-64-api-compatibility)
+      * [Commodore 128 API Compatibility](#commodore-128-api-compatibility)
+      * [New API for the Commander X16](#new-api-for-the-commander-x16)
+         * [Clock](#clock)
+            * [Function Name: clock_set_date_time](#function-name-clock_set_date_time)
+            * [Function Name: clock_get_date_time](#function-name-clock_get_date_time)
+         * [Mouse](#mouse-1)
+            * [Function Name: mouse_config](#function-name-mouse_config)
+            * [Function Name: mouse_get](#function-name-mouse_get)
+         * [Joystick](#joystick)
+            * [Function Name: joystick_scan](#function-name-joystick_scan)
+            * [Function Name: joystick_get](#function-name-joystick_get)
+         * [Low-Level Graphics](#low-level-graphics)
+            * [Function Name: GRAPH_LL_init](#function-name-graph_ll_init)
+            * [Function Name: GRAPH_LL_get_info](#function-name-graph_ll_get_info)
+            * [Function Name: GRAPH_LL_cursor_position](#function-name-graph_ll_cursor_position)
+            * [Function Name: GRAPH_LL_cursor_next_line](#function-name-graph_ll_cursor_next_line)
+            * [Function Name: GRAPH_LL_get_pixel](#function-name-graph_ll_get_pixel)
+            * [Function Name: GRAPH_LL_get_pixels](#function-name-graph_ll_get_pixels)
+            * [Function Name: GRAPH_LL_set_pixel](#function-name-graph_ll_set_pixel)
+            * [Function Name: GRAPH_LL_set_pixels](#function-name-graph_ll_set_pixels)
+            * [Function Name: GRAPH_LL_set_8_pixels](#function-name-graph_ll_set_8_pixels)
+            * [Function Name: GRAPH_LL_set_8_pixels_opaque](#function-name-graph_ll_set_8_pixels_opaque)
+            * [Function Name: GRAPH_LL_fill_pixels](#function-name-graph_ll_fill_pixels)
+            * [Function Name: GRAPH_LL_filter_pixels](#function-name-graph_ll_filter_pixels)
+            * [Function Name: GRAPH_LL_move_pixels](#function-name-graph_ll_move_pixels)
+         * [Graphics](#graphics)
+            * [Function Name: GRAPH_init](#function-name-graph_init)
+            * [Function Name: GRAPH_clear](#function-name-graph_clear)
+            * [Function Name: GRAPH_set_window](#function-name-graph_set_window)
+            * [Function Name: GRAPH_set_colors](#function-name-graph_set_colors)
+            * [Function Name: GRAPH_draw_line](#function-name-graph_draw_line)
+            * [Function Name: GRAPH_draw_rect](#function-name-graph_draw_rect)
+            * [Function Name: GRAPH_move_rect](#function-name-graph_move_rect)
+            * [Function Name: GRAPH_draw_oval](#function-name-graph_draw_oval)
+            * [Function Name: GRAPH_draw_image](#function-name-graph_draw_image)
+            * [Function Name: GRAPH_set_font](#function-name-graph_set_font)
+            * [Function Name: GRAPH_get_char_size](#function-name-graph_get_char_size)
+            * [Function Name: GRAPH_put_char](#function-name-graph_put_char)
+         * [Other](#other)
+            * [Function Name: monitor](#function-name-monitor)
+            * [Function Name: scrmod](#function-name-scrmod)
+            * [Function Name: JSRFAR](#function-name-jsrfar)
+   * [Machine Language Monitor](#machine-language-monitor)
+   * [Memory Map](#memory-map)
+      * [Banked Memory](#banked-memory)
+      * [ROM Allocations](#rom-allocations)
+      * [RAM Contents](#ram-contents)
+      * [I/O Area](#io-area)
+   * [Video Programming](#video-programming)
+   * [Sound Programming](#sound-programming)
+   * [I/O Programming](#io-programming)
 
 
 ## Overview
@@ -199,13 +254,6 @@ Pressing the `F9` key cycles through the available keyboard layouts.
 There are several new statement and functions. Note that all BASIC keywords (such as `FOR`) get converted into tokens (such as `$81`), and the tokens for the new keywords have not been finalized yet. Therefore, loading BASIC program saved from a different revision of BASIC may mix up keywords.
 
 
-#### GEOS
-
-**TYPE: Command**
-**FORMAT: GEOS**
-
-**Action:** Enter the GEOS UI.
-
 #### CHAR
 
 **TYPE: Command**
@@ -268,6 +316,43 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 	10 SCREEN$80
 	20 FORI=1TO20:FRAMERND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*128:NEXT
 	30 GOTO20
+
+#### GEOS
+
+**TYPE: Command**
+**FORMAT: GEOS**
+
+**Action:** Enter the GEOS UI.
+
+#### JOY
+
+**TYPE: Integer Function**
+**FORMAT: JOY(n)**
+
+**Action:** Return the state a joystick.
+
+`JOY(1)` returns the state the first joystick, and `JOY(2)` the state of the second joystick. The result is a bit field, with pressed buttons `OR`ed together:
+
+| Value | NES   | SNES  | Keyboard     |
+|-------|-------|-------|--------------|
+|$80    | A     | B     | Ctrl         |
+|$40    | B     | Y     | Alt          |
+|$20    | SELECT| SELECT| Space        |
+|$10    | START | START | Enter        |
+|$08    | UP    | UP    | Cursor Up    |
+|$04    | DOWN  | DOWN  | Cursor Down  |
+|$02    | LEFT  | LEFT  | Cursor Left  |
+|$01    | RIGHT | RIGHT | Cursor Right |
+
+**EXAMPLE of JOY Function:**
+
+	10 J=JOY(1)
+	20 PRINT CHR$(147);J;": ";
+	30 IF J AND 8 THEN PRINT"UP ";
+	40 IF J AND 4 THEN PRINT"DOWN ";
+	50 IF J AND 2 THEN PRINT"LEFT ";
+	60 IF J AND 1 THEN PRINT"RIGHT ";
+	70 GOTO10
 
 #### LINE
 
@@ -1040,7 +1125,7 @@ $FF44: `monitor` - enter machine language monitor
 $FF47: `restore_basic` - enter BASIC
 $FF5F: `scrmod` - set screen mode
 
-#### Function Name: monitor
+##### Function Name: monitor
 
 Purpose: Enter the machine language monitor
 Call address: $FF44
@@ -1081,7 +1166,7 @@ set, sets the current screen mode to the value in .A. For a list of possible val
 
 
 
-#### Function Name: JSRFAR
+##### Function Name: JSRFAR
 
 Purpose: Execute a routine on another RAM or ROM bank
 Call address: $FF6E
