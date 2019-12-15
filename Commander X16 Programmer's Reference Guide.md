@@ -186,7 +186,7 @@ This is the set of all supported PETSCII control characters. Descriptions in bol
 
 * $01: SWAP COLORS swaps the foreground and background colors in text mode
 * $04/$06/$0B/$0C: the new attribute change codes only have an effect in graphics mode
-* $07/$08/$09/$0A/$18: have been added for ASCII compatibility [NYI]
+* $07/$08/$09/$0A/$18: have been added for ASCII compatibility *[NYI]*
 * $08/$09: Charset switch enable/disable not supported
 * F9-F12, HELP: these codes match the C65 additions
 
@@ -213,28 +213,18 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 **Action:** This command draws a text string on the graphics screen in a given color.
 
-The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), as well as the following GEOS control codes:
-
-| Code | Description     |
-|------|-----------------|
-| 13   | Carriage Return |
-| 14   | Underline       |
-| 18   | Reverse         |
-| 24   | Bold            |
-| 25   | Italics         |
-| 26   | Outline         |
-| 27   | Plain text      |
+The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), as well most PETSCII control codes.
 
 **EXAMPLE of CHAR Statement:**
 
 	10 SCREEN$80
 	20 A$="The quick brown fox jumps over the lazy dog."
 	24 CHAR0,6,0,A$
-	30 CHAR0,6+12,0,CHR$(14)+A$
-	40 CHAR0,6+12*2,0,CHR$(18)+A$
-	50 CHAR0,6+12*3,0,CHR$(24)+A$
-	60 CHAR0,6+12*4,0,CHR$(25)+A$
-	70 CHAR0,6+12*5,0,CHR$(26)+A$
+	30 CHAR0,6+12,0,CHR$($04)+A$   :REM UNDERLINE
+	40 CHAR0,6+12*2,0,CHR$($06)+A$ :REM BOLD
+	50 CHAR0,6+12*3,0,CHR$($0B)+A$ :REM ITALICS
+	60 CHAR0,6+12*4,0,CHR$($0C)+A$ :REM OUTLINE
+	70 CHAR0,6+12*5,0,CHR$($12)+A$ :REM REVERSE
 
 #### COLOR
 
@@ -498,7 +488,7 @@ For applications to remain compatible between different versions of the ROM, the
 
 The following features must not be relied upon:
 
-* the $0000-$03FF memory layout
+* the zero page and $0200+ memory layout
 * direct function offsets in the ROM
 
 ### Commodore 64 API Compatibility
@@ -553,7 +543,7 @@ Some notes:
 * For device #8, the Commodore Peripheral Bus calls first talk to the "Computer DOS" built into the ROM to detect an SD card, before falling back to the Commodore Serial Bus.
 * The `IOBASE` call returns $9F60, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
-* The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200-$02FF) are generally **not** compatible with the C64.
+* The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200+) are generally **not** compatible with the C64.
 * The vectors ($0300-$0333) are fully compatible with the C64.
 
 ### Commodore 128 API Compatibility
@@ -580,13 +570,28 @@ Some notes:
 |`STASH` |`STAVEC`|$XXXX   |
 |`CMPARE`|`CMPVEC`|$XXXX   |
 
-Note: `STASH` and `CMPARE` are currently non-functional.
+*[Note: `STASH` and `CMPARE` are currently non-functional.]*
 
 ### New API for the Commander X16
 
 There are lots of new APIs. Please note that their addresses and their behavior is still prelimiary and can change between revisions.
 
-Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc.
+Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc. (The registers start at $02 instead of $00 to allow compatiblility with 65xx systems that have a processor port at $00/$01.)
+
+The 16 bit ABI generally follows the following conventions:
+
+* arguments
+    * word-sized arguments: passed in r0-r5
+    * byte-sized arguments: if three or less, passed in .a, .x, .y; otherwise in 16 bit registers
+* return values
+	* basic rules as above
+    * function takes no arguments: r0-r5, else indirect through passed-in pointer
+    * arguments in r0-r5 can be "inout", i.e. they can be updated
+* saved/scratch registers
+    * r0-r5 args (saved)
+    * r6-r10 saved
+    * r11-r15 scratch
+    * .a, .x, .y scratch (unless used otherwise)
 
 #### Clock
 
@@ -874,7 +879,7 @@ Purpose: Fill pixels with constant color, update cursor
 
 **Description:** `GRAPH_LL_fill_pixels` sets pixels with a constant color. The argument `step` specifies the increment between pixels. A value of 0 or 1 will cause consecutive pixels to be set. Passing a `step` value of the screen width will set vertically adjacent pixels going top down. Smaller values allow drawing dotted horizontal lines, and multiples of the screen width allow drawig dotted vertical lines.
 
-[Note: Only the values 0/1 and screen width are currently supported.]
+*[Note: Only the values 0/1 and screen width are currently supported.]*
 
 ##### Function Name: GRAPH_LL_filter_pixels
 
@@ -888,7 +893,7 @@ Purpose: Apply transform to pixels, update cursor
 Signature: void GRAPH_LL_move_pixels(word sx: r0, word sy: r1, word tx: r2, word ty: r3, word count: r4);
 Purpose: Copy horizontally consecutive pixels to a different position
 
-[Note: Overlapping regions are not yet supported.]
+*[Note: Overlapping regions are not yet supported.]*
 
 #### Graphics
 
@@ -926,7 +931,7 @@ Purpose: Set the clipping region
 
 **Description:** All graphics commands are clipped to the window. This function configures the origin and size of the window.
 
-[Note: Only text output is currently clipped.]
+*[Note: Only text output is currently clipped.]*
 
 ##### Function Name: GRAPH_set_colors
 
@@ -947,7 +952,7 @@ Purpose: Draw a rectangle.
 
 **Description:** This function will draw the frame of a rectangle using the stroke color. If `fill` is `true`, it will also fill the area using the fill color. To only fill a rectangle, set the stroke color to the same value as the fill color.
 
-[Note: The border radius is currently unimplemented.]
+*[Note: The border radius is currently unimplemented.]*
 
 ##### Function Name: GRAPH_move_rect
 
@@ -956,7 +961,7 @@ Purpose: Copy a rectangular screen area to a different location
 
 **Description:** `GRAPH_move_rect` coll copy a rectangular area of the screen to a different location. The two areas may overlap.
 
-[Note: Support for overlapping is not currently implemented.]
+*[Note: Support for overlapping is not currently implemented.]*
 
 ##### Function Name: GRAPH_draw_oval
 
@@ -1027,7 +1032,7 @@ Notes:
 * There is no way to individually disable attributes (underlined, bold, reversed, italics, outline). The only way to disable them is to reset the attributes using code $92, which switches to plain text.
 * All 16 PETSCII color codes are supported. Code $01 to swap the colors will swap the stroke and fill colors.
 * The stroke color is used to draw the characters, and the underline is drawn using the fill color. In reverse text mode, the text background is filled with the fill color.
-* [BELL ($07), TAB ($09) and SHIFT+TAB ($18) are not yet implemented.]
+* *[BELL ($07), TAB ($09) and SHIFT+TAB ($18) are not yet implemented.]*
 
 #### Other
 
@@ -1153,7 +1158,8 @@ This is the allocation of the banks of banked ROM:
 |2   |CBDOS  |The computer-based CBM-DOS for FAT32 SD cards          |
 |3   |GEOS   |GEOS KERNAL                                            |
 |4   |BASIC  |BASIC interpreter                                      |
-|5-7 |–      |*[Currently unused]*                                   |
+|5   |MONITOR|Machine Language Monitor                               |
+|6-7 |–      |*[Currently unused]*                                   |
 
 **Important**: The layout of the banks is still constantly changing.
 
@@ -1166,16 +1172,17 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 |$0000-$007F|User zero page                                                  |
 |$0080-$00FF|KERNAL and BASIC zero page variables                            |
 |$0100-$01FF|CPU stack                                                       |
-|$0200-$07FF|KERNAL and BASIC variables                                      |
+|$0200-$03FF|KERNAL and BASIC variables, vectors                             |
+|$0400-$07FF|currently unused                                                |
 |$0800-$9EFF|BASIC program/variables; available to the user                  |
 
-The following zero page locations are completely unused by KERNAL/BASIC and are available to the user:
+The following zero page locations are completely unused by KERNAL/BASIC/FPLIB and are available to the user:
 
 |Addresses  |
 |-----------|
 |$0000-$007F|
 
-In a machine language application that only uses KERNAL, the following zero page locations are also available:
+In a machine language application that only uses KERNAL (no BASIC or floating point), the following zero page locations are also available:
 
 |Addresses  |
 |-----------|
@@ -1185,7 +1192,8 @@ This is the allocation of banked RAM in the KERNAL/BASIC environment.
 
 |Bank   |Description               |
 |-------|--------------------------|
-|0-254  |Available to the user     |
+|0      |Used for KERNAL variables |
+|1-254  |Available to the user     |
 |255[^2]|DOS buffers and variables |
 
 ### I/O Area
