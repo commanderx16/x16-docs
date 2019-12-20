@@ -629,6 +629,7 @@ Some notes:
 * For device #8, the Commodore Peripheral Bus calls first talk to the "Computer DOS" built into the ROM to detect an SD card, before falling back to the Commodore Serial Bus.
 * The `IOBASE` call returns $9F60, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
+* The `RAMTAS` call additionally returns the number of available RAM banks in the .A register.
 * The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200+) are generally **not** compatible with the C64.
 * The vectors ($0300-$0333) are fully compatible with the C64.
 
@@ -1135,6 +1136,7 @@ Notes:
 $FF44: `monitor` - enter machine language monitor
 $FF47: `restore_basic` - enter BASIC
 $FF5F: `screen_set_mode` - set screen mode
+$FF62: `screen_set_charset` - activate 8x8 text mode charset
 
 ##### Function Name: monitor
 
@@ -1173,7 +1175,33 @@ Registers affected: .A, .X, .Y
 	JSR screen_set_mode ; SET 320x200@256C MODE
 	BCS FAILURE
 
+##### Function Name: screen_set_charset
 
+Purpose: Activate a 8x8 text mode charset
+Call address: $FF62
+
+Communication registers: .A, .X, .Y
+Preparatory routines: None
+Stack requirements: [?]
+Registers affected: .A, .X, .Y
+
+**Description:** A call to this routine uploads a character set to the video hardware and activates it. The value of .A decides what charset to upload:
+
+| Value | Description          |
+|-------|----------------------|
+| 0     | use pointer in .X/.Y |
+| 1     | ISO                  |
+| 2     | PET upper/graph      |
+| 3     | PET upper/lower      |
+
+If .A is zero, .X (lo) and .Y (hi) contain a pointer to a 2 KB RAM area that gets uploaded as the new 8x8 character set. The data has to consist of 256 characters of 8 bytes each, top to bottom, with the MSB on the left and set bits representing the foreground color.
+
+**EXAMPLE:**
+
+	LDA #0
+	LDX #<MY_CHARSET
+	LDY #>MY_CHARSET
+	JSR screen_set_charset ; UPLOAD CUSTOM CHARSET "MY_CHARSET"
 
 ##### Function Name: JSRFAR
 
