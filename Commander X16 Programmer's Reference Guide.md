@@ -53,6 +53,7 @@
          * [Low-Level Graphics](#low-level-graphics)
             * [Function Name: GRAPH_LL_init](#function-name-graph_ll_init)
             * [Function Name: GRAPH_LL_get_info](#function-name-graph_ll_get_info)
+            * [Function Name: GRAPH_LL_set_palette](#function-name-graph_ll_set_palette)
             * [Function Name: GRAPH_LL_cursor_position](#function-name-graph_ll_cursor_position)
             * [Function Name: GRAPH_LL_cursor_next_line](#function-name-graph_ll_cursor_next_line)
             * [Function Name: GRAPH_LL_get_pixel](#function-name-graph_ll_get_pixel)
@@ -79,7 +80,7 @@
             * [Function Name: GRAPH_put_char](#function-name-graph_put_char)
          * [Other](#other)
             * [Function Name: monitor](#function-name-monitor)
-            * [Function Name: scrmod](#function-name-scrmod)
+            * [Function Name: screen_set_mode](#function-name-screen_set_mode)
             * [Function Name: JSRFAR](#function-name-jsrfar)
    * [Machine Language Monitor](#machine-language-monitor)
    * [Memory Map](#memory-map)
@@ -1133,7 +1134,7 @@ Notes:
 
 $FF44: `monitor` - enter machine language monitor
 $FF47: `restore_basic` - enter BASIC
-$FF5F: `scrmod` - set screen mode
+$FF5F: `screen_set_mode` - set screen mode
 
 ##### Function Name: monitor
 
@@ -1154,7 +1155,7 @@ Registers affected: Does not return
 
       JMP monitor
 
-##### Function Name: scrmod
+##### Function Name: screen_set_mode
 
 Purpose: Set the screen mode
 Call address: $FF5F
@@ -1164,14 +1165,12 @@ Error returns: .C = 1 in case of error
 Stack requirements: [?]
 Registers affected: .A, .X, .Y
 
-**Description:** A call to this routine, with the carry flag
-set, sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. A call with the carry bit clear returns the current mode in .A.
+**Description:** A call to this routine sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`.
 
 **EXAMPLE:**
 
 	LDA #$80
-	SEC
-	JSR scrmod ; SET 320x200@256C MODE
+	JSR screen_set_mode ; SET 320x200@256C MODE
 	BCS FAILURE
 
 
