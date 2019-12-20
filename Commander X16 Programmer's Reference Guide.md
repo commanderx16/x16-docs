@@ -667,16 +667,17 @@ The 16 bit ABI generally follows the following conventions:
 
 * arguments
     * word-sized arguments: passed in r0-r5
-    * byte-sized arguments: if three or less, passed in .a, .x, .y; otherwise in 16 bit registers
+    * byte-sized arguments: if three or less, passed in .A, .X, .Y; otherwise in 16 bit registers
+    * boolean arguments: .C, .N
 * return values
 	* basic rules as above
     * function takes no arguments: r0-r5, else indirect through passed-in pointer
     * arguments in r0-r5 can be "inout", i.e. they can be updated
 * saved/scratch registers
-    * r0-r5 args (saved)
-    * r6-r10 saved
-    * r11-r15 scratch
-    * .a, .x, .y scratch (unless used otherwise)
+    * r0-r5: arguments (saved)
+    * r6-r10: saved
+    * r11-r15: scratch
+    * .A, .X, .Y, .C, .N: scratch (unless used otherwise)
 
 #### Clock
 
