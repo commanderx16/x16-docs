@@ -861,8 +861,9 @@ If joystick 1 is not present, it will fall back to returning the state of the ke
 
 The low-level graphics API completely abstracts the framebuffer by exposing a minimal set of high-performance functions. It is basically a framebuffer driver. It is useful as an abstraction and as a convenience library for applications that need high performance framebuffer access.
 
-$FEF9: `GRAPH_LL_init` - enable graphics mode
-$FEFC: `GRAPH_LL_get_info` - get screen size and color depth
+$FEF6: `GRAPH_LL_init` - enable graphics mode
+$FEF9: `GRAPH_LL_get_info` - get screen size and color depth
+$FEFC: `GRAPH_LL_set_palette` - set (parts of) the palette
 $FEFF: `GRAPH_LL_cursor_position` - position the direct-access cursor
 $FF02: `GRAPH_LL_cursor_next_line` - move direct-access cursor to next line
 $FF05: `GRAPH_LL_get_pixel` - read one pixel, update cursor
@@ -877,8 +878,9 @@ $FF1D: `GRAPH_LL_move_pixels` - copy horizontally consecutive pixels to a differ
 
 All calls are vectored, which allows installing a replacement graphics driver.
 
-$02E6: I_GRAPH_LL_init
-$02E8: I_GRAPH_LL_get_info
+$02E4: I_GRAPH_LL_init
+$02E6: I_GRAPH_LL_get_info
+$02E8: I_GRAPH_LL_set_palette
 $02EA: I_GRAPH_LL_cursor_position
 $02EC: I_GRAPH_LL_cursor_next_line
 $02EE: I_GRAPH_LL_get_pixel
@@ -904,6 +906,13 @@ Purpose: Enter graphics mode.
 
 Signature: void GRAPH_LL_get_info(out word width: r0, out word height: r0, out byte color_depth: .a);
 Purpose: Return the resolution and color depth
+
+##### Function Name: GRAPH_LL_set_palette
+
+Signature: void GRAPH_LL_set_palette(word pointer: r0, index: .a, byte count: .x);
+Purpose: Set (parts of) the palette
+
+[Note: This is not yet implemented.]
 
 ##### Function Name: GRAPH_LL_cursor_position
 
