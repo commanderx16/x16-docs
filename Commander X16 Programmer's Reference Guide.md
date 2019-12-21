@@ -53,21 +53,21 @@
          * [Sprites](#sprites)
             * [Function Name: sprite_set_image](#function-name-sprite_set_image)
             * [Function Name: sprite_set_position](#function-name-sprite_set_position)
-         * [Low-Level Graphics](#low-level-graphics)
-            * [Function Name: GRAPH_LL_init](#function-name-graph_ll_init)
-            * [Function Name: GRAPH_LL_get_info](#function-name-graph_ll_get_info)
-            * [Function Name: GRAPH_LL_set_palette](#function-name-graph_ll_set_palette)
-            * [Function Name: GRAPH_LL_cursor_position](#function-name-graph_ll_cursor_position)
-            * [Function Name: GRAPH_LL_cursor_next_line](#function-name-graph_ll_cursor_next_line)
-            * [Function Name: GRAPH_LL_get_pixel](#function-name-graph_ll_get_pixel)
-            * [Function Name: GRAPH_LL_get_pixels](#function-name-graph_ll_get_pixels)
-            * [Function Name: GRAPH_LL_set_pixel](#function-name-graph_ll_set_pixel)
-            * [Function Name: GRAPH_LL_set_pixels](#function-name-graph_ll_set_pixels)
-            * [Function Name: GRAPH_LL_set_8_pixels](#function-name-graph_ll_set_8_pixels)
-            * [Function Name: GRAPH_LL_set_8_pixels_opaque](#function-name-graph_ll_set_8_pixels_opaque)
-            * [Function Name: GRAPH_LL_fill_pixels](#function-name-graph_ll_fill_pixels)
-            * [Function Name: GRAPH_LL_filter_pixels](#function-name-graph_ll_filter_pixels)
-            * [Function Name: GRAPH_LL_move_pixels](#function-name-graph_ll_move_pixels)
+         * [Framebuffer](#framebuffer)
+            * [Function Name: FB_init](#function-name-fb_init)
+            * [Function Name: FB_get_info](#function-name-fb_get_info)
+            * [Function Name: FB_set_palette](#function-name-fb_set_palette)
+            * [Function Name: FB_cursor_position](#function-name-fb_cursor_position)
+            * [Function Name: FB_cursor_next_line](#function-name-fb_cursor_next_line)
+            * [Function Name: FB_get_pixel](#function-name-fb_get_pixel)
+            * [Function Name: FB_get_pixels](#function-name-fb_get_pixels)
+            * [Function Name: FB_set_pixel](#function-name-fb_set_pixel)
+            * [Function Name: FB_set_pixels](#function-name-fb_set_pixels)
+            * [Function Name: FB_set_8_pixels](#function-name-fb_set_8_pixels)
+            * [Function Name: FB_set_8_pixels_opaque](#function-name-fb_set_8_pixels_opaque)
+            * [Function Name: FB_fill_pixels](#function-name-fb_fill_pixels)
+            * [Function Name: FB_filter_pixels](#function-name-fb_filter_pixels)
+            * [Function Name: FB_move_pixels](#function-name-fb_move_pixels)
          * [Graphics](#graphics)
             * [Function Name: GRAPH_init](#function-name-graph_init)
             * [Function Name: GRAPH_clear](#function-name-graph_clear)
@@ -900,141 +900,141 @@ Error returns: None
 
 **Description:** This function shows a given sprite (.A) at a certain position or hides it. The position is passed in r0 and r1. If the x position is negative (>$8000), the sprite will be hidden.
 
-#### Low-Level Graphics
+#### Framebuffer
 
-The low-level graphics API completely abstracts the framebuffer by exposing a minimal set of high-performance functions. It is basically a framebuffer driver. It is useful as an abstraction and as a convenience library for applications that need high performance framebuffer access.
+The framebuffer API is a low-level graphics API that completely abstracts the framebuffer by exposing a minimal set of high-performance functions. It is useful as an abstraction and as a convenience library for applications that need high performance framebuffer access.
 
-$FEF6: `GRAPH_LL_init` - enable graphics mode
-$FEF9: `GRAPH_LL_get_info` - get screen size and color depth
-$FEFC: `GRAPH_LL_set_palette` - set (parts of) the palette
-$FEFF: `GRAPH_LL_cursor_position` - position the direct-access cursor
-$FF02: `GRAPH_LL_cursor_next_line` - move direct-access cursor to next line
-$FF05: `GRAPH_LL_get_pixel` - read one pixel, update cursor
-$FF08: `GRAPH_LL_get_pixels` - copy pixels into RAM, update cursor
-$FF0B: `GRAPH_LL_set_pixel` - set one pixel, update cursor
-$FF0E: `GRAPH_LL_set_pixels` - copy pixels from RAM, update cursor
-$FF11: `GRAPH_LL_set_8_pixels` - set 8 pixels from bit mask (transparent), update cursor
-$FF14: `GRAPH_LL_set_8_pixels_opaque` - set 8 pixels from bit mask (opaque), update cursor
-$FF17: `GRAPH_LL_fill_pixels` - fill pixels with constant color, update cursor
-$FF1A: `GRAPH_LL_filter_pixels` - apply transform to pixels, update cursor
-$FF1D: `GRAPH_LL_move_pixels` - copy horizontally consecutive pixels to a different position
+$FEF6: `FB_init` - enable graphics mode
+$FEF9: `FB_get_info` - get screen size and color depth
+$FEFC: `FB_set_palette` - set (parts of) the palette
+$FEFF: `FB_cursor_position` - position the direct-access cursor
+$FF02: `FB_cursor_next_line` - move direct-access cursor to next line
+$FF05: `FB_get_pixel` - read one pixel, update cursor
+$FF08: `FB_get_pixels` - copy pixels into RAM, update cursor
+$FF0B: `FB_set_pixel` - set one pixel, update cursor
+$FF0E: `FB_set_pixels` - copy pixels from RAM, update cursor
+$FF11: `FB_set_8_pixels` - set 8 pixels from bit mask (transparent), update cursor
+$FF14: `FB_set_8_pixels_opaque` - set 8 pixels from bit mask (opaque), update cursor
+$FF17: `FB_fill_pixels` - fill pixels with constant color, update cursor
+$FF1A: `FB_filter_pixels` - apply transform to pixels, update cursor
+$FF1D: `FB_move_pixels` - copy horizontally consecutive pixels to a different position
 
-All calls are vectored, which allows installing a replacement graphics driver.
+All calls are vectored, which allows installing a replacement framebuffer driver.
 
-$02E4: I_GRAPH_LL_init
-$02E6: I_GRAPH_LL_get_info
-$02E8: I_GRAPH_LL_set_palette
-$02EA: I_GRAPH_LL_cursor_position
-$02EC: I_GRAPH_LL_cursor_next_line
-$02EE: I_GRAPH_LL_get_pixel
-$02F0: I_GRAPH_LL_get_pixels
-$02F2: I_GRAPH_LL_set_pixel
-$02F4: I_GRAPH_LL_set_pixels
-$02F6: I_GRAPH_LL_set_8_pixels
-$02F8: I_GRAPH_LL_set_8_pixels_opaque
-$02FA: I_GRAPH_LL_fill_pixels
-$02FC: I_GRAPH_LL_filter_pixels
-$02FE: I_GRAPH_LL_move_pixels
+$02E4: I_FB_init
+$02E6: I_FB_get_info
+$02E8: I_FB_set_palette
+$02EA: I_FB_cursor_position
+$02EC: I_FB_cursor_next_line
+$02EE: I_FB_get_pixel
+$02F0: I_FB_get_pixels
+$02F2: I_FB_set_pixel
+$02F4: I_FB_set_pixels
+$02F6: I_FB_set_8_pixels
+$02F8: I_FB_set_8_pixels_opaque
+$02FA: I_FB_fill_pixels
+$02FC: I_FB_filter_pixels
+$02FE: I_FB_move_pixels
 
 The model of this API is based on the direct-access cursor. In order to read and write pixels, the cursor has to be set to a specific x/y-location, and all subsequent calls will access consecutive pixels at the cursor position and update the cursor.
 
-The default driver supports the VERA framebuffer at a resolution of 320x200 pixels and 256 colors. Using `scnmod` to set mode $80 will enable this driver.
+The default driver supports the VERA framebuffer at a resolution of 320x200 pixels and 256 colors. Using `screen_set_mode` to set mode $80 will enable this driver.
 
-##### Function Name: GRAPH_LL_init
+##### Function Name: FB_init
 
-Signature: void GRAPH_LL_init();
+Signature: void FB_init();
 Purpose: Enter graphics mode.
 
-##### Function Name: GRAPH_LL_get_info
+##### Function Name: FB_get_info
 
-Signature: void GRAPH_LL_get_info(out word width: r0, out word height: r1, out byte color_depth: .a);
+Signature: void FB_get_info(out word width: r0, out word height: r1, out byte color_depth: .a);
 Purpose: Return the resolution and color depth
 
-##### Function Name: GRAPH_LL_set_palette
+##### Function Name: FB_set_palette
 
-Signature: void GRAPH_LL_set_palette(word pointer: r0, index: .a, byte count: .x);
+Signature: void FB_set_palette(word pointer: r0, index: .a, byte count: .x);
 Purpose: Set (parts of) the palette
 
 [Note: This is not yet implemented.]
 
-##### Function Name: GRAPH_LL_cursor_position
+##### Function Name: FB_cursor_position
 
-Signature: void GRAPH_LL_cursor_position(word x: r0, word y: r1);
+Signature: void FB_cursor_position(word x: r0, word y: r1);
 Purpose: Position the direct-access cursor
 
-**Description:** `GRAPH_LL_cursor_position` sets the direct-access cursor to the given screen coordinate. Future operations will access pixels at the cursor location and update the cursor.
+**Description:** `FB_cursor_position` sets the direct-access cursor to the given screen coordinate. Future operations will access pixels at the cursor location and update the cursor.
 
-##### Function Name: GRAPH_LL_cursor_next_line
+##### Function Name: FB_cursor_next_line
 
-Signature: void GRAPH_LL_cursor_next_line(word x: r0);
+Signature: void FB_cursor_next_line(word x: r0);
 Purpose: Move the direct-access cursor to next line
 
-**Description:** `GRAPH_LL_cursor_next_line` increments the y position of the direct-access cursor, and sets the x position to the same one that was passed to the previous `GRAPH_LL_cursor_position` call. This is useful for drawing rectangular shapes, and faster than explicitly positioning the cursor.
+**Description:** `FB_cursor_next_line` increments the y position of the direct-access cursor, and sets the x position to the same one that was passed to the previous `FB_cursor_position` call. This is useful for drawing rectangular shapes, and faster than explicitly positioning the cursor.
 
-##### Function Name: GRAPH_LL_get_pixel
+##### Function Name: FB_get_pixel
 
-Signature: byte GRAPH_LL_get_pixel();
+Signature: byte FB_get_pixel();
 Purpose: Read one pixel, update cursor
 
-##### Function Name: GRAPH_LL_get_pixels
+##### Function Name: FB_get_pixels
 
-Signature: void GRAPH_LL_get_pixels(word ptr: r0, word count: r1);
+Signature: void FB_get_pixels(word ptr: r0, word count: r1);
 Purpose: Copy pixels into RAM, update cursor
 
 **Description:** This function copies pixels into an array in RAM. The array consists of one byte per pixel.
 
-##### Function Name: GRAPH_LL_set_pixel
+##### Function Name: FB_set_pixel
 
-Signature: void GRAPH_LL_set_pixel(byte color: .a);
+Signature: void FB_set_pixel(byte color: .a);
 Purpose: Set one pixel, update cursor
 
-##### Function Name: GRAPH_LL_set_pixels
+##### Function Name: FB_set_pixels
 
-Signature: void GRAPH_LL_set_pixels(word ptr: r0, word count: r1);
+Signature: void FB_set_pixels(word ptr: r0, word count: r1);
 Purpose: Copy pixels from RAM, update cursor
 
 **Description:** This function sets pixels from an array of pixels in RAM. The array consists of one byte per pixel.
 
-##### Function Name: GRAPH_LL_set_8_pixels
+##### Function Name: FB_set_8_pixels
 
-Signature: void GRAPH_LL_set_8_pixels(byte pattern: .a, byte color: .x);
+Signature: void FB_set_8_pixels(byte pattern: .a, byte color: .x);
 Purpose: Set 8 pixels from bit mask (transparent), update cursor
 
 **Description:** This function sets all 1-bits of the pattern to a given color and skips a pixel for every 0 bit. The order is MSB to LSB. The cursor will be moved by 8 pixels.
 
-##### Function Name: GRAPH_LL_set_8_pixels_opaque
+##### Function Name: FB_set_8_pixels_opaque
 
-Signature: void GRAPH_LL_set_8_pixels_opaque(byte pattern: .a, byte mask: r0L, byte color1: .x, byte color2: .y);
+Signature: void FB_set_8_pixels_opaque(byte pattern: .a, byte mask: r0L, byte color1: .x, byte color2: .y);
 Purpose: Set 8 pixels from bit mask (opaque), update cursor
 
 **Description:** For every 1-bit in the mask, this function sets the pixel to color1 if the corresponding bit in the pattern is 1, and to color2 otherwise. For every 0-bit in the mask, it skips a pixel. The order is MSB to LSB. The cursor will be moved by 8 pixels.
 
-##### Function Name: GRAPH_LL_fill_pixels
+##### Function Name: FB_fill_pixels
 
-Signature: void GRAPH_LL_fill_pixels(word count: r0, word step: r1, byte color: .a);
+Signature: void FB_fill_pixels(word count: r0, word step: r1, byte color: .a);
 Purpose: Fill pixels with constant color, update cursor
 
-**Description:** `GRAPH_LL_fill_pixels` sets pixels with a constant color. The argument `step` specifies the increment between pixels. A value of 0 or 1 will cause consecutive pixels to be set. Passing a `step` value of the screen width will set vertically adjacent pixels going top down. Smaller values allow drawing dotted horizontal lines, and multiples of the screen width allow drawig dotted vertical lines.
+**Description:** `FB_fill_pixels` sets pixels with a constant color. The argument `step` specifies the increment between pixels. A value of 0 or 1 will cause consecutive pixels to be set. Passing a `step` value of the screen width will set vertically adjacent pixels going top down. Smaller values allow drawing dotted horizontal lines, and multiples of the screen width allow drawig dotted vertical lines.
 
 *[Note: Only the values 0/1 and screen width are currently supported.]*
 
-##### Function Name: GRAPH_LL_filter_pixels
+##### Function Name: FB_filter_pixels
 
-Signature: void GRAPH_LL_filter_pixels(word ptr: r0, word count: r1);
+Signature: void FB_filter_pixels(word ptr: r0, word count: r1);
 Purpose: Apply transform to pixels, update cursor
 
 **Description:** This function allows modifying consecutive pixels. The function pointer will be called for every pixel, with the color in .a, and it needs to return the new color in .a.
 
-##### Function Name: GRAPH_LL_move_pixels
+##### Function Name: FB_move_pixels
 
-Signature: void GRAPH_LL_move_pixels(word sx: r0, word sy: r1, word tx: r2, word ty: r3, word count: r4);
+Signature: void FB_move_pixels(word sx: r0, word sy: r1, word tx: r2, word ty: r3, word count: r4);
 Purpose: Copy horizontally consecutive pixels to a different position
 
 *[Note: Overlapping regions are not yet supported.]*
 
 #### Graphics
 
-The high-level graphics API exposes a set of standard functions. It allows applications to easily perform some common high-level actions like drawing lines, rectangles and images, as well as moving parts of the screen. All commands are completely implemented on top of the low-level API, that is, they will continue working after replacing the low-level driver with one that supports a different resolution, color depth or even graphics device.
+The high-level graphics API exposes a set of standard functions. It allows applications to easily perform some common high-level actions like drawing lines, rectangles and images, as well as moving parts of the screen. All commands are completely implemented on top of the framebuffer API, that is, they will continue working after replacing the framebuffer driver with one that supports a different resolution, color depth or even graphics device.
 
 $FF20: `GRAPH_init` - initialize graphics
 $FF23: `GRAPH_clear` - clear screen
