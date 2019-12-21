@@ -1328,7 +1328,7 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 |$0080-$00FF|KERNAL and BASIC zero page variables                            |
 |$0100-$01FF|CPU stack                                                       |
 |$0200-$03FF|KERNAL and BASIC variables, vectors                             |
-|$0400-$07FF|currently unused                                                |
+|$0400-$07FF|Availabe for machine code programs or custom data storage       |
 |$0800-$9EFF|BASIC program/variables; available to the user                  |
 
 The following zero page locations are completely unused by KERNAL/BASIC/FPLIB and are available to the user:
