@@ -50,6 +50,9 @@
          * [Joystick](#joystick)
             * [Function Name: joystick_scan](#function-name-joystick_scan)
             * [Function Name: joystick_get](#function-name-joystick_get)
+         * [Sprites](#sprites)
+            * [Function Name: sprite_set_image](#function-name-sprite_set_image)
+            * [Function Name: sprite_set_position](#function-name-sprite_set_position)
          * [Low-Level Graphics](#low-level-graphics)
             * [Function Name: GRAPH_LL_init](#function-name-graph_ll_init)
             * [Function Name: GRAPH_LL_get_info](#function-name-graph_ll_get_info)
@@ -81,6 +84,7 @@
          * [Other](#other)
             * [Function Name: monitor](#function-name-monitor)
             * [Function Name: screen_set_mode](#function-name-screen_set_mode)
+            * [Function Name: screen_set_charset](#function-name-screen_set_charset)
             * [Function Name: JSRFAR](#function-name-jsrfar)
    * [Machine Language Monitor](#machine-language-monitor)
    * [Memory Map](#memory-map)
@@ -859,6 +863,35 @@ If joystick 1 is not present, it will fall back to returning the state of the ke
       JSR joystick_get
       AND #128
       BEQ NES_A_PRESSED
+
+#### Sprites
+
+$FEF0: `sprite_set_image` - set the image of a sprite
+$FEF3: `sprite_set_position` - set the position of a sprite
+
+##### Function Name: sprite_set_image
+
+Purpose: Set the image of a sprite
+Call address: $FEF0
+Signature: bool sprite_set_image(byte number: .a, width: .x, height: .y, apply_mask: .c, word pixels: r0, word mask: r1, byte bpp: r2L);
+Error returns: .C = 1 in case of error
+
+**Description:** This function sets the image of a sprite. The number of the sprite is given in .A, The bits per pixel (bpp) in r2L, and the width and height in .X and .Y. The pixel data at r0 is interpreted accordingly and converted into the graphics hardware's native format. If the .C flag is set, the transparency mask pointed to by r1 is applied during the conversion. The function returns .C = 0 if converting the data was successful, and .C = 1 otherwise. Note that this does not change the visibility of the sprite.
+
+**Note**: There are certain limitations on the possible values of width, height, bpp and apply_mask:
+
+* width and height may not exceed the hardware's capabilities.
+* Legal values for bpp are 1, 4 and 8. If the hardware only supports lower depths, the image data is converted down.
+* apply_mask is only valid for 1 bpp data.
+
+##### Function Name: sprite_set_position
+
+Purpose: Set the the position of a sprite or hide it.
+Call address: $FEF3
+Signature: void sprite_set_position(byte number: .a, word x: r0, word y: r1);
+Error returns: None
+
+**Description:** This function shows a given sprite (.A) at a certain position or hides it. The position is passed in r0 and r1. If the x position is negative (>$8000), the sprite will be hidden.
 
 #### Low-Level Graphics
 
