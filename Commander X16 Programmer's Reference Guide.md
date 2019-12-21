@@ -940,7 +940,7 @@ Purpose: Enter graphics mode.
 
 ##### Function Name: GRAPH_LL_get_info
 
-Signature: void GRAPH_LL_get_info(out word width: r0, out word height: r0, out byte color_depth: .a);
+Signature: void GRAPH_LL_get_info(out word width: r0, out word height: r1, out byte color_depth: .a);
 Purpose: Return the resolution and color depth
 
 ##### Function Name: GRAPH_LL_set_palette
