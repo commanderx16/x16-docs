@@ -802,7 +802,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `joystick_scan` retrieves all state from the two joysticks and saves it. It can then be retrieved using `joystick_get`.
+**Description:** The routine `joystick_scan` retrieves all state from the two joysticks and saves it. It can then be retrieved using `joystick_get`. The default interrupt handler already takes care of this, so this routine should only be called if the interrupt handler has been completely replaced.
 
 ##### Function Name: joystick_get
 
@@ -853,6 +853,13 @@ If joystick 1 is not present, it will fall back to returning the state of the ke
 * Note that bits 6 and 7 in byte 0 map to different buttons on NES and SNES.
 
 **How to Use:**
+
+If the default interrupt handler is used:
+
+1) Call this routine.
+
+If the default interrupt handler is disabled or replaced:
+
 1) Call `joystick_scan` to have the system query the joysticks.
 2) Call this routine.
 
