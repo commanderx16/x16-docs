@@ -1173,15 +1173,42 @@ Notes:
 
 #### Other
 
-$FEED: `decompress` - decompress LZSA2 block
+$FEE4: `memory_fill` - fill memory region with a byte value
+$FEE7: `memory_copy` - copy memory region
+$FEEA: `memory_crc` - calculate CRC16 of memory region
+$FEED: `memory_decompress` - decompress LZSA2 block
 $FF44: `monitor` - enter machine language monitor
 $FF47: `restore_basic` - enter BASIC
 $FF5F: `screen_set_mode` - set screen mode
 $FF62: `screen_set_charset` - activate 8x8 text mode charset
 
-##### Function Name: decompress
+##### Function Name: memory_fill
 
-Signature: void decompress(word input: r0, inout word output: r1);
+Signature: void memory_fill(word address: r0, word num_bytes: r1, byte value: .a);
+Purpose: Fill a memory region with a byte value.
+Call address: $FEE4
+
+**Description:** This function fills the memory region specified by an address (r0) and a size in bytes (r1) with the constant byte value passed in .A.
+
+##### Function Name: memory_copy
+
+Signature: void memory_copy(word source: r0, word target: r1, word num_bytes: r2);
+Purpose: Copy a memory region to a different region.
+Call address: $FEE7
+
+**Description:** This function copies one memory region specified by an address (r0) and a size in bytes (r2) to a different region specified by its start address (r1). The two regions may overlap.
+
+##### Function Name: memory_crc
+
+Signature: (word result: r2) memory_crc(word address: r0, word num_bytes: r1);
+Purpose: Calculate the CRC16 of a memory region.
+Call address: $FEEA
+
+**Description:** This function calculates the CRC16 checksum of the memory region specified by an address (r0) and a size in bytes (r1). The result is returned in r2.
+
+##### Function Name: memory_decompress
+
+Signature: void memory_decompress(word input: r0, inout word output: r1);
 Purpose: Decompress an LZSA2 block
 Call address: $FEED
 
