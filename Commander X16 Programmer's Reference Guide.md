@@ -1173,10 +1173,26 @@ Notes:
 
 #### Other
 
+$FEED: `decompress` - decompress LZSA2 block
 $FF44: `monitor` - enter machine language monitor
 $FF47: `restore_basic` - enter BASIC
 $FF5F: `screen_set_mode` - set screen mode
 $FF62: `screen_set_charset` - activate 8x8 text mode charset
+
+##### Function Name: decompress
+
+Signature: void decompress(word input: r0, inout word output: r1);
+Purpose: Decompress an LZSA2 block
+Call address: $FEED
+
+**Description:** This function decompresses an LZSA2-compressed data block from the location passed in r0 and outputs the decompressed data at the location passed in r1. After the call, r1 will be updated with the location of the last output byte plus one.
+
+**Notes**: 
+
+* To create compressed data, use the `lzsa` tool[^4] like this:
+`lzsa -r -f2 <original_file> <compressed_file>`
+* This function cannot be used to decompress data in-place, as the output data would overwrite the input data before it is consumed. Therefore, make sure to load the input data to a different location.
+* It is possible to have the input data stored in banked RAM, with the obvious 8 KB size restriction.
 
 ##### Function Name: monitor
 
@@ -1335,7 +1351,7 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 |$0080-$00FF|KERNAL and BASIC zero page variables                            |
 |$0100-$01FF|CPU stack                                                       |
 |$0200-$03FF|KERNAL and BASIC variables, vectors                             |
-|$0400-$07FF|Availabe for machine code programs or custom data storage       |
+|$0400-$07FF|Available for machine code programs or custom data storage      |
 |$0800-$9EFF|BASIC program/variables; available to the user                  |
 
 The following zero page locations are completely unused by KERNAL/BASIC/FPLIB and are available to the user:
@@ -1384,7 +1400,7 @@ See the [VERA Programmer's Reference](VERA%20Programmer's%20Reference.md) for th
 
 The KERNAL uploads the current character sets (PETSCII graphics, PETSCII upper/lower or ISO-8859-15) to $0F800, i.e. the top of video RAM bank 0.
 
-Application software is free to reuse this part of video RAM if it does not need the character set. If it needs them again later, it can use the KERNAL call `CINT` ($FF81), which initializes the VERA chip and uploads the PETSCII graphics character set, or print character code $0E too trigger an upload of the PETSCII upper/lower chcracter set, or $0F for the ISO character set.
+Application software is free to reuse this part of video RAM if it does not need the character set. If it needs them again later, it can use the KERNAL call `CINT` ($FF81), which initializes the VERA chip and uploads the PETSCII graphics character set, or call `screen_set_charset` ($FF62) to upload a particular charset.
 
 ## Sound Programming
 
@@ -1429,3 +1445,5 @@ The GPIO connections for the Commodore Serial Bus and the mouse PS/2 connection 
 [^2]: On systems with 512 KB RAM, DOS uses bank 63, and banks 0-62 are available to the user.
 
 [^3]: The pin assignment of the NES/SNES controller is likely to change.
+
+[^4]: [https://github.com/emmanuel-marty/lzsa](https://github.com/emmanuel-marty/lzsa)
