@@ -1395,11 +1395,12 @@ In a machine language application that only uses KERNAL (no BASIC or floating po
 
 This is the allocation of banked RAM in the KERNAL/BASIC environment.
 
-|Bank   |Description               |
-|-------|--------------------------|
-|0      |Used for KERNAL variables |
-|1-254  |Available to the user     |
-|255[^2]|DOS buffers and variables |
+|Bank |Description                                 |
+|-----|--------------------------------------------|
+|0    |Used for KERNAL/CBDOS variables and buffers |
+|1-255|Available to the user                       |
+
+(On systems with only 512 KB RAM, banks 64-255 are unavailable.)
 
 ### I/O Area
 
@@ -1468,8 +1469,6 @@ The GPIO connections for the Commodore Serial Bus and the mouse PS/2 connection 
 <!------->
 
 [^1]: Current development systems have 2 MB of bankable RAM. Actual hardware is currently planned to have an option of either 512 KB or 2 MB of RAM.
-
-[^2]: On systems with 512 KB RAM, DOS uses bank 63, and banks 0-62 are available to the user.
 
 [^3]: The pin assignment of the NES/SNES controller is likely to change.
 
