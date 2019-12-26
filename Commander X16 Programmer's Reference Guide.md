@@ -814,7 +814,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `joystick_get` retrieves all state from one of the joysticks. The number of the joystick is passed in .X (0 or 1), and the state is returned in .A, .X and .Y.
+**Description:** The routine `joystick_get` retrieves all state from one of the joysticks. The number of the joystick is passed in .A (0 or 1), and the state is returned in .A, .X and .Y.
 
       .A, byte 0:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
                   NES  | A | B |SEL|STA|UP |DN |LT |RT |
@@ -866,7 +866,7 @@ If the default interrupt handler is disabled or replaced:
 **EXAMPLE:**
 
       JSR joystick_scan
-      LDX #0
+      LDA #0
       JSR joystick_get
       AND #128
       BEQ NES_A_PRESSED
