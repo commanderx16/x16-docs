@@ -473,7 +473,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 	20 FORI=1TO20:RECTRND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*256:NEXT
 	30 GOTO20
 
-#### GEOS
+#### RESET
 
 **TYPE: Command**
 **FORMAT: RESET**
