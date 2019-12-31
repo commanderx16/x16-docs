@@ -384,6 +384,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 **EXAMPLE of MON Statement:**
 
       MON
+      MONITOR
 
 #### MOUSE
 
