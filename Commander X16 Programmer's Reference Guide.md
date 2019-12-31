@@ -29,6 +29,7 @@
          * [OLD](#old)
          * [PSET](#pset)
          * [RECT](#rect)
+         * [RESET](#reset)
          * [SCREEN](#screen)
          * [VPEEK](#vpeek)
          * [VPOKE](#vpoke)
@@ -376,7 +377,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 #### MON
 
 **TYPE: Command**
-**FORMAT: MON**
+**FORMAT: MON (Alternative: MONITOR**
 
 **Action:** This command enters the machine language monitor. See the dedicated chapter for a  description.
 
@@ -471,6 +472,17 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 	10 SCREEN$80
 	20 FORI=1TO20:RECTRND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*256:NEXT
 	30 GOTO20
+
+#### GEOS
+
+**TYPE: Command**
+**FORMAT: RESET**
+
+**Action:** Performs a reset.
+
+**EXAMPLE of RESET Statement:**
+
+	RESET
 
 #### SCREEN
 
