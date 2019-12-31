@@ -479,7 +479,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 **TYPE: Command**
 **FORMAT: RESET**
 
-**Action:** Performs a reset.
+**Action:** Performs a software reset of the system.
 
 **EXAMPLE of RESET Statement:**
 
