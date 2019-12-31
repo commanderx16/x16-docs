@@ -377,7 +377,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 #### MON
 
 **TYPE: Command**
-**FORMAT: MON (Alternative: MONITOR**
+**FORMAT: MON (Alternative: MONITOR)**
 
 **Action:** This command enters the machine language monitor. See the dedicated chapter for a  description.
 
