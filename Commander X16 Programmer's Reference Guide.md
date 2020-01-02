@@ -280,6 +280,17 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 	60 CHAR0,6+12*4,0,CHR$($0C)+A$ :REM OUTLINE
 	70 CHAR0,6+12*5,0,CHR$($12)+A$ :REM REVERSE
 
+#### CLS
+
+**TYPE: Command**
+**FORMAT: CLS**
+
+**Action:** Clears the screen (same effect as ?CHR$(147) ).
+
+**EXAMPLE of RESET Statement:**
+
+	CLS
+
 #### COLOR
 
 **TYPE: Command**
