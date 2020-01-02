@@ -286,7 +286,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 **TYPE: Command**
 **FORMAT: CLS**
 
-**Action:** Clears the screen (same effect as `?CHR$(147)`).
+**Action:** Clears the screen. Same effect as `?CHR$(147)`.
 
 **EXAMPLE of CLS Statement:**
 
