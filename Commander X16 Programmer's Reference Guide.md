@@ -288,7 +288,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 **Action:** Clears the screen (same effect as `?CHR$(147)`).
 
-**EXAMPLE of RESET Statement:**
+**EXAMPLE of CLS Statement:**
 
 	CLS
 
