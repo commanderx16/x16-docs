@@ -17,6 +17,7 @@
       * [Keyboard Layouts](#keyboard-layouts)
       * [New Statements and Functions](#new-statements-and-functions)
          * [CHAR](#char)
+         * [CLS](#cls)
          * [COLOR](#color)
          * [DOS](#dos)
          * [FRAME](#frame)
