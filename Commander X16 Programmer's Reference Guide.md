@@ -1393,7 +1393,7 @@ This is an overview of the X16 memory map:
 
 ### Banked Memory
 
-The RAM bank (0-255) defaults to 255, and the ROM bank (0-7) defaults to 7 on RESET. The RAM bank can be configured through VIA#1 PA0-7 ($9F61), and the ROM bank through VIA#1 PB0-2 ($9F60). See section "I/O Programming" for more information.
+The RAM bank (0-255) defaults to 0, and the ROM bank (0-7) defaults to 0 on RESET. The RAM bank can be configured through VIA#1 PA0-7 ($9F61), and the ROM bank through VIA#1 PB0-2 ($9F60). See section "I/O Programming" for more information.
 
 ### ROM Allocations
 
@@ -1444,6 +1444,8 @@ This is the allocation of banked RAM in the KERNAL/BASIC environment.
 |1-255|Available to the user                       |
 
 (On systems with only 512 KB RAM, banks 64-255 are unavailable.)
+
+During startup, the KERNAL activates RAM bank 1 as the default for the user.
 
 ### I/O Area
 
