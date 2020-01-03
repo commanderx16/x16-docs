@@ -82,7 +82,15 @@
             * [Function Name: GRAPH_set_font](#function-name-graph_set_font)
             * [Function Name: GRAPH_get_char_size](#function-name-graph_get_char_size)
             * [Function Name: GRAPH_put_char](#function-name-graph_put_char)
+         * [Console](#console)
+            * [Function Name: console_init](#function-name-console_init)
+            * [Function Name: console_put_char](#function-name-console_put_char)
+            * [Function Name: console_get_char](#function-name-console_get_char)
          * [Other](#other)
+            * [Function Name: memory_fill](#function-name-memory_fill)
+            * [Function Name: memory_copy](#function-name-memory_copy)
+            * [Function Name: memory_crc](#function-name-memory_crc)
+            * [Function Name: memory_decompress](#function-name-memory_decompress)
             * [Function Name: monitor](#function-name-monitor)
             * [Function Name: screen_set_mode](#function-name-screen_set_mode)
             * [Function Name: screen_set_charset](#function-name-screen_set_charset)
@@ -1064,10 +1072,10 @@ $FF41: `GRAPH_put_char` - print a character
 
 ##### Function Name: GRAPH_init
 
-Signature: void GRAPH_init();
-Purpose: Enter and initialize graphics mode
+Signature: void GRAPH_init(word vectors: r0);
+Purpose: Activate framebuffer driver, enter and initialize graphics mode
 
-**Description**: This call switches the video hardware into graphics mode, sets the window to full screen, initializes the colors and activates the system font.
+**Description**: This call activates the framebuffer driver whose vector table is passed in r0. If r0 is 0, the default driver is activated. It then switches the video hardware into graphics mode, sets the window to full screen, initializes the colors and activates the system font.
 
 ##### Function Name: GRAPH_clear
 
@@ -1139,7 +1147,7 @@ Purpose: Set the current font
 Signature: (byte baseline: .a, byte width: .x, byte height_or_style: .y, bool is_coltrol: .c) GRAPH_get_char_size(byte c: .a, byte format: .x);
 Purpose: Get the size and baseline of a character, or interpret a control code
 
-**Description:** This functionality of `GRAPH_get_char_size` depends on the type on code that is passed in: For a printable character, this function returns the metrics of the character in a given format. For a control code, it returns the resulting format. In either case, the current format is passed in .x, and the character in .a. 
+**Description:** This functionality of `GRAPH_get_char_size` depends on the type of code that is passed in: For a printable character, this function returns the metrics of the character in a given format. For a control code, it returns the resulting format. In either case, the current format is passed in .x, and the character in .a. 
 
 * The format is an opaque byte value whose value should not be relied upon, except for `0`, which is plain text. 
 * The resulting values are measured in pixels.
