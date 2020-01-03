@@ -1136,20 +1136,14 @@ Purpose: Set the current font
 
 ##### Function Name: GRAPH_get_char_size
 
-Signature: (byte baseline: .a, byte width: .x, byte height: .y) GRAPH_get_char_size(byte c: .a, byte format: .x);
-Purpose: Get the size and baseline of a character
+Signature: (byte baseline: .a, byte width: .x, byte height_or_style: .y, bool is_coltrol: .c) GRAPH_get_char_size(byte c: .a, byte format: .x);
+Purpose: Get the size and baseline of a character, or interpret a control code
 
-**Description:** This function returns the metrics of a character in a given format. The format value is a bit mask combining the following values:
+**Description:** This functionality of `GRAPH_get_char_size` depends on the type on code that is passed in: For a printable character, this function returns the metrics of the character in a given format. For a control code, it returns the resulting format. In either case, the current format is passed in .x, and the character in .a. 
 
-| Value | Description |
-|-------|-------------|
-| $80   | underlined  |
-| $40   | bold        |
-| $20   | reversed    |
-| $10   | italics     |
-| $08   | outline     |
-
-The resulting values are measured in pixels. The basline is measured from the top.
+* The format is an opaque byte value whose value should not be relied upon, except for `0`, which is plain text. 
+* The resulting values are measured in pixels.
+* The basline is measured from the top.
 
 ##### Function Name: GRAPH_put_char
 
@@ -1183,6 +1177,42 @@ Notes:
 * All 16 PETSCII color codes are supported. Code $01 to swap the colors will swap the stroke and fill colors.
 * The stroke color is used to draw the characters, and the underline is drawn using the fill color. In reverse text mode, the text background is filled with the fill color.
 * *[BELL ($07), TAB ($09) and SHIFT+TAB ($18) are not yet implemented.]*
+
+#### Console
+
+$FEDB: `console_init` - initialize console mode
+$FEDE: `console_put_char` - print character to console
+$FEE1: `console_get_char` - get character from console
+
+The console is a screen mode that allows text output and input in proportional fonts that support the usual styles. It is useful for rich text-based interfaces.
+
+##### Function Name: console_init
+
+Signature: void console_init();
+Purpose: Initialize console mode.
+Call address: $FEDB
+
+**Description:** This function initializes console mode by switching to graphics mode, clearing the screen and positioning the cursor at the top left.
+
+##### Function Name: console_put_char
+
+Signature: void console_put_char(byte char: .a, bool wrapping: .c);
+Purpose: Print a character to the console.
+Call address: $FEDE
+
+**Description:** This function prints a character to the console. The .C flag specifies whether text should be wrapped at character (.C=0) or word (.C=1) boundaries. In the latter case, characters will be buffered until a SPACE, CR or LF character is sent, so make sure the text that is printed always ends in one of these characters.
+
+If the bottom of the screen is reached, this function will scroll its contents up to make extra room.
+
+##### Function Name: console_get_char
+
+Signature: (byte char: .a) console_get_char();
+Purpose: Get a character from the console.
+Call address: $FEE1
+
+**Description:** This function gets a character to the console. It does this by collecting a whole line of character, i.e. until the user presses RETURN. Then, the line will be sent character by character.
+
+This function allows editing the line using BACKSPACE/DEL, but does not allow moving the cursor within the line, write more than one line, or using control codes.
 
 #### Other
 
