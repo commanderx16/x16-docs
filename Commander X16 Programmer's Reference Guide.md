@@ -1087,9 +1087,9 @@ Purpose: Clear the current window with the current background color.
 Signature: void GRAPH_set_window(word x: r0, word y: r1, word width: r2, word height: r3);
 Purpose: Set the clipping region
 
-**Description:** All graphics commands are clipped to the window. This function configures the origin and size of the window.
+**Description:** All graphics commands are clipped to the window. This function configures the origin and size of the window. All 0 arguments set the window to full screen.
 
-*[Note: Only text output is currently clipped.]*
+*[Note: Only text output and GRAPH_clear currently respect the clipping region.]*
 
 ##### Function Name: GRAPH_set_colors
 
