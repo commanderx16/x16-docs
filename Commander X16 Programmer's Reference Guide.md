@@ -8,6 +8,7 @@
 
 <!-- generated with https://github.com/ekalinin/github-markdown-toc -->
 
+* [Commander X16 Programmer's Reference Guide](#commander-x16-programmers-reference-guide)
    * [Overview](#overview)
    * [BASIC Programming](#basic-programming)
       * [Commodore 64 Compatibility](#commodore-64-compatibility)
@@ -85,6 +86,7 @@
          * [Console](#console)
             * [Function Name: console_init](#function-name-console_init)
             * [Function Name: console_put_char](#function-name-console_put_char)
+            * [Function Name: console_put_image](#function-name-console_put_image)
             * [Function Name: console_get_char](#function-name-console_get_char)
          * [Other](#other)
             * [Function Name: memory_fill](#function-name-memory_fill)
@@ -1190,6 +1192,7 @@ Notes:
 
 $FEDB: `console_init` - initialize console mode
 $FEDE: `console_put_char` - print character to console
+$FED8: `console_put_image` - draw image as if it was a character
 $FEE1: `console_get_char` - get character from console
 
 The console is a screen mode that allows text output and input in proportional fonts that support the usual styles. It is useful for rich text-based interfaces.
@@ -1210,7 +1213,20 @@ Call address: $FEDE
 
 **Description:** This function prints a character to the console. The .C flag specifies whether text should be wrapped at character (.C=0) or word (.C=1) boundaries. In the latter case, characters will be buffered until a SPACE, CR or LF character is sent, so make sure the text that is printed always ends in one of these characters.
 
-If the bottom of the screen is reached, this function will scroll its contents up to make extra room.
+**Note**: If the bottom of the screen is reached, this function will scroll its contents up to make extra room.
+
+##### Function Name: console_put_image
+
+Signature: void console_put_image(word ptr: r0, word width: r1, word height: r2);
+Purpose: Draw image as if it was a character.
+Call address: $FEE1
+
+**Description:** This function draws an image (in GRAPH_draw_image format) at the current cursor position and advances the cursor accordingly. This way, an image can be presented inline. A common example would be an emoji bitmap, but it is also possible to show full-width pictures if you print a newline before and after the image.
+
+**Notes**:
+
+* If the bottom of the screen is reached, this function will scroll its contents up to make extra room.
+* Subsequent line breaks will take the image height into account, so that the new cursor position is below the image.
 
 ##### Function Name: console_get_char
 
