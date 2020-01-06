@@ -88,6 +88,7 @@
             * [Function Name: console_put_char](#function-name-console_put_char)
             * [Function Name: console_put_image](#function-name-console_put_image)
             * [Function Name: console_get_char](#function-name-console_get_char)
+            * [Function Name: console_set_paging_message](#function-name-console_set_paging_message)
          * [Other](#other)
             * [Function Name: memory_fill](#function-name-memory_fill)
             * [Function Name: memory_copy](#function-name-memory_copy)
@@ -1194,6 +1195,7 @@ $FEDB: `console_init` - initialize console mode
 $FEDE: `console_put_char` - print character to console
 $FED8: `console_put_image` - draw image as if it was a character
 $FEE1: `console_get_char` - get character from console
+$FED5: `console_set_paging_message` - set paging message or disables paging
 
 The console is a screen mode that allows text output and input in proportional fonts that support the usual styles. It is useful for rich text-based interfaces.
 
@@ -1237,6 +1239,16 @@ Call address: $FEE1
 **Description:** This function gets a character to the console. It does this by collecting a whole line of character, i.e. until the user presses RETURN. Then, the line will be sent character by character.
 
 This function allows editing the line using BACKSPACE/DEL, but does not allow moving the cursor within the line, write more than one line, or using control codes.
+
+##### Function Name: console_set_paging_message
+
+Signature: void console_set_paging_message(word message: r0);
+Purpose: Set the paging message or disables paging.
+Call address: $FED5
+
+**Description:** The console can halt printing after a full screen height worth of text has been printed. It will then show a message, wait for any key, and continue printing. This function sets this message. A zero-terminated text is passed in r0. To turn off paging, call this function with r0 = 0 - this is the default.
+
+**Note:** It is possible to use control codes to change the text style and color. Do not use codes that change the cursor position, like CR or LF. Also, the text must not overflow one line on the screen.
 
 #### Other
 
