@@ -1195,7 +1195,7 @@ $FEDB: `console_init` - initialize console mode
 $FEDE: `console_put_char` - print character to console
 $FED8: `console_put_image` - draw image as if it was a character
 $FEE1: `console_get_char` - get character from console
-$FED5: `console_set_paging_message` - set paging message or disables paging
+$FED5: `console_set_paging_message` - set paging message or disable paging
 
 The console is a screen mode that allows text output and input in proportional fonts that support the usual styles. It is useful for rich text-based interfaces.
 
@@ -1243,7 +1243,7 @@ This function allows editing the line using BACKSPACE/DEL, but does not allow mo
 ##### Function Name: console_set_paging_message
 
 Signature: void console_set_paging_message(word message: r0);
-Purpose: Set the paging message or disables paging.
+Purpose: Set the paging message or disable paging.
 Call address: $FED5
 
 **Description:** The console can halt printing after a full screen height worth of text has been printed. It will then show a message, wait for any key, and continue printing. This function sets this message. A zero-terminated text is passed in r0. To turn off paging, call this function with r0 = 0 - this is the default.
