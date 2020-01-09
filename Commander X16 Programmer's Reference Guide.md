@@ -1257,7 +1257,7 @@ $FEE7: `memory_copy` - copy memory region
 $FEEA: `memory_crc` - calculate CRC16 of memory region
 $FEED: `memory_decompress` - decompress LZSA2 block
 $FF44: `monitor` - enter machine language monitor
-$FF47: `restore_basic` - enter BASIC
+$FF47: `enter_basic` - enter BASIC
 $FF5F: `screen_set_mode` - set screen mode
 $FF62: `screen_set_charset` - activate 8x8 text mode charset
 
@@ -1318,6 +1318,22 @@ Registers affected: Does not return
 **EXAMPLE:**
 
       JMP monitor
+
+##### Function Name: enter_basic
+
+Purpose: Enter BASIC
+Call address: $FF47
+Communication registers: .C
+Preparatory routines: None
+Error returns: Does not return
+
+**Description:** Call this to enter BASIC mode, either through a cold start (.C=1) or a warm start (.C=0).
+
+**EXAMPLE:**
+
+	CLC
+	JMP enter_basic ; returns to the "READY." prompt
+
 
 ##### Function Name: screen_set_mode
 
