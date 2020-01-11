@@ -1205,7 +1205,7 @@ Signature: void console_init(word x: r0, word y: r1, word width: r2, word height
 Purpose: Initialize console mode.
 Call address: $FEDB
 
-**Description:** This function initializes console mode. It sets up the window (text clipping area) passed into it, clears the window and positions the cursor at the top left. All 0 arguments create a full screen console. You have to switch to graphics mode using `set_screen_mode` beforehand.
+**Description:** This function initializes console mode. It sets up the window (text clipping area) passed into it, clears the window and positions the cursor at the top left. All 0 arguments create a full screen console. You have to switch to graphics mode using `screen_set_mode` beforehand.
 
 ##### Function Name: console_put_char
 
