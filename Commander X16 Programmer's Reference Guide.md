@@ -753,6 +753,7 @@ Registers affected: .A, .X, .Y
 #### Mouse
 
 $FF68: `mouse_config` - configure mouse pointer
+$FF71: `mouse_scan` - query mouse
 $FF6B: `mouse_get` - get state of mouse
 
 ##### Function Name: mouse_config
@@ -775,6 +776,18 @@ The argument in .X specifies the scale. Use a scale of 1 for a 640x480 screen, a
 
 	LDA #1
 	JSR mouse_config ; show the default mouse pointer
+
+##### Function Name: mouse_scan
+
+Purpose: Query the mouse and save its state
+Call address: $FF71
+Communication registers: None
+Preparatory routines: None
+Error returns: None
+Stack requirements: ?
+Registers affected: .A, .X, .Y
+
+**Description:** The routine `mouse_scan` retrieves all state from the mouse and saves it. It can then be retrieved using `mouse_get`. The default interrupt handler already takes care of this, so this routine should only be called if the interrupt handler has been completely replaced.
 
 ##### Function Name: mouse_get
 
