@@ -7,7 +7,7 @@ Version 0.9
 **This is preliminary documentation and the specification can still change at any point.**
 
 This document describes the **V**ersatile **E**mbedded **R**etro **A**dapter or VERA. The VERA consists of:
-- Video generator supporting:
+- Video generator featuring:
   - Multiple output formats (VGA, NTSC Composite, NTSC S-Video, RGB video) at a fixed resolution of 640x480@60Hz
   - Support for 2 layers, both supporting either tile or bitmap mode.
   - Support for up to 128 sprites.
@@ -47,7 +47,8 @@ This document describes the **V**ersatile **E**mbedded **R**etro **A**dapter or 
 		<td>$9F22</td>
 		<td>ADDRx_H (x=ADDRSEL)</td>
 		<td colspan="4" align="center">Address Increment</td>
-		<td colspan="3" align="center">-</td>
+		<td colspan="1" align="center">DECR</td>
+		<td colspan="2" align="center">-</td>
 		<td colspan="1" align="center">VRAM Address (16)</td>
 	</tr>
 	<tr>
@@ -278,7 +279,7 @@ The video RAM (VRAM) isn't directly accessible on the CPU bus. VERA only exposes
 There are 2 data ports to the VRAM. Which can be accessed using DATA0 and DATA1. The address and increment associated with the data port is specified in ADDRx_L/ADDRx_M/ADDRx_H. These 3 registers are multiplexed using the ADDR_SEL in the CTRL register. When ADDR_SEL = 0, ADDRx_L/ADDRx_M/ADDRx_H become ADDR0_L/ADDR0_M/ADDR0_H.  
 When ADDR_SEL = 1, ADDRx_L/ADDRx_M/ADDRx_H become ADDR1_L/ADDR1_M/ADDR1_H.
 
-By setting the 'Address increment' field in ADDRx_H, the address will be increment after each access to the data register. The increment register values and corresponding increment amounts are shown in the following table:
+By setting the 'Address Increment' field in ADDRx_H, the address will be increment after each access to the data register. The increment register values and corresponding increment amounts are shown in the following table:
 
 | Register value | Increment amount |
 | -------------: | ---------------: |
@@ -298,6 +299,8 @@ By setting the 'Address increment' field in ADDRx_H, the address will be increme
 | 13             | 160              |
 | 14             | 320              |
 | 15             | 640              |
+
+Setting the **DECR** bit, will decrement instead of increment by the value set by the 'Address Increment' field.
 
 ## Reset
 
