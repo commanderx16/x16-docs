@@ -265,7 +265,7 @@ This document describes the **V**ersatile **E**mbedded **R**etro **A**dapter or 
 | --------------- | -------------------------- |
 | $00000 - $1F9BF | Video RAM                  |
 | $1F9C0 - $1F9FF | PSG registers              |
-| $1FA00 - $F1BFF | Palette                    |
+| $1FA00 - $1FBFF | Palette                    |
 | $1FC00 - $1FFFF | Sprite attributes          |
 
 ***Important note:
