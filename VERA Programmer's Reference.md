@@ -54,12 +54,12 @@ This document describes the **V**ersatile **E**mbedded **R**etro **A**dapter or 
 	<tr>
 		<td>$9F23</td>
 		<td>DATA0</td>
-		<td colspan="8" align="center">VRAM Data port 0 (read/write)</td>
+		<td colspan="8" align="center">VRAM Data port 0</td>
 	</tr>
 	<tr>
 		<td>$9F24</td>
 		<td>DATA1</td>
-		<td colspan="8" align="center">VRAM Data port 1 (write only)</td>
+		<td colspan="8" align="center">VRAM Data port 1</td>
 	</tr>
 	<tr>
 		<td>$9F25</td>
