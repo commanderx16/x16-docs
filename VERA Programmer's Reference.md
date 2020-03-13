@@ -691,11 +691,11 @@ The formula for calculating the output frequency is:
 
     sample_rate = 25MHz / 512 = 48828.125 Hz
 
-    output_frequency = sample_rate / (2^20) * frequency_word
+    output_frequency = sample_rate / (2^17) * frequency_word
 
-Thus the output frequency can be set in steps of about 0.0466 Hz.
+Thus the output frequency can be set in steps of about 0.373 Hz.
 
-*Example: to output a frequency of 440Hz (note A4) the **Frequency word** should be set to  440 / (48828.125 / (2^20)) = 9449*
+*Example: to output a frequency of 440Hz (note A4) the **Frequency word** should be set to  440 / (48828.125 / (2^17)) = 1181*
 
 **Volume** controls the volume of the sound with a logarithmic curve; 0 is silent, 63 is the loudest.
 The **Left** and **Right** bits control to which output channels the sound should be output.
