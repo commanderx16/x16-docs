@@ -698,7 +698,7 @@ Some notes:
 
 There are lots of new APIs. Please note that their addresses and their behavior is still prelimiary and can change between revisions.
 
-Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc. (The registers start at $02 instead of $00 to allow compatiblility with 65xx systems that have a processor port at $00/$01.)
+Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc. (The registers start at $02 instead of $00 to allow compatibility with 65xx systems that have a processor port at $00/$01.)
 
 The 16 bit ABI generally follows the following conventions:
 
@@ -937,7 +937,7 @@ Error returns: .C = 1 in case of error
 
 ##### Function Name: sprite_set_position
 
-Purpose: Set the the position of a sprite or hide it.
+Purpose: Set the position of a sprite or hide it.
 Call address: $FEF3
 Signature: void sprite_set_position(byte number: .a, word x: r0, word y: r1);
 Error returns: None
@@ -1058,7 +1058,7 @@ Purpose: Set 8 pixels from bit mask (opaque), update cursor
 Signature: void FB_fill_pixels(word count: r0, word step: r1, byte color: .a);
 Purpose: Fill pixels with constant color, update cursor
 
-**Description:** `FB_fill_pixels` sets pixels with a constant color. The argument `step` specifies the increment between pixels. A value of 0 or 1 will cause consecutive pixels to be set. Passing a `step` value of the screen width will set vertically adjacent pixels going top down. Smaller values allow drawing dotted horizontal lines, and multiples of the screen width allow drawig dotted vertical lines.
+**Description:** `FB_fill_pixels` sets pixels with a constant color. The argument `step` specifies the increment between pixels. A value of 0 or 1 will cause consecutive pixels to be set. Passing a `step` value of the screen width will set vertically adjacent pixels going top down. Smaller values allow drawing dotted horizontal lines, and multiples of the screen width allow drawing dotted vertical lines.
 
 *[Note: Only the values 0/1 and screen width are currently supported.]*
 
@@ -1167,14 +1167,14 @@ Purpose: Set the current font
 
 ##### Function Name: GRAPH_get_char_size
 
-Signature: (byte baseline: .a, byte width: .x, byte height_or_style: .y, bool is_coltrol: .c) GRAPH_get_char_size(byte c: .a, byte format: .x);
+Signature: (byte baseline: .a, byte width: .x, byte height_or_style: .y, bool is_control: .c) GRAPH_get_char_size(byte c: .a, byte format: .x);
 Purpose: Get the size and baseline of a character, or interpret a control code
 
 **Description:** This functionality of `GRAPH_get_char_size` depends on the type of code that is passed in: For a printable character, this function returns the metrics of the character in a given format. For a control code, it returns the resulting format. In either case, the current format is passed in .x, and the character in .a. 
 
 * The format is an opaque byte value whose value should not be relied upon, except for `0`, which is plain text. 
 * The resulting values are measured in pixels.
-* The basline is measured from the top.
+* The baseline is measured from the top.
 
 ##### Function Name: GRAPH_put_char
 
