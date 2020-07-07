@@ -26,6 +26,7 @@ This describes the "R2" board revision and the emulator/ROM versions r38 and lat
       * [Keyboard Layouts](#keyboard-layouts)
       * [New Statements and Functions](#new-statements-and-functions)
          * [CHAR](#char)
+         * [CLS](#cls)
          * [COLOR](#color)
          * [DOS](#dos)
          * [FRAME](#frame)
@@ -298,6 +299,17 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 	50 CHAR0,6+12*3,0,CHR$($0B)+A$ :REM ITALICS
 	60 CHAR0,6+12*4,0,CHR$($0C)+A$ :REM OUTLINE
 	70 CHAR0,6+12*5,0,CHR$($12)+A$ :REM REVERSE
+
+#### CLS
+
+**TYPE: Command**
+**FORMAT: CLS**
+
+**Action:** Clears the screen. Same effect as `?CHR$(147);`.
+
+**EXAMPLE of CLS Statement:**
+
+	CLS
 
 #### COLOR
 
