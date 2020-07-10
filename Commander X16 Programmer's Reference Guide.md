@@ -45,6 +45,10 @@ This describes the "R2" board revision and the emulator/ROM versions r38 and lat
          * [VPOKE](#vpoke)
          * [VLOAD](#vload)
       * [Other New Features](#other-new-features)
+          * [Hexadecimal and Binary Literals](#hexadecimal-and-binary-literals)
+          * [Different Text Modes](#different-text-modes)
+          * [LOAD into VRAM](#load-into-vram)
+          * [Default Device Numbers](#default-device-numbers)
       * [Internal Representation](#internal-representation)
    * [KERNAL](#kernal)
       * [KERNAL Version](#kernal-version)
@@ -564,17 +568,23 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 ### Other New Features
 
+#### Hexadecimal and Binary Literals
+
 The numeric constants parser supports both hex (`$`) and binary (`%`) literals, like this:
 
       PRINT $EA31 + %1010
 
 The size of hex and binary values is only restricted by the range that can be represented by BASIC's internal floating point representation.
 
+#### Different Text Modes
+
 In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch modes, use the BASIC statement `SCREEN`:
 
       SCREEN 0 : REM SWITCH TO 40 CHARACTER MODE
       SCREEN 2 : REM SWITCH TO 80 CHARACTER MODE
       SCREEN 255 : REM SWITCH BETWEEN 40 and 80 CHARACTER MODE
+
+#### LOAD into VRAM
 
 In BASIC, the contents of files can be directly loaded into VRAM with the `LOAD` statement. When a secondary address greater than one is used, the KERNAL will now load the file into the VERA's VRAM address space. The first two bytes of the file are used as lower 16 bits of the address. The upper 4 bits are `(SA-2) & 0x0ff` where `SA` is the secondary address.
 
@@ -586,6 +596,10 @@ Examples:
 	  40 LOAD"TILES.BIN",1,3 : REM SET ADDRESS TO $1XXXX
 	  50 REM LOAD MAP
       60 LOAD"MAP.BIN",1,2 : REM SET ADDRESS TO $0XXXX
+
+#### Default Device Numbers
+
+In BASIC, the LOAD, SAVE and OPEN statements default to the last-used IEEE device (device numbers 8 and above), or 8.
 
 ### Internal Representation
 
