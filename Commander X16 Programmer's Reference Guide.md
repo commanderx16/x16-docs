@@ -107,6 +107,7 @@ This describes the "R2" board revision and the emulator/ROM versions r38 and lat
             * [Function Name: memory_copy](#function-name-memory_copy)
             * [Function Name: memory_crc](#function-name-memory_crc)
             * [Function Name: memory_decompress](#function-name-memory_decompress)
+            * [Function Name: entropy_get](#function-name-entropy_get)
             * [Function Name: monitor](#function-name-monitor)
             * [Function Name: screen_set_mode](#function-name-screen_set_mode)
             * [Function Name: screen_set_charset](#function-name-screen_set_charset)
@@ -1307,6 +1308,7 @@ $FEE4: `memory_fill` - fill memory region with a byte value
 $FEE7: `memory_copy` - copy memory region
 $FEEA: `memory_crc` - calculate CRC16 of memory region
 $FEED: `memory_decompress` - decompress LZSA2 block
+$FECF: `entropy_get` - get 24 random bits
 $FF44: `monitor` - enter machine language monitor
 $FF47: `enter_basic` - enter BASIC
 $FF5F: `screen_set_mode` - set screen mode
@@ -1350,6 +1352,43 @@ Call address: $FEED
 `lzsa -r -f2 <original_file> <compressed_file>`
 * This function cannot be used to decompress data in-place, as the output data would overwrite the input data before it is consumed. Therefore, make sure to load the input data to a different location.
 * It is possible to have the input data stored in banked RAM, with the obvious 8 KB size restriction.
+
+##### Function Name: entropy_get
+
+Purpose: Get 24 random bits
+Call address: $FECF
+Communication registers: .A, .X, .Y
+Preparatory routines: None
+Error returns: None
+Registers affected: .A, .X, .Y
+
+**Description:** This routine returns 24 somewhat random bits in registers .A, .X, and .Y. In order to get higher-quality random numbers, this data should be fed into a pseudo-random number generator.
+
+**How to Use:**
+1) Call this routine.
+
+**EXAMPLE:**
+
+    ; throw a dice
+    again:
+      JSR entropy_get
+      STX tmp   ; combine 24 bits
+      EOR tmp   ; using exclusive-or
+      STY tmp   ; to get a higher-quality
+      EOR tmp   ; 8 bit random value
+      STA tmp
+      LSR
+      LSR
+      LSR
+      LSR       ; combine resulting 8 bits
+      EOR tmp   ; to get 4 bits
+      AND #7    ; we're down to values 0-7
+      CMP #0
+      BEQ again ; 0 is illegal
+      CMP #7
+      BEQ again ; 7 is illegal
+      ORA #$30  ; convert to ASCII
+      JMP $FFD2 ; print character
 
 ##### Function Name: monitor
 
