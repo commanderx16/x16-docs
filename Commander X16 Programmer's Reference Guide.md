@@ -120,6 +120,7 @@ This describes the "R2" board revision and the emulator/ROM versions r38 and lat
    * [Video Programming](#video-programming)
    * [Sound Programming](#sound-programming)
    * [I/O Programming](#io-programming)
+   * [Real-Time-Clock Programming](#real-time-clock-programming)
 
 
 ## Overview
@@ -1620,6 +1621,18 @@ The following tables describe the connections of the GPIO ports:
 
 All 16 GPIOs of the second VIA are available to the user.
 
+## Real-Time-Clock Programming
+
+The Commander X16 contains a battery-backed Dallas DS12885 real-time-clock chip, which is a derivative of the ubiquitous Motorola MC146818. It provide a real-time clock/calendar, a time-of-day alarm, a timer, three maskable interrupts, and 114 bytes of RAM.
+
+It is accessible through the I/O ports $9F44 and $9F46. The first I/O port allows selecting the number of the register to be accessed ($00-$7F), and the second I/O port is used to read or write the selected 8-bit register:
+
+|Addresses  |Description |
+|-----------|------------|
+|$9F44      |Address     |
+|$9F46      |Data        |
+
+For a description of the registers, please refer to the DS12885 datasheet.
 
 <hr>
 
