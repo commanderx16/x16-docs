@@ -533,6 +533,8 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 The value of $FF (255) toggles between modes $00 and $02.
 
+Note that in text/graphics mode ($80), text color 0 is now translucent instead of black.
+
 #### VPEEK
 
 **TYPE: Integer Function**
