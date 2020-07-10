@@ -785,6 +785,8 @@ Registers affected: .A, .X, .Y
 
 **Description:** The routine `clock_get_date_time` returns the state of the system's real-time-clock. The register assignment is identical to `clock_set_date_time`.
 
+On the Commander X16, the *jiffies* field is unsupported and will always read back as 0.
+
 #### Mouse
 
 $FF68: `mouse_config` - configure mouse pointer
