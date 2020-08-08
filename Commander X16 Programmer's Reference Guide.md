@@ -566,7 +566,14 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 #### VLOAD
 
-*TODO*
+**TYPE: Command**
+**FORMAT: VLOAD &lt;filename&gt;,&lt;device number&gt;,&lt;bank&gt;,&lt;address&gt;**
+
+**Action:** Load a file into the video address space.
+
+**EXAMPLE of VLOAD Statement:**
+
+	VLOAD "PALETTE.BIN",8,1,$FA00 : REM LOADS PALETTE.BIN INTO THE PALETTE
 
 ### Other New Features
 
@@ -695,6 +702,7 @@ Some notes:
 * The `IOBASE` call returns $9F60, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
 * The `MEMTOP` call additionally returns the number of available RAM banks in the .A register.
+* The `LOAD` call requires A to be set to the secondary address instead of Load/Verify.
 * The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200+) are generally **not** compatible with the C64.
 * The vectors ($0300-$0333) are fully compatible with the C64.
 
