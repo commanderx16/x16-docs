@@ -4,6 +4,14 @@
 
 *This is the PRELIMINARY Programmer's Reference Guide for the Commander X16 computer. Every and any information in this document can change, as the product is still in development!*
 
+<hr>
+
+**IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT**
+This describes the "R2" board revision and the emulator/ROM versions r39 and later. For the original "R1" board revision and emulator/ROM versions r38 and lower, check out older versions of this document that don't have this notice.
+**IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT**
+
+<hr>
+
 **Table of contents**
 
 <!-- generated with https://github.com/ekalinin/github-markdown-toc -->
@@ -113,6 +121,7 @@
    * [Video Programming](#video-programming)
    * [Sound Programming](#sound-programming)
    * [I/O Programming](#io-programming)
+   * [Real-Time-Clock Programming](#real-time-clock-programming)
 
 
 ## Overview
@@ -123,7 +132,7 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 
 * 8-bit 65C02 CPU at 8 MHz
 * 512 KB or 2 MB RAM
-* 128 KB ROM
+* 512 KB ROM
 * VERA video controller
 	* up to 640x480 resolution
 	* 256 colors from a palette of 4096
@@ -132,12 +141,12 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 * *[sound controller TBD]*
 * Connectivity:
 	* PS/2 keyboard and mouse
-	* 2 NES/SNES controllers
+	* 4 NES/SNES controllers
 	* SD card
 	* Commodore Serial Bus ("IEC")
 	* several free GPIOs ("user port")
 
-As a modern sibling of the line of Commodore home computers, the Commander X16 is resaonably compatible with computers of that line.
+As a modern sibling of the line of Commodore home computers, the Commander X16 is reasonably compatible with computers of that line.
 
 * Pure BASIC programs are fully backwards compatible with the VIC-20 and the C64.
 * POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID controllers, for example.)
@@ -614,7 +623,6 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 * a PS/2 mouse driver
 * an NES/SNES controller driver
 * a Commodore Serial Bus ("IEC") driver *[not yet working]*
-* an RS-232 driver *[not yet working]*
 * "Channel I/O" for abstracting devices
 * simple memory management
 * timekeeping
@@ -870,7 +878,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `joystick_scan` retrieves all state from the two joysticks and saves it. It can then be retrieved using `joystick_get`. The default interrupt handler already takes care of this, so this routine should only be called if the interrupt handler has been completely replaced.
+**Description:** The routine `joystick_scan` retrieves all state from the four joysticks and saves it. It can then be retrieved using `joystick_get`. The default interrupt handler already takes care of this, so this routine should only be called if the interrupt handler has been completely replaced.
 
 ##### Function Name: joystick_get
 
@@ -882,7 +890,7 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `joystick_get` retrieves all state from one of the joysticks. The number of the joystick is passed in .A (0 or 1), and the state is returned in .A, .X and .Y.
+**Description:** The routine `joystick_get` retrieves all state from one of the joysticks. The number of the joystick is passed in .A (0 through 3), and the state is returned in .A, .X and .Y.
 
       .A, byte 0:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
                   NES  | A | B |SEL|STA|UP |DN |LT |RT |
@@ -895,7 +903,7 @@ Registers affected: .A, .X, .Y
                   $00 = joystick present
                   $FF = joystick not present
 
-If joystick 1 is not present, it will fall back to returning the state of the keyboard, if present:
+If joystick 0 is not present, it will fall back to returning the state of the keyboard, if present:
 
 |Keyboard Key  | NES Equivalent |
 |--------------|----------------|
@@ -1523,11 +1531,18 @@ This is an overview of the X16 memory map:
 |$0000-$9EFF|Fixed RAM (40 KB minus 256 bytes)								   |
 |$9F00-$9FFF|I/O Area (256 bytes)											   |
 |$A000-$BFFF|Banked RAM (8 KB window into one of 256 banks for a total of 2 MB)|
-|$C000-$FFFF|Banked ROM (16 KB window into one of 8 banks for a total of 128 KB) |
+|$C000-$FFFF|Banked ROM (16 KB window into one of 32 banks for a total of 512 KB) |
 
 ### Banked Memory
 
-The RAM bank (0-255) defaults to 0, and the ROM bank (0-7) defaults to 0 on RESET. The RAM bank can be configured through VIA#1 PA0-7 ($9F61), and the ROM bank through VIA#1 PB0-2 ($9F60). See section "I/O Programming" for more information.
+The currently enabled RAM and ROM banks can be configured by writing to zero page locations 0 and 1:
+
+|Address  |Description              |
+|---------|-------------------------|
+|$0000    |Current RAM bank (0-255) |
+|$0001    |Current ROM bank (0-31)  |
+
+The currently set banks can also be read back from the respective memory locations. Both settings default to 0 on RESET. The upper three bits of location 1 are undefined.
 
 ### ROM Allocations
 
@@ -1551,7 +1566,8 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 
 |Addresses  |Description                                                     |
 |-----------|----------------------------------------------------------------|
-|$0000-$007F|User zero page                                                  |
+|$0000-$0001|Memory bank settings                                            |
+|$0002-$007F|User zero page                                                  |
 |$0080-$00FF|KERNAL and BASIC zero page variables                            |
 |$0100-$01FF|CPU stack                                                       |
 |$0200-$03FF|KERNAL and BASIC variables, vectors                             |
@@ -1562,7 +1578,7 @@ The following zero page locations are completely unused by KERNAL/BASIC/FPLIB an
 
 |Addresses  |
 |-----------|
-|$0000-$007F|
+|$0002-$007F|
 
 In a machine language application that only uses KERNAL (no BASIC or floating point), the following zero page locations are also available:
 
@@ -1587,15 +1603,14 @@ This is the memory map of the I/O Area:
 
 |Addresses  |Description                  |
 |-----------|-----------------------------|
-|$9F00-$9F1F|Reserved for audio controller|
-|$9F20-$9F3F|VERA video controller		  |
-|$9F40-$9F5F|Reserved					  |
-|$9F60-$9F6F|VIA I/O controller #1		  |
-|$9F70-$9F7F|VIA I/O controller #2		  |
-|$9F80-$9F9F|Real time clock			  |
-|$9FA0-$9FBF|Future Expansion			  |
-|$9FC0-$9FDF|Future Expansion			  |
-|$9FE0-$9FFF|Future Expansion			  |
+|$9F00-$9F0F|VIA I/O controller #1        |
+|$9F10-$9F1F|VIA I/O controller #2        |
+|$9F20-$9F3F|VERA video controller        |
+|$9F40-$9F41|YM2151 audio controller      |
+|$9F42-$9F43|SAA1099P audio controller    |
+|$9F44-$9F46|Real time clock              |
+|$9F47-$9F5F|Reserved                     |
+|$9F60-$9FFF|External devices             |
 
 ## Video Programming
 
@@ -1621,31 +1636,44 @@ The following tables describe the connections of the GPIO ports:
 
 **VIA#1**
 
-|Pin  |Description |
-|-----|------------|
-|PA0-7|RAM bank    |
-|PB0-2|ROM bank    |
-|PB3-7|*[TBD]*     |
+
+|Pin  |Name      | Description                     |
+|-----|----------|---------------------------------|
+| PA0 | PS2KDAT  | PS/2 DATA keyboard              |
+| PA1 | PS2KCLK  | PS/2 CLK  keyboard              |
+| PA2 | NESLATCH | NES LATCH (for all controllers) |
+| PA3 | NESCLK   | NES CLK   (for all controllers) |
+| PA4 | NESDAT3  | NES DATA  (controller 3)        |
+| PA5 | NESDAT2  | NES DATA  (controller 2)        |
+| PA6 | NESDAT1  | NES DATA  (controller 1)        |
+| PA7 | NESDAT0  | NES DATA  (controller 0)        |
+| PB0 | PS2MDAT  | PS/2 DATA mouse                 |
+| PB1 | PS2MCLK  | PS/2 CLK  mouse                 |
+| PB2 | ACTLED   | activity LED                    |
+| PB3 | IECATTO  | Serial ATN  out                 |
+| PB4 | IECCLKO  | Serial CLK  out                 |
+| PB5 | IECDATAO | Serial DATA out                 |
+| PB6 | IECCLKI  | Serial CLK  in                  |
+| PB7 | IECDATAI | Serial DATA in                  |
 
 **VIA#2**
 
-|Pin  |Description     |
-|-----|------------    |
-|PA0  |KBD PS/2 DAT    |
-|PA1  |KBD PS/2 CLK    |
-|PA2  |TBD             |
-|PA3  |JOY1/2 LATCH[^3]|
-|PA4  |JOY1 DATA       |
-|PA5  |JOY1/2 CLK      |
-|PA6  |JOY2 DATA       |
-|PA7  |*[TBD]*         |
-|PB0  |MOUSE PS/2 DAT  |
-|PB1  |MOUSE PS/2 CLK  |
-|PB2-7|*[TBD]*         |
+All 16 GPIOs of the second VIA are available to the user.
 
-The GPIO connections for the Commodore Serial Bus and the mouse PS/2 connection have not been finalized.
+## Real-Time-Clock Programming
 
-<!------->
+The Commander X16 contains a battery-backed Dallas DS12885 real-time-clock chip, which is a derivative of the ubiquitous Motorola MC146818. It provide a real-time clock/calendar, a time-of-day alarm, a timer, three maskable interrupts, and 114 bytes of RAM.
+
+It is accessible through the I/O ports $9F44 and $9F46. The first I/O port allows selecting the number of the register to be accessed ($00-$7F), and the second I/O port is used to read or write the selected 8-bit register:
+
+|Addresses  |Description |
+|-----------|------------|
+|$9F44      |Address     |
+|$9F46      |Data        |
+
+For a description of the registers, please refer to the DS12885 datasheet.
+
+<hr>
 
 [^1]: Current development systems have 2 MB of bankable RAM. Actual hardware is currently planned to have an option of either 512 KB or 2 MB of RAM.
 
