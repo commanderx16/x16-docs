@@ -311,8 +311,8 @@ Here is a code example to copy 256 bytes from $1000 to $4000.
 ```
 begin
   ;load ADDR0 with $01000 and increment=1
-  LDA #$00   ;load ADDR_SEL for DATA0
-  STA $9F25
+  LDA #$01   ;load ADDR_SEL for DATA0
+  TRB $9F25
   LDA #$00   ;ADDR_L
   STA $9F20
   LDA #$10   ;ADDR_M
@@ -322,7 +322,7 @@ begin
 
   ;load ADDR1 with $04000 and increment=1
   LDA #$01   ;load ADDR_SEL for DATA1
-  STA $9F25
+  TSB $9F25
   LDA #$00   ;ADDR_L
   STA $9F20
   LDA #$40   ;ADDR_M
