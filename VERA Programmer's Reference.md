@@ -279,7 +279,7 @@ The video RAM (VRAM) isn't directly accessible on the CPU bus. VERA only exposes
 There are 2 data ports to the VRAM. Which can be accessed using DATA0 and DATA1. The address and increment associated with the data port is specified in ADDRx_L/ADDRx_M/ADDRx_H. These 3 registers are multiplexed using the ADDR_SEL in the CTRL register. When ADDR_SEL = 0, ADDRx_L/ADDRx_M/ADDRx_H become ADDR0_L/ADDR0_M/ADDR0_H.  
 When ADDR_SEL = 1, ADDRx_L/ADDRx_M/ADDRx_H become ADDR1_L/ADDR1_M/ADDR1_H.
 
-By setting the 'Address Increment' field in ADDRx_H, the address will be increment after each access (read or write) to the data register. Both addresses are getting incremented  individually hence on access of DATA0, ADDR0 getting incremented and ADDR1 is unchanged. The increment register values and corresponding increment amounts are shown in the following table:
+By setting the 'Address Increment' field in ADDRx_H, the address will be increment after each access (read or write) to the data register. Both addresses are incremented individually. When DATA0 is accessed, ADDR0 is incremented and ADDR1 is unchanged. The increment register values and corresponding increment amounts are shown in the following table:
 
 | Register value | Increment amount |
 | -------------: | ---------------: |
