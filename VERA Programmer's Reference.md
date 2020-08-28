@@ -528,7 +528,77 @@ Each pixel in the tile data gives a color index of either 0-3 (2bpp), 0-15 (4bpp
 
 ### Bitmap mode 1/2/4/8 bpp
 
-**MAP_BASE** isn’t used in these modes. **TILE_BASE** points to the bitmap data.
+**MAP_BASE** isn’t used in these modes. 
+
+**TILE_BASE** points to the bitmap data.
+
+**BITMAP DATA**
+
+The bitmap data is organized in VRAM as a series of bits (according to the bpp) for each pixel. Therefore in lower bpp settings multiple bits will be stored in a single byte. The pixel color code is stored in the order of MSB to LSB. For example a 4bpp bitmap will have the bits ordered for each pixel in the form of bits[3210] or in numbers the color 7 will be defined as bits[0111]. 
+
+The diagram below shows how the pixels are organized in VRAM bytes for the different bitmap depth.
+
+
+<table>
+	<tr>
+		<td>Pixels</td>
+		<td>ABCDEFGH</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th>Bitmap mode</th>
+		<th>Byte&nbsp;0</th>
+		<th>Byte&nbsp;1</th>
+		<th>Byte&nbsp;2</th>
+		<th>Byte&nbsp;3</th>
+		<th>Byte&nbsp;4</th>
+		<th>Byte&nbsp;5</th>
+		<th>Byte&nbsp;6</th>
+		<th>Byte&nbsp;7</th>
+	</tr>
+	<tr>
+		<td align="right">Bits</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+	</tr>
+	<tr>
+		<td>1bpp</td>
+		<td align="center" >ABCDEFGH</td>
+		<td colspan="7"></td>
+	<tr>
+		<td>2bpp</td>
+		<td align="center" >AABBCCDD</td>
+		<td align="center" >EEFFGGHH</td>
+		<td colspan="6"></td>
+	</tr>
+	<tr>
+		<td>4bpp</td>
+		<td align="center" >AAAABBBB</td>
+		<td align="center" >CCCCDDDD</td>
+		<td align="center" >EEEEFFFF</td>
+		<td align="center" >GGGGHHHH</td>
+		<td align="center" colspan="4"></td>
+	</tr>
+	<tr>
+		<td>8bpp</td>
+		<td align="center" >AAAAAAAA</td>
+		<td align="center" >BBBBBBBB</td>
+		<td align="center" >CCCCCCCC</td>
+		<td align="center" >DDDDDDDD</td>
+		<td align="center" >EEEEEEEE</td>
+		<td align="center" >FFFFFFFF</td>
+		<td align="center" >GGGGGGGG</td>
+		<td align="center" >HHHHHHHH</td>
+	</tr>
+</table>
 
 **TILEW** specifies the bitmap width. TILEW=0 results in 320 pixels width and TILEW=1 results in 640 pixels width.
 
