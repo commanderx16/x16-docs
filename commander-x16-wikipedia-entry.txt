@@ -1,11 +1,4 @@
 {{short description|Home computer}}
-{{Proposed deletion/dated
-  |concern = I cannot find significant discussion of this computer in multiple reliable subjects per [[WP:GNG]].
-  |timestamp = 20201010211433
-  |nom = Discospinster
-  |help = off
-}}
-{{Advert|date=October 2020}}
 {{Use dmy dates|date=July 2013}}
 {{Infobox information appliance
 | name         = Commander X16
