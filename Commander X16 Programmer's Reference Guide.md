@@ -702,7 +702,7 @@ Some notes:
 * The `IOBASE` call returns $9F60, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
 * The `MEMTOP` call additionally returns the number of available RAM banks in the .A register.
-* The `LOAD` call requires A to be set to the secondary address instead of Load/Verify.
+* To load into VERA's RAM with the `LOAD` call, set the .A register to the RAM bank number plus 2 (ie., 2 or 3) instead of the load/verify switch (0/1).
 * The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200+) are generally **not** compatible with the C64.
 * The vectors ($0300-$0333) are fully compatible with the C64.
 
