@@ -286,6 +286,18 @@ Pressing the `F9` key cycles through the available keyboard layouts.
 There are several new statement and functions. Note that all BASIC keywords (such as `FOR`) get converted into tokens (such as `$81`), and the tokens for the new keywords have not been finalized yet. Therefore, loading BASIC program saved from a different revision of BASIC may mix up keywords.
 
 
+#### BIN$
+
+**TYPE: String Function**
+**FORMAT: BIN$(n)**
+
+**Action:** Return a string representing the binary value of n. If n <= 255, 8 characters are returned and if 255 > n <= 65535, 16 characters are returned.
+
+**EXAMPLE of BIN$ Function:**
+
+	PRINT BIN$(200)   : REM PRINTS 11001000 AS BINARY REPRESENTATION OF 200
+	print bin$(45231) : REM PRINTS 1011000010101111 TO REPRESENT 16 BITS
+
 #### CHAR
 
 **TYPE: Command**
@@ -1202,9 +1214,9 @@ Purpose: Set the current font
 Signature: (byte baseline: .a, byte width: .x, byte height_or_style: .y, bool is_control: .c) GRAPH_get_char_size(byte c: .a, byte format: .x);
 Purpose: Get the size and baseline of a character, or interpret a control code
 
-**Description:** This functionality of `GRAPH_get_char_size` depends on the type of code that is passed in: For a printable character, this function returns the metrics of the character in a given format. For a control code, it returns the resulting format. In either case, the current format is passed in .x, and the character in .a. 
+**Description:** This functionality of `GRAPH_get_char_size` depends on the type of code that is passed in: For a printable character, this function returns the metrics of the character in a given format. For a control code, it returns the resulting format. In either case, the current format is passed in .x, and the character in .a.
 
-* The format is an opaque byte value whose value should not be relied upon, except for `0`, which is plain text. 
+* The format is an opaque byte value whose value should not be relied upon, except for `0`, which is plain text.
 * The resulting values are measured in pixels.
 * The baseline is measured from the top.
 
@@ -1346,7 +1358,7 @@ Call address: $FEED
 
 **Description:** This function decompresses an LZSA2-compressed data block from the location passed in r0 and outputs the decompressed data at the location passed in r1. After the call, r1 will be updated with the location of the last output byte plus one.
 
-**Notes**: 
+**Notes**:
 
 * To create compressed data, use the `lzsa` tool[^4] like this:
 `lzsa -r -f2 <original_file> <compressed_file>`
