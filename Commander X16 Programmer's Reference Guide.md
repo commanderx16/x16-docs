@@ -7,7 +7,7 @@
 <hr>
 
 **IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT**
-This describes the "R2" board revision and the emulator/ROM versions r39 and later. For the original "R1" board revision and emulator/ROM versions r38 and lower, check out older versions of this document that don't have this notice.
+This describes the "Proto2" board revision and the emulator/ROM versions r39 and later. For the original "Proto1" board revision and emulator/ROM versions r38 and lower, check out older versions of this document that don't have this notice.
 **IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT** **IMPORTANT**
 
 <hr>
@@ -1607,9 +1607,7 @@ This is the memory map of the I/O Area:
 |$9F10-$9F1F|VIA I/O controller #2        |
 |$9F20-$9F3F|VERA video controller        |
 |$9F40-$9F41|YM2151 audio controller      |
-|$9F42-$9F43|SAA1099P audio controller    |
-|$9F44-$9F46|Real time clock              |
-|$9F47-$9F5F|Reserved                     |
+|$9F42-$9F5F|Reserved                     |
 |$9F60-$9FFF|External devices             |
 
 ## Video Programming
@@ -1662,16 +1660,11 @@ All 16 GPIOs of the second VIA are available to the user.
 
 ## Real-Time-Clock Programming
 
-The Commander X16 contains a battery-backed Dallas DS12885 real-time-clock chip, which is a derivative of the ubiquitous Motorola MC146818. It provide a real-time clock/calendar, a time-of-day alarm, a timer, three maskable interrupts, and 114 bytes of RAM.
+The Commander X16 contains a battery-backed Microchip MCP7940N real-time-clock chip. It provide a real-time clock/calendar, two alarms and 64 bytes of RAM.
 
-It is accessible through the I/O ports $9F44 and $9F46. The first I/O port allows selecting the number of the register to be accessed ($00-$7F), and the second I/O port is used to read or write the selected 8-bit register:
+It is accessible through the I2C bus.
 
-|Addresses  |Description |
-|-----------|------------|
-|$9F44      |Address     |
-|$9F46      |Data        |
-
-For a description of the registers, please refer to the DS12885 datasheet.
+*[TODO]*
 
 <hr>
 
