@@ -25,6 +25,7 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
       * [New Control Characters](#new-control-characters)
       * [Keyboard Layouts](#keyboard-layouts)
       * [New Statements and Functions](#new-statements-and-functions)
+      	 * [BIN$](#bin)
          * [CHAR](#char)
          * [CLS](#cls)
          * [COLOR](#color)
@@ -296,7 +297,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 **EXAMPLE of BIN$ Function:**
 
 	PRINT BIN$(200)   : REM PRINTS 11001000 AS BINARY REPRESENTATION OF 200
-	print bin$(45231) : REM PRINTS 1011000010101111 TO REPRESENT 16 BITS
+	PRINT BIN$(45231) : REM PRINTS 1011000010101111 TO REPRESENT 16 BITS
 
 #### CHAR
 
