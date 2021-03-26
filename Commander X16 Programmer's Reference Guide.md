@@ -32,6 +32,7 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
          * [DOS](#dos)
          * [FRAME](#frame)
          * [GEOS](#geos)
+	 * [HEX$](#hex)
          * [JOY](#joy)
          * [LINE](#line)
          * [MON](#mon)
@@ -292,7 +293,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 **TYPE: String Function**
 **FORMAT: BIN$(n)**
 
-**Action:** Return a string representing the binary value of n. If n <= 255, 8 characters are returned and if 255 > n <= 65535, 16 characters are returned.
+**Action:** Return a string representing the binary value of n. If n <= 255, 8 characters are returned and if 255 < n <= 65535, 16 characters are returned.
 
 **EXAMPLE of BIN$ Function:**
 
@@ -379,6 +380,18 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 **FORMAT: GEOS**
 
 **Action:** Enter the GEOS UI.
+
+#### HEX$
+
+** TYPE: String Function**
+** FORMAT: HEX$(n)**
+
+**Action:** Return a string representing the hexadecimal value of n. If n <= 255, 2 characters are returned and if 255 < n <= 65535, 4 characters are returned.
+
+**EXAMPLE of HEX$ Function:**
+
+	PRINT HEX$(200)   : REM PRINTS C8 AS HEXADECIMAL REPRESENTATION OF 200
+	PRINT HEX$(45231) : REM PRINTS B0AF TO REPRESENT 16 BIT VALUE
 
 #### JOY
 
