@@ -32,7 +32,7 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
          * [DOS](#dos)
          * [FRAME](#frame)
          * [GEOS](#geos)
-	 * [HEX$](#hex)
+      	 * [HEX$](#hex)
          * [JOY](#joy)
          * [LINE](#line)
          * [MON](#mon)
