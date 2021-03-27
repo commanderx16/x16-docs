@@ -1658,6 +1658,47 @@ The following tables describe the connections of the GPIO ports:
 
 All 16 GPIOs of the second VIA are available to the user.
 
+### Custom keyboard scan code handler
+
+On receiving a keyboard scan code, the Kernal jumps to the address stored in $032E-032F. This makes
+it possible to implement a custom scan code handler that extends or overrides the default behavior of the Kernal.
+
+Input set by the Kernal: .X = PS/2 prefix, .A = PS/2 scan code, carry clear if key down and set if key up event.
+
+Return from a custom handler with RTS. The Kernal will continue handling the scan code according to the values of .X, .A and carry. In order to prevent the Kernal from handling the scan code, let .A = 0 on returning from the handler.
+
+```
+;EXAMPLE: A custom handler that prints "A" on Alt key down
+
+setup:
+    sei
+    lda #<keyhandler
+    sta $032e
+    lda #>keyhandler
+    sta $032f
+    cli
+    rts
+
+keyhandler:
+    php         ;Save input on stack
+    pha
+    phx
+
+    bcs exit    ;C=1 is key up
+
+    cmp #$11    ;Alt key scan code
+    bne exit    
+
+    lda #'a'
+    jsr $ffd2
+
+exit:
+    plx		;Restore input
+    pla
+    plp
+    rts		;Return control to Kernal
+```
+
 ## Real-Time-Clock Programming
 
 The Commander X16 contains a battery-backed Microchip MCP7940N real-time-clock chip. It provide a real-time clock/calendar, two alarms and 64 bytes of RAM.
