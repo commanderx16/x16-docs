@@ -1567,7 +1567,8 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 |Addresses  |Description                                                     |
 |-----------|----------------------------------------------------------------|
 |$0000-$0001|Memory bank settings                                            |
-|$0002-$007F|User zero page                                                  |
+|$0002-$0021|KERNAL Variables for New API for the Commander X16
+|$0022-$007F|User zero page                                                  |
 |$0080-$00FF|KERNAL and BASIC zero page variables                            |
 |$0100-$01FF|CPU stack                                                       |
 |$0200-$03FF|KERNAL and BASIC variables, vectors                             |
@@ -1578,7 +1579,7 @@ The following zero page locations are completely unused by KERNAL/BASIC/FPLIB an
 
 |Addresses  |
 |-----------|
-|$0002-$007F|
+|$0022-$007F|
 
 In a machine language application that only uses KERNAL (no BASIC or floating point), the following zero page locations are also available:
 
