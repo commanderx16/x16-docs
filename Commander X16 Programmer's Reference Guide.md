@@ -383,8 +383,8 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 #### HEX$
 
-** TYPE: String Function**
-** FORMAT: HEX$(n)**
+**TYPE: String Function**
+**FORMAT: HEX$(n)**
 
 **Action:** Return a string representing the hexadecimal value of n. If n <= 255, 2 characters are returned and if 255 < n <= 65535, 4 characters are returned.
 
