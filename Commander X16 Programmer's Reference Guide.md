@@ -67,6 +67,9 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
          * [Joystick](#joystick)
             * [Function Name: joystick_scan](#function-name-joystick_scan)
             * [Function Name: joystick_get](#function-name-joystick_get)
+          * [I2C](#i2c)
+             * [Function Name: i2c_read_byte](#function-name-i2c_read_byte)
+             * [Function Name: i2c_write_byte](#function-name-i2c_write_byte)
          * [Sprites](#sprites)
             * [Function Name: sprite_set_image](#function-name-sprite_set_image)
             * [Function Name: sprite_set_position](#function-name-sprite_set_position)
@@ -973,6 +976,53 @@ If the default interrupt handler is disabled or replaced:
       AND #128
       BEQ NES_A_PRESSED
 
+#### I2C
+
+$FEC6: `i2c_read_byte` - read a byte from an I2C device
+$FEC9: `i2c_write_byte` - write a byte to an I2C device
+
+##### Function Name: i2c_read_byte
+
+Purpose: Read a byte at a given offset from a given I2C device
+Call address: $FEC6
+Communication registers: .A, .X, .Y
+Preparatory routines: None
+Error returns: .C = 1 in case of error
+Stack requirements: [?]
+Registers affected: .A
+
+**Description:** The routine `i2c_read_byte` reads a single byte at offset .Y from I2C device .X and returns the result in .A. .C is 0 if the read was successful, and 1 if no such device exists.
+
+**EXAMPLE:**
+
+	LDX #$6F ; RTC device
+	LDY #$20 ; start of NVRAM inside RTC
+	JSR i2c_read_byte ; read first byte of NVRAM
+
+##### Function Name: i2c_write_byte
+
+Purpose: Write a byte at a given offset to a given I2C device
+Call address: $FEC9
+Communication registers: .A, .X, .Y
+Preparatory routines: None
+Error returns: .C = 1 in case of error
+Stack requirements: [?]
+Registers affected: .A
+
+**Description:** The routine `i2c_write_byte` writes the byte in .A at offset .Y of I2C device .X. .C is 0 if the write was successful, and 1 if no such device exists.
+
+**EXAMPLES:**
+
+	LDX #$6F ; RTC device
+	LDY #$20 ; start of NVRAM inside RTC
+	LDA #'X'
+	JSR i2c_write_byte ; write first byte of NVRAM
+
+	LDX #$42 ; System Management Controller
+	LDY #$01 ; magic location for system poweroff
+	LDA #$00 ; magic value for system poweroff
+	JSR i2c_write_byte ; power off the system
+
 #### Sprites
 
 $FEF0: `sprite_set_image` - set the image of a sprite
@@ -1654,9 +1704,9 @@ Application software is free to reuse this part of video RAM if it does not need
 
 ## I/O Programming
 
-There are two 65C22 "Versatile Interface Adapter" (VIA) I/O controllers in the system, VIA#1 at address $9F60 and VIA#2 at address $9F70. The IRQ out lines of both VIAs are connected to the IRQ in line of the CPU.
+There are two 65C22 "Versatile Interface Adapter" (VIA) I/O controllers in the system, VIA#1 at address $9F60 and VIA#2 at address $9F70. The IRQ out lines of VIA#1 is connected to the CPU's NMI line, while the IRQ out line of VIA#2 is connected to the CPU's IRQ line.
 
-The following tables describe the connections of the GPIO ports:
+The following tables describe the connections of the I/O pins:
 
 **VIA#1**
 
@@ -1673,16 +1723,17 @@ The following tables describe the connections of the GPIO ports:
 | PA7 | NESDAT0  | NES DATA  (controller 0)        |
 | PB0 | PS2MDAT  | PS/2 DATA mouse                 |
 | PB1 | PS2MCLK  | PS/2 CLK  mouse                 |
-| PB2 | ACTLED   | activity LED                    |
+| PB2 | I2CDATA  | I2C DATA                        |
 | PB3 | IECATTO  | Serial ATN  out                 |
 | PB4 | IECCLKO  | Serial CLK  out                 |
 | PB5 | IECDATAO | Serial DATA out                 |
 | PB6 | IECCLKI  | Serial CLK  in                  |
 | PB7 | IECDATAI | Serial DATA in                  |
+| CB2 | I2CCLK   | I2C CLK                         |
 
 **VIA#2**
 
-All 16 GPIOs of the second VIA are available to the user.
+The second VIA is completely unused by the system. All its 16 GPIOs and 4 handshake I/Os can be freely used.
 
 ### Custom keyboard scan code handler
 
@@ -1725,13 +1776,28 @@ exit:
     rts		;Return control to Kernal
 ```
 
-## Real-Time-Clock Programming
+### I2C Bus
 
-The Commander X16 contains a battery-backed Microchip MCP7940N real-time-clock chip. It provide a real-time clock/calendar, two alarms and 64 bytes of RAM.
+The Commander X16 contains an I2C bus, which is implemented through two pins of VIA#1. The system management controller (SMC) and the real-time clock (RTC) are connected through this bus. The KERNAL APIs `i2c_read_byte` and `i2c_write_byte` allow talking to these devices.
 
-It is accessible through the I2C bus.
+#### System Management Controller
 
-*[TODO]*
+The system management controller (SMC) controls the power and activity LEDs, and an be used to power down the system or inject RESET or NMI signals.
+
+| Register | Value      | Description             |
+|----------|------------|-------------------------|
+| 0x01     | 0x00       | Power off               |
+| 0x01     | 0x01       | Hard reboot             |
+| 0x02     | 0x00       | Inject RESET            |
+| 0x03     | 0x00       | Inject NMI              |
+| 0x04     | 0x00..0xFF | Power LED brightness    |
+| 0x05     | 0x00..0xFF | Activity LED brightness |
+
+#### Real-Time-Clock
+
+The Commander X16 contains a battery-backed Microchip MCP7940N real-time-clock (RTC) chip. It provide a real-time clock/calendar, two alarms and 64 bytes of RAM.
+
+For more information, please refer to this device's datasheet.
 
 <hr>
 
