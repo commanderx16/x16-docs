@@ -1570,6 +1570,78 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
       .WORD $C000 ; ADDRESS
       .BYTE 1     ; BANK
 
+
+## Floating Point Library
+
+The Commander X16 contains a floating point library with a precision of 40 bits, which corresponds to 9 decimal digits. It is a stand-alone derivative of the library contained in Microsoft BASIC.
+
+The following functions are available from machine language code after setting the ROM bank to 4.
+
+| Symbol     | Address | Description                                     |
+|------------|---------|-------------------------------------------------|
+| `AYINT`    | $FE00   | facmo+1:facmo = (s16)FAC                        |
+| `GIVAYF2`  | $FE03   | FAC = (s16).A:.Y                                |
+| `GETADR2`  | $FE06   | .A:.Y = (u16)FAC                                |
+| `FADDH`    | $FE09   | FAC += .5                                       |
+| `FSUB`     | $FE0C   | FAC -= mem(.Y:.A)                               |
+| `FSUBT`    | $FE0F   | FAC -= ARG                                      |
+| `FADD`     | $FE12   | FAC += mem(.Y/.A)                               |
+| `FADDT2`   | $FE15   | FAC += ARG                                      |
+| `FADDT`    | $FE18   | BASIC ONLY, DO NOT USE                          |
+| `ZEROFC`   | $FE1B   | FAC = 0                                         |
+| `NORMAL`   | $FE1E   | Normalize FAC                                   |
+| `NEGFAC`   | $FE21   | FAC = -FAC                                      |
+| `LOG`      | $FE24   | FAC = log(FAC)                                  |
+| `FMULT`    | $FE27   | FAC *= mem(.Y:.A)                               |
+| `FMULTT2`  | $FE2A   | FAC *= ARG                                      |
+| `FMULTT`   | $FE2D   | BASIC ONLY, DO NOT USE                          |
+| `CONUPK`   | $FE30   | ARG = mem(.Y:.A) (5 bytes)                      |
+| `MUL10`    | $FE33   | FAC *= 10                                       |
+| `DIV10`    | $FE36   | FAC /= 10                                       |
+| `FDIV`     | $FE39   | FAC = mem(.Y:.A) / FAC                          |
+| `FDIVT2`   | $FE3C   | FAC /= ARG                                      |
+| `FDIVT`    | $FE3F   | BASIC ONLY, DO NOT USE                          |
+| `MOVFM`    | $FE42   | FAC = mem(.Y:.A) (5 bytes)                      |
+| `MOVMF`    | $FE45   | mem(.Y:.X) = round(FAC) (5 bytes)               |
+| `MOVFA`    | $FE48   | FAC = ARG                                       |
+| `MOVAF`    | $FE4B   | ARG = round(FAC)                                |
+| `MOVEF`    | $FE4E   | ARG = FAC                                       |
+| `ROUND`    | $FE51   | Round FAC using rounding byte                   |
+| `SIGN`     | $FE54   | .A = sgn(FAC)                                   |
+| `SGN`      | $FE57   | FAC = sgn(FAC)                                  |
+| `FLOAT`    | $FE5A   | FAC = (u8).A                                    |
+| `FLOATS`   | $FE5D   | FAC = (s16)facho+1:facho                        |
+| `FLOATC`   | $FE60   | BASIC ONLY, DO NOT USE                          |
+| `FLOATB`   | $FE63   | BASIC ONLY, DO NOT USE                          |
+| `ABS`      | $FE66   | FAC = abs(FAC)                                  |
+| `FCOMP`    | $FE69   | .A = FAC == mem(.Y:.A)                          |
+| `FCOMPN`   | $FE6C   | BASIC ONLY, DO NOT USE                          |
+| `QINT`     | $FE6F   | facho:facho+1:facho+2:facho+2 = u32(FAC)        |
+| `INT`      | $FE72   | FAC = int(FAC)                                  |
+| (reserved) | $FE75   | reserved for `fin`                              |
+| `FINLOG`   | $FE78   | FAC += (s8).A                                   |
+| `FOUT`     | $FE7B   | Convert FAC to ASCIIZ string at fbuffr          |
+| `FOUTC`    | $FE7E   | Convert FAC to ASCIIZ string at fbuffr - 1 + .Y |
+| `SQR`      | $FE81   | FAC = sqr(FAC)                                  |
+| `FPWRT2`   | $FE84   | FAC = ARG^FAC                                   |
+| `FPWRT`    | $FE87   | BASIC ONLY, DO NOT USE                          |
+| `NEGOP`    | $FE8A   | FAC = -FAC - 1                                  |
+| `EXP`      | $FE8D   | FAC = e^FAC                                     |
+| `POLYX`    | $FE90   | Polynomial Evaluation 1 (SIN/COS/ATN/LOG)       |
+| `POLY`     | $FE93   | Polynomial Evaluation 2 (EXP)                   |
+| `RND`      | $FE96   | FAC = rnd(FAC)                                  |
+| `COS`      | $FE99   | FAC = cos(FAC)                                  |
+| `SIN`      | $FE9C   | FAC = sin(FAC)                                  |
+| `TAN`      | $FE9F   | FAC = tan(FAC)                                  |
+| `ATN`      | $FEA2   | FAC = atn(FAC)                                  |
+
+For more information, refer to [Mapping the Commodore 64](http://unusedino.de/ec64/technical/project64/mapping_c64.html) by Sheldon Leemon, ISBN 0-942386-23-X, but note these errata:
+ * `FADDT`, `TMULTT` and `FDIVT` require further setup that is not documented
+ * `FMULT` at $BA28 adds mem to FAC, not ARG to FAC
+ * `FMULTT` at $BA2B (add ARG to FAC) is not documented
+ * `NORMAL` at $B8D7 is incorrectly documented as being at $B8FE
+
+
 ## Machine Language Monitor
 
 The built-in machine language monitor can be started with the `MON` BASIC command. It is based on the monitor of the Final Cartridge III and supports all its features. See the [Final Cartridge III Manual](https://rr.pokefinder.org/rrwiki/images/7/70/Final_Cartridge_III_english_Manual.pdf) more more information.
