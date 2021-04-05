@@ -1811,11 +1811,11 @@ The second VIA is completely unused by the system. All its 16 GPIOs and 4 handsh
 ### Custom keyboard scan code handler
 
 On receiving a keyboard scan code, the KERNAL jumps to the address stored in $032E-032F. This makes
-it possible to implement a custom scan code handler that extends or overrides the default behavior of the KERNAL.
+it possible to implement custom scan code handlers that extend or override the default behavior of the KERNAL.
 
 Input set by the KERNAL: .X = PS/2 prefix, .A = PS/2 scan code, carry clear if key down and set if key up event.
 
-Return from a custom handler with RTS. The KERNAL will continue handling the scan code according to the values of .X, .A and carry. In order to prevent the KERNAL from handling the scan code, let .A = 0 on returning from the handler.
+Return from a custom handler with RTS. The KERNAL will continue handling the scan code according to the values of .X, .A and carry.  The KERNAL will, however, ignore the scan code if the zero flag is set.
 
 ```
 ;EXAMPLE: A custom handler that prints "A" on Alt key down
