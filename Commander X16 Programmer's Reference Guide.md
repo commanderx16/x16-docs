@@ -117,6 +117,7 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
             * [Function Name: screen_set_mode](#function-name-screen_set_mode)
             * [Function Name: screen_set_charset](#function-name-screen_set_charset)
             * [Function Name: JSRFAR](#function-name-jsrfar)
+   * [Floating Point Library](#floating-point-library)
    * [Machine Language Monitor](#machine-language-monitor)
    * [Memory Map](#memory-map)
       * [Banked Memory](#banked-memory)
