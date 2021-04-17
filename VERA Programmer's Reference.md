@@ -82,7 +82,7 @@ This document describes the **V**ersatile **E**mbedded **R**etro **A**dapter or 
 	<tr>
 		<td>$9F27</td>
 		<td>ISR</td>
-		<td colspan="4" align="center">Sprite collissions</td>
+		<td colspan="4" align="center">Sprite collisions</td>
 		<td colspan="1" align="center">AFLOW</td>
 		<td colspan="1" align="center">SPRCOL</td>
 		<td colspan="1" align="center">LINE</td>
