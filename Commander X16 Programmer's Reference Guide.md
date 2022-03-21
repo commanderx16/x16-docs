@@ -596,7 +596,15 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 #### VLOAD
 
-*TODO*
+**TYPE: Command**
+	**FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
+	
+**Action:** Loads a file directly into VERA RAM. 
+
+**EXAMPLES of VLOAD:**
+	
+	VLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $4000.
+	VLOAD "MYFONT.BIN", 8, 1, 0      :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($10000).
 
 ### Other New Features
 
