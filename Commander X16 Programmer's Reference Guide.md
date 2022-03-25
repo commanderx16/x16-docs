@@ -827,6 +827,56 @@ Registers affected: .A, .X, .Y
 
 On the Commander X16, the *jiffies* field is unsupported and will always read back as 0.
 
+#### Keyboard
+
+$FEBD: `kbdbuf_peek` - get first char in keyboard queue and queue length
+$FEC0: `kbdbuf_get_modifiers` - get currently pressed modifiers
+$FEC3: `kbdbuf_put` - append a char to the keyboard queue
+
+##### Function Name: kbdbuf_peek
+
+Purpose: Get next char and keyboard queue length
+Call address: $FEBD
+Communication registers: .A, .X
+Preparatory routines: None
+Error returns: None
+Stack requirements: 0
+Registers affected: -
+
+**Description:** The routine `kbdbuf_peek` returns the next character in the keyboard queue in .A, without removing it from the queue, and the current length of the queue in .X. If .X is 0, the Z flag will be set, and the value of .A is undefined.
+
+##### Function Name: kbdbuf_get_modifiers
+
+Purpose: Get currently pressed modifiers
+Call address: $FEC0
+Communication registers: .A
+Preparatory routines: None
+Error returns: None
+Stack requirements: 0
+Registers affected: -
+
+**Description:** The routine `kbdbuf_get_modifiers` returns a bitmask that represents the currently pressed modifier keys in .A:
+
+| Bit | Value | Description  | Comment        |
+|-----|-------|--------------|----------------|
+| 0   | 1     | Shift        |                |
+| 1   | 2     | Alt          | C64: Commodore |
+| 2   | 4     | Control      |                |
+| 3   | 8     | Logo/Windows | C128: Alt      |
+| 4   | 16    | Caps         |                |
+
+##### Function Name: kbdbuf_put
+
+Purpose: Append a char to the keyboard queue
+Call address: $FEC3
+Communication registers: .A
+Preparatory routines: None
+Error returns: None
+Stack requirements: 0
+Registers affected: .X
+
+**Description:** The routine `kbdbuf_put` appends the char in .A to the keyboard queue.
+
 #### Mouse
 
 $FF68: `mouse_config` - configure mouse pointer
