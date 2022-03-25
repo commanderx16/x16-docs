@@ -705,8 +705,8 @@ $FFB4: `TALK` – send TALK command
 $FFB1: `LISTEN` – send LISTEN command
 $FFAE: `UNLSN` – send UNLISTEN command
 $FFAB: `UNTLK` – send UNTALK command
-$FFA8: `IECOUT` – send byte to serial bus
-$FFA5: `IECIN` – read byte from serial bus
+$FFA8: `CIOUT` – send byte to peripheral bus
+$FFA5: `ACPTR` – read byte from peripheral bus
 $FFA2: `SETTMO` – set timeout
 $FF96: `TKSA` – send TALK secondary address
 $FF93: `SECOND` – send LISTEN secondary address
@@ -783,6 +783,30 @@ The 16 bit ABI generally follows the following conventions:
     * r6-r10: saved
     * r11-r15: scratch
     * .A, .X, .Y, .C, .N: scratch (unless used otherwise)
+
+#### Commodore Peripheral Bus
+
+$FF44: `MACPTR` - read multiple bytes from peripheral bus
+
+##### Function Name: MACPTR
+
+Purpose: Read multiple bytes from the peripheral bus
+Call address: $FF44
+Communication registers: .A, .X, .Y
+Preparatory routines: `FILNAM`, `FILPAR`, `OPEN`, `CHKIN`
+Error returns: None
+Stack requirements: ...
+Registers affected: .A, .X, .Y
+
+**Description:** The routine `MACPTR` is the multi-byte variant of the `ACPTR` KERNAL routine. Instead of returning a single byte in .A, it can read multiple bytes in one call and write them directly to memory.
+
+The number of bytes to be read is passed in the .A register; a value of 0 indicates that it is up to the KERNAL to decide how many bytes to read. A pointer to where the data is supposed to be written is passed in the .X (lo) and .Y (hi) registers.
+
+Upon return, a set .C flag indicates that the device does not support `MACPTR`, and the program needs to read the data byte-by-byte using the `ACPTR` call instead.
+
+If `MACPTR` is supported, .C is clear and .X (lo) and .Y (hi) contain the number of bytes read.
+
+Like with `ACPTR`, the status of the operation can be retrieved using the `READST` KERNAL call.
 
 #### Clock
 
