@@ -123,7 +123,7 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
             * [Function Name: screen_set_mode](#function-name-screen_set_mode)
             * [Function Name: screen_set_charset](#function-name-screen_set_charset)
             * [Function Name: JSRFAR](#function-name-jsrfar)
-   * [Floating Point Library](#floating-point-library)
+   * [Math Library](#math-library)
    * [Machine Language Monitor](#machine-language-monitor)
    * [Memory Map](#memory-map)
       * [Banked Memory](#banked-memory)
@@ -1660,9 +1660,9 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
       .BYTE 1     ; BANK
 
 
-## Floating Point Library
+## Math Library
 
-The Commander X16 contains a floating point library with a precision of 40 bits, which corresponds to 9 decimal digits. It is a stand-alone derivative of the library contained in Microsoft BASIC.
+The Commander X16 contains a floating point Math library with a precision of 40 bits, which corresponds to 9 decimal digits. It is a stand-alone derivative of the library contained in Microsoft BASIC.
 
 The following functions are available from machine language code after setting the ROM bank to 4.
 
@@ -1811,13 +1811,13 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 |$0400-$07FF|Available for machine code programs or custom data storage      |
 |$0800-$9EFF|BASIC program/variables; available to the user                  |
 
-The following zero page locations are completely unused by KERNAL/BASIC/FPLIB and are available to the user:
+The following zero page locations are completely unused by KERNAL/BASIC/MATH and are available to the user:
 
 |Addresses  |
 |-----------|
 |$0002-$007F|
 
-In a machine language application that only uses KERNAL (no BASIC or floating point), the following zero page locations are also available:
+In a machine language application that only uses KERNAL (no BASIC or floating point Math), the following zero page locations are also available:
 
 |Addresses  |
 |-----------|
