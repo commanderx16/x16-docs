@@ -408,11 +408,11 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 **TYPE: Integer Function**
 **FORMAT: JOY(n)**
 
-**Action:** Return the state a joystick.
+**Action:** Return the state of a joystick.
 
-`JOY(1)` through `JOY(4)` return the state of SNES controllers connected to the system, and `JOY(0)` returns the state the "keyboard joystick", a set of keyboard keys that map to the SNES controller layout. See [`joystick_get`](#function-name-joystick_get) for details.
+`JOY(1)` through `JOY(4)` return the state of SNES controllers connected to the system, and `JOY(0)` returns the state of the "keyboard joystick", a set of keyboard keys that map to the SNES controller layout. See [`joystick_get`](#function-name-joystick_get) for details.
 
-If no controller is connected to the port (or no keyboard is connected), the function returns -1. Otherwise, the result is a bit field, with pressed buttons `OR`ed together:
+If no controller is connected to the SNES port (or no keyboard is connected), the function returns -1. Otherwise, the result is a bit field, with pressed buttons `OR`ed together:
 
 | Value  | Button |
 |--------|--------|
@@ -429,17 +429,22 @@ If no controller is connected to the port (or no keyboard is connected), the fun
 | $002   | LEFT   |
 | $001   | RIGHT  |
 
-Note that this bitfield is different from the `joystick_get` KERNEL API one.
+Note that this bitfield is different from the `joystick_get` KERNEL API one. Also note that the keyboard joystick will allow LEFT and RIGHT as well as UP and DOWN to be pressed at the same time, while controllers usually prevent this mechanically.
 
 **EXAMPLE of JOY Function:**
 
-	10 J=JOY(0) :REM KEYBOARD JOYSTICK
-	20 PRINT CHR$(147);J;": ";
-	30 IF J AND 8 THEN PRINT"UP ";
-	40 IF J AND 4 THEN PRINT"DOWN ";
-	50 IF J AND 2 THEN PRINT"LEFT ";
-	60 IF J AND 1 THEN PRINT"RIGHT ";
-	70 GOTO10
+	10 REM DETECT CONTROLLER, FALL BACK TO KEYBOARD
+	20 J = 0: FOR I=1 TO 4: IF JOY(I) >= 0 THEN J = I: GOTO40
+	30 NEXT
+	40 :
+	50 V=JOY(J)
+	60 PRINT CHR$(147);V;": ";
+	70 IF V = -1 THEN PRINT"DISCONNECTED ": GOTO50
+	80 IF V AND 8 THEN PRINT"UP ";
+	90 IF V AND 4 THEN PRINT"DOWN ";
+	100 IF V AND 2 THEN PRINT"LEFT ";
+	110 IF V AND 1 THEN PRINT"RIGHT ";
+	120 GOTO50
 
 #### LINE
 
@@ -780,7 +785,7 @@ Some notes:
 
 There are lots of new APIs. Please note that their addresses and their behavior is still prelimiary and can change between revisions.
 
-Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc. (The registers start at $02 instead of $00 to allow compatibility with 65xx systems that have a processor port at $00/$01.)
+Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc.
 
 The 16 bit ABI generally follows the following conventions:
 
@@ -1044,6 +1049,8 @@ The keyboard joystick uses the standard SNES9X/ZSNES mapping:
 | START          | Enter        |                   |
 | SELECT         | Left Shift   |                   |
 | D-Pad          | Cursor Keys  |                   |
+
+Note that the keyboard joystick will allow LEFT and RIGHT as well as UP and DOWN to be pressed at the same time, while controllers usually prevent this mechanically.
 
 **How to Use:**
 
