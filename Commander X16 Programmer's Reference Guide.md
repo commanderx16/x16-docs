@@ -120,7 +120,7 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
             * [Function Name: memory_decompress](#function-name-memory_decompress)
             * [Function Name: entropy_get](#function-name-entropy_get)
             * [Function Name: monitor](#function-name-monitor)
-            * [Function Name: screen_set_mode](#function-name-screen_set_mode)
+            * [Function Name: screen_mode](#function-name-screen_mode)
             * [Function Name: screen_set_charset](#function-name-screen_set_charset)
             * [Function Name: JSRFAR](#function-name-jsrfar)
    * [Math Library](#math-library)
@@ -1186,7 +1186,7 @@ $02FE: I_FB_move_pixels
 
 The model of this API is based on the direct-access cursor. In order to read and write pixels, the cursor has to be set to a specific x/y-location, and all subsequent calls will access consecutive pixels at the cursor position and update the cursor.
 
-The default driver supports the VERA framebuffer at a resolution of 320x200 pixels and 256 colors. Using `screen_set_mode` to set mode $80 will enable this driver.
+The default driver supports the VERA framebuffer at a resolution of 320x200 pixels and 256 colors. Using `screen_mode` to set mode $80 will enable this driver.
 
 ##### Function Name: FB_init
 
@@ -1429,7 +1429,7 @@ Signature: void console_init(word x: r0, word y: r1, word width: r2, word height
 Purpose: Initialize console mode.
 Call address: $FEDB
 
-**Description:** This function initializes console mode. It sets up the window (text clipping area) passed into it, clears the window and positions the cursor at the top left. All 0 arguments create a full screen console. You have to switch to graphics mode using `screen_set_mode` beforehand.
+**Description:** This function initializes console mode. It sets up the window (text clipping area) passed into it, clears the window and positions the cursor at the top left. All 0 arguments create a full screen console. You have to switch to graphics mode using `screen_mode` beforehand.
 
 ##### Function Name: console_put_char
 
@@ -1483,7 +1483,7 @@ $FEED: `memory_decompress` - decompress LZSA2 block
 $FECF: `entropy_get` - get 24 random bits
 $FF44: `monitor` - enter machine language monitor
 $FF47: `enter_basic` - enter BASIC
-$FF5F: `screen_set_mode` - set screen mode
+$FF5F: `screen_mode` - get/set screen mode
 $FF62: `screen_set_charset` - activate 8x8 text mode charset
 
 ##### Function Name: memory_fill
@@ -1597,22 +1597,23 @@ Error returns: Does not return
 	JMP enter_basic ; returns to the "READY." prompt
 
 
-##### Function Name: screen_set_mode
+##### Function Name: screen_mode
 
-Purpose: Set the screen mode
+Purpose: Get/Set the screen mode
 Call address: $FF5F
-Communication registers: .A
+Communication registers: .A, .C
 Preparatory routines: None
 Error returns: .C = 1 in case of error
 Stack requirements: [?]
 Registers affected: .A, .X, .Y
 
-**Description:** A call to this routine sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`.
+**Description:** If .C is set, a call to this routine gets the current screen mode in .A. If .C is clear, it sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. If the mode is unsupported, .C will be set, otherwise cleared.
 
 **EXAMPLE:**
 
 	LDA #$80
-	JSR screen_set_mode ; SET 320x200@256C MODE
+	clc
+	JSR screen_mode ; SET 320x200@256C MODE
 	BCS FAILURE
 
 ##### Function Name: screen_set_charset
