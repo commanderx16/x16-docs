@@ -410,22 +410,30 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 **Action:** Return the state a joystick.
 
-`JOY(1)` returns the state the first joystick, and `JOY(2)` the state of the second joystick. The result is a bit field, with pressed buttons `OR`ed together:
+`JOY(1)` through `JOY(4)` return the state of SNES controllers connected to the system, and `JOY(0)` returns the state the "keyboard joystick", a set of keyboard keys that map to the SNES controller layout. See [`joystick_get`](#function-name-joystick_get) for details.
 
-| Value | NES   | SNES  | Keyboard     |
-|-------|-------|-------|--------------|
-|$80    | A     | B     | Ctrl         |
-|$40    | B     | Y     | Alt          |
-|$20    | SELECT| SELECT| Space        |
-|$10    | START | START | Enter        |
-|$08    | UP    | UP    | Cursor Up    |
-|$04    | DOWN  | DOWN  | Cursor Down  |
-|$02    | LEFT  | LEFT  | Cursor Left  |
-|$01    | RIGHT | RIGHT | Cursor Right |
+If no controller is connected to the port (or no keyboard is connected), the function returns -1. Otherwise, the result is a bit field, with pressed buttons `OR`ed together:
+
+| Value  | Button |
+|--------|--------|
+| $800   | A      |
+| $400   | X      |
+| $200   | L      |
+| $100   | R      |
+| $080   | B      |
+| $040   | Y      |
+| $020   | SELECT |
+| $010   | START  |
+| $008   | UP     |
+| $004   | DOWN   |
+| $002   | LEFT   |
+| $001   | RIGHT  |
+
+Note that this bitfield is different from the `joystick_get` KERNEL API one.
 
 **EXAMPLE of JOY Function:**
 
-	10 J=JOY(1)
+	10 J=JOY(0) :REM KEYBOARD JOYSTICK
 	20 PRINT CHR$(147);J;": ";
 	30 IF J AND 8 THEN PRINT"UP ";
 	40 IF J AND 4 THEN PRINT"DOWN ";
@@ -1008,43 +1016,34 @@ Error returns: None
 Stack requirements: 0
 Registers affected: .A, .X, .Y
 
-**Description:** The routine `joystick_get` retrieves all state from one of the joysticks. The number of the joystick is passed in .A (0 through 3), and the state is returned in .A, .X and .Y.
+**Description:** The routine `joystick_get` retrieves all state from one of the joysticks. The number of the joystick is passed in .A (0 for the keyboard joystick and 1 through 4 for SNES controllers), and the state is returned in .A, .X and .Y.
 
       .A, byte 0:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-                  NES  | A | B |SEL|STA|UP |DN |LT |RT |
                   SNES | B | Y |SEL|STA|UP |DN |LT |RT |
 
       .X, byte 1:      | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-                  NES  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | X |
                   SNES | A | X | L | R | 1 | 1 | 1 | 1 |
       .Y, byte 2:
                   $00 = joystick present
                   $FF = joystick not present
 
-If joystick 0 is not present, it will fall back to returning the state of the keyboard, if present:
+If a button is pressed, the corresponding bit is zero.
 
-|Keyboard Key  | NES Equivalent |
-|--------------|----------------|
-|Ctrl          | A 		|
-|Alt 	       | B		|
-|Space         | SELECT         |
-|Enter         | START		|
-|Cursor Up     | UP		|
-|Cursor Down   | DOWN		|
-|Cursor Left   | LEFT		|
-|Cursor Right  | RIGHT		|
+(With a dedicated handler, the API can also be used for other devices with an SNES controller connector. The data returned in .A/.X/Y is just the raw 24 bits returned by the device.)
 
-* Presence of a joystick can be detected by checking byte 2.
-* The type of controller is encoded in bits 0-3 in byte 1:
+The keyboard joystick uses the standard SNES9X/ZSNES mapping:
 
-|Value|Type               |
-|-----|-------------------|
-|0000 |NES		  |
-|0001 |keyboard (NES-like)|
-|1111 |SNES		  |
-
-* If a button is pressed, the corresponding bit is zero.
-* Note that bits 6 and 7 in byte 0 map to different buttons on NES and SNES.
+| SNES Button    |Keyboard Key  | Alt. Keyboard Key |
+|----------------|--------------|-------------------|
+| A              | X            | Left Ctrl         |
+| B              | Z            | Left Alt          |
+| X              | S            |                   |
+| Y              | A            |                   |
+| L              | D            |                   |
+| R              | C            |                   |
+| START          | Enter        |                   |
+| SELECT         | Left Shift   |                   |
+| D-Pad          | Cursor Keys  |                   |
 
 **How to Use:**
 
@@ -1062,8 +1061,9 @@ If the default interrupt handler is disabled or replaced:
       JSR joystick_scan
       LDA #0
       JSR joystick_get
+      TXA
       AND #128
-      BEQ NES_A_PRESSED
+      BEQ A_PRESSED
 
 #### I2C
 
