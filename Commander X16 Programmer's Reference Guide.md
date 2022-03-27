@@ -487,6 +487,8 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 
 `MOUSE 1` turns on the mouse pointer and `MOUSE 0` turns it off. If the BASIC program has its own mouse pointer sprite configured, it can use `MOUSE $FF`, which will turn the mouse pointer on, but not set the default pointer sprite.
 
+The size of the mouse pointer's area will be configured according to the current screen mode. If the screen mode is changed, the MOUSE statement has to be repeated.
+
 **EXAMPLES of MOUSE Statement:**
 
 	MOUSE 1 : REM ENABLE MOUSE
@@ -940,10 +942,12 @@ Registers affected: .A, .X, .Y
 
 The argument in .A specifies whether the mouse pointer should be visible or not, and what shape it should have. For a list of possible values, see the basic statement `MOUSE`.
 
-The argument in .X specifies the scale. Use a scale of 1 for a 640x480 screen, and a scale of 2 for a 320x240 screen. A value of 0 does not change the scale.
+The arguments in .X and .Y specify the screen resolution in 8 pixel increments. The values .X = 0 and .Y = 0 keep the current resolution.
 
 **EXAMPLE:**
 
+	SEC
+	JSR screen_mode ; get current screen size (in 8px) into .X and .Y
 	LDA #1
 	JSR mouse_config ; show the default mouse pointer
 
