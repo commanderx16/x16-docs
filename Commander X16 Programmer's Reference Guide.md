@@ -129,6 +129,8 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
       * [Banked Memory](#banked-memory)
       * [ROM Allocations](#rom-allocations)
       * [RAM Contents](#ram-contents)
+         * [Zero Page](#zero-page)
+         * [Banking](#banking)
       * [I/O Area](#io-area)
    * [Video Programming](#video-programming)
    * [Sound Programming](#sound-programming)
@@ -1846,25 +1848,29 @@ This is the allocation of fixed RAM in the KERNAL/BASIC environment.
 
 |Addresses  |Description                                                     |
 |-----------|----------------------------------------------------------------|
-|$0000-$0001|Memory bank settings                                            |
-|$0002-$007F|User zero page                                                  |
-|$0080-$00FF|KERNAL and BASIC zero page variables                            |
+|$0000-$00FF|Zero page                                                       |
 |$0100-$01FF|CPU stack                                                       |
 |$0200-$03FF|KERNAL and BASIC variables, vectors                             |
 |$0400-$07FF|Available for machine code programs or custom data storage      |
 |$0800-$9EFF|BASIC program/variables; available to the user                  |
 
-The following zero page locations are completely unused by KERNAL/BASIC/MATH and are available to the user:
+The $0400-$07FF can be seen as the equivalent of $C000-$CFFF on a C64. A typical use would be for helper machine code called by BASIC.
 
-|Addresses  |
-|-----------|
-|$0002-$007F|
+#### Zero Page
 
-In a machine language application that only uses KERNAL (no BASIC or floating point Math), the following zero page locations are also available:
+|Addresses  |Description                            |
+|-----------|---------------------------------------|
+|$0000-$0001|Banking registers                      |
+|$0002-$0021|16 bit registers r0-r15 for KERNAL API |
+|$0022-$007F|Available to the user                  |
+|$0080-$009C|Used by KERNAL and DOS                 |
+|$009D-$00A8|Reserved for DOS/BASIC                 |
+|$00A9-$00D3|Used by the Math library (and BASIC)   |
+|$00D4-$00FF|Used by BASIC                          |
 
-|Addresses  |
-|-----------|
-|$00A9-$00FF|
+Machine code applications are free to reuse the BASIC area, and if they don't use the Math library, also that area.
+
+#### Banking
 
 This is the allocation of banked RAM in the KERNAL/BASIC environment.
 
