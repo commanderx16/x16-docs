@@ -582,15 +582,21 @@ The size of the mouse pointer's area will be configured according to the current
 
 **Action:** This command switches the screen mode. Modes $80 (128) and above are graphics modes.
 
-| Mode | Description | Comment |
-|------|-------------|---------|
-| $00  | 40x30 text  |         |
-| $01  | 80x30 text  | (currently unsupported) |
-| $02  | 80x60 text  |
-| $80  | 320x200@256c<br/>40x25 text | |
-| $81  | 640x400@16c | (currently unsupported) |
+| Mode | Description |
+|------|-------------|
+| $00  | 80x60 text  |
+| $01  | 80x30 text  |
+| $02  | 40x60 text  |
+| $03  | 40x30 text  |
+| $04  | 40x15 text  |
+| $05  | 20x30 text  |
+| $06  | 20x15 text  |
+| $80  | 320x200@256c<br/>40x25 text |
+| $81  | 640x400@16c* |
 
-The value of $FF (255) toggles between modes $00 and $02.
+* [currently unimplemented]
+
+The value of $FF (255) toggles between modes $00 and $03.
 
 Note that in text/graphics mode ($80), text color 0 is now translucent instead of black.
 
@@ -643,8 +649,8 @@ The size of hex and binary values is only restricted by the range that can be re
 
 In BASIC, both an 80x60 and a 40x30 character text mode is supported. To switch modes, use the BASIC statement `SCREEN`:
 
-      SCREEN 0 : REM SWITCH TO 40 CHARACTER MODE
-      SCREEN 2 : REM SWITCH TO 80 CHARACTER MODE
+      SCREEN 3 : REM SWITCH TO 40 CHARACTER MODE
+      SCREEN 0 : REM SWITCH TO 80 CHARACTER MODE
       SCREEN 255 : REM SWITCH BETWEEN 40 and 80 CHARACTER MODE
 
 #### LOAD into VRAM
