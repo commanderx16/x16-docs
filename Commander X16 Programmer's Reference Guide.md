@@ -1835,7 +1835,9 @@ This is the allocation of the banks of banked ROM:
 |3   |GEOS   |GEOS KERNAL                                            |
 |4   |BASIC  |BASIC interpreter                                      |
 |5   |MONITOR|Machine Language Monitor                               |
-|6-7 |–      |*[Currently unused]*                                   |
+|6   |CHARSET|PETSCII and ISO character sets (uploaded into VRAM)    |
+|7   |CODEX  |CodeX16 Interactive Assembly Environment / Monitor     |
+|6-31|–      |*[Currently unused]*                                   |
 
 **Important**: The layout of the banks is still constantly changing.
 
