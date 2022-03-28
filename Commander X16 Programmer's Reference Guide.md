@@ -1738,27 +1738,24 @@ The following calls are not part of the C128/C65 API.
 
 | X16   | Symbol   | Description                                     |
 |-------|----------|-------------------------------------------------|
-| $FE6F | FADDH    | FAC += .5                                       |
-| $FE72 | FADDT2   | FAC += ARG                                      |
-| $FE75 | ZEROFC   | FAC = 0                                         |
-| $FE78 | NORMAL   | Normalize FAC                                   |
-| $FE7B | NEGFAC   | FAC = -FAC                                      |
-| $FE7E | FMULTT2  | FAC *= ARG                                      |
-| $FE81 | MUL10    | FAC *= 10                                       |
-| $FE84 | DIV10    | FAC /= 10                                       |
-| $FE87 | FDIVT2   | FAC /= ARG                                      |
-| $FE8A | MOVEF    | ARG = FAC                                       |
-| $FE8D | SGN      | FAC = sgn(FAC)                                  |
-| $FE90 | FLOAT    | FAC = (u8).A                                    |
-| $FE93 | FLOATS   | FAC = (s16)facho+1:facho                        |
-| $FE96 | FLOATB   | BASIC ONLY, DO NOT USE                          |
-| $FE99 | FCOMPN   | BASIC ONLY, DO NOT USE                          |
-| $FE9C | QINT     | facho:facho+1:facho+2:facho+2 = u32(FAC)        |
-| $FE9F | FINLOG   | FAC += (s8).A                                   |
-| $FEA2 | FOUTC    | Convert FAC to ASCIIZ string at fbuffr - 1 + .Y |
-| $FEA5 | FPWRT2   | FAC = ARG^FAC                                   |
+| $FE81 | FADDH    | FAC += .5                                       |
+| $FE84 | ZEROFC   | FAC = 0                                         |
+| $FE87 | NORMAL   | Normalize FAC                                   |
+| $FE8A | NEGFAC   | FAC = -FAC                                      |
+| $FE8D | MUL10    | FAC *= 10                                       |
+| $FE90 | DIV10    | FAC /= 10                                       |
+| $FE93 | MOVEF    | ARG = FAC                                       |
+| $FE96 | SGN      | FAC = sgn(FAC)                                  |
+| $FE99 | FLOAT    | FAC = (u8).A                                    |
+| $FE9C | FLOATS   | FAC = (s16)facho+1:facho                        |
+| $FE9F | QINT     | facho:facho+1:facho+2:facho+2 = u32(FAC)        |
+| $FEA2 | FINLOG   | FAC += (s8).A                                   |
+| $FEA5 | FOUTC    | Convert FAC to ASCIIZ string at fbuffr - 1 + .Y |
+
+<!-- https://github.com/commanderx16/x16-rom/issues/245
 | $FEA8 | POLYX    | Polynomial Evaluation 1 (SIN/COS/ATN/LOG)       |
 | $FEAB | POLY     | Polynomial Evaluation 2 (EXP)                   |
+-->
 
 ### Notes
 
@@ -1770,7 +1767,7 @@ The following calls are not part of the C128/C65 API.
         JSR entropy_get ; KERNAL call to get entropy into .A/.X/.Y
         PLP             ; restore .Z=1
         JSR RND_0
-* The calls `FADDT`, `FMULTT`, `FDIVT` and `FPWRT` of the C128 API require further setup. Use the new calls `FADDT2`, `FMULTT2`, `FDIVT2` and `FPWRT2` instead.
+* The calls `FADDT`, `FMULTT`, `FDIVT` and `FPWRT` were broken on on the C128/C65. They are fixed on the X16.
 * For more information on the additional calls, refer to [Mapping the Commodore 64](http://unusedino.de/ec64/technical/project64/mapping_c64.html) by Sheldon Leemon, ISBN 0-942386-23-X, but note these errata:
    * `FMULT` at $BA28 adds mem to FAC, not ARG to FAC
    * `NORMAL` at $B8D7 is incorrectly documented as being at $B8FE
