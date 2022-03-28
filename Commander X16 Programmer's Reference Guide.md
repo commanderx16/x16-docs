@@ -603,7 +603,7 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 **EXAMPLE of VPEEK Function:**
 
-      PRINT (VPEEK($F,$2000) AND $E0) / 32 : REM PRINTS THE CURRENT MODE (0-7)
+      PRINT VPEEK(1,$B000) : REM SCREEN CODE OF CHARACTER AT 0/0 ON SCREEN
 
 #### VPOKE
 
@@ -614,8 +614,8 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 **EXAMPLE of VPOKE Statement:**
 
-      VPOKE 0,1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
-                             REM AT 0/0 TO RED ON WHITE
+      VPOKE 1,$B000+1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
+                                   REM AT 0/0 TO RED ON WHITE
 
 #### VLOAD
 
@@ -627,7 +627,7 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 **EXAMPLES of VLOAD:**
 	
 	VLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $4000.
-	VLOAD "MYFONT.BIN", 8, 1, 0      :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($10000).
+	VLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($1F000).
 
 ### Other New Features
 
@@ -1903,9 +1903,20 @@ See the [VERA Programmer's Reference](VERA%20Programmer's%20Reference.md) for th
 
 **IMPORTANT**: The VERA register layout has changed between 0.7 and 0.8. Here is the old documentation: [vera-module v0.7.pdf](https://github.com/commanderx16/x16-docs/blob/master/old/vera-module%20v0.7.pdf)
 
-The KERNAL uploads the current character sets (PETSCII graphics, PETSCII upper/lower or ISO-8859-15) to $0F800, i.e. the top of video RAM bank 0.
+The X16 KERNAL uses the following video memory layout:
 
-Application software is free to reuse this part of video RAM if it does not need the character set. If it needs them again later, it can use the KERNAL call `CINT` ($FF81), which initializes the VERA chip and uploads the PETSCII graphics character set, or call `screen_set_charset` ($FF62) to upload a particular charset.
+|Addresses    |Description                                   |
+|-------------|----------------------------------------------|
+|$00000-$12BFF|320x240@256c Bitmap                           |
+|$12C00-$12FFF|*unused*                                      |
+|$13000-$1AFFF|Sprites ($1000 per sprite)                    |
+|$1B000-$1EBFF|Text Mode                                     |
+|$1EC00-$1EFFF|*unused*                                      |
+|$1F000-$1F7FF|Charset                                       |
+|$1F800-$1F9BF|*unused*                                      |
+|$1F9C0-$1FFFF|VERA internal (PSG, Palette, Sprite Registers)|
+
+Application software is free to use any part of video RAM if it does not use the corresponding KERNAL functionality. To restore text mode, it just hast to call `CINT` ($FF81).
 
 ## Sound Programming
 
