@@ -35,6 +35,7 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
       	 * [HEX$](#hex)
          * [JOY](#joy)
          * [LINE](#line)
+         * [LOCATE](#locate)
          * [MON](#mon)
          * [MOUSE](#mouse)
          * [MX/MY/MB](#mxmymb)
@@ -459,8 +460,28 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 
 	10 SCREEN128
 	20 FORA=0TO2*\XFFSTEP2*\XFF/200
-	30 LINE100,100,100+SIN(A)*100,100+COS(A)*100
+	30 :  LINE100,100,100+SIN(A)*100,100+COS(A)*100
 	40 NEXT
+
+#### LOCATE
+
+**TYPE: Command**
+**FORMAT: LOCATE &lt;line&gt;[,&lt;column&gt;]**
+
+**Action:** This command positions the text mode cursor at the given location. The values are 1-based. If no column is given, only the line is changed.
+
+**EXAMPLE of LOCATE Statement:**
+
+	100 REM DRAW CIRCLE ON TEXT SCREEN
+	110 SCREEN0
+	120 R=25
+	130 X0=40
+	140 Y0=30
+	150 FORT=0TO360STEP1
+	160 :  X=X0+R*COS(T)
+	170 :  Y=Y0+R*SIN(T)
+	180 :  LOCATEY,X:PRINTCHR$($12);" ";
+	190 NEXT
 
 #### MON
 
