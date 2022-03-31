@@ -1127,13 +1127,13 @@ If the default interrupt handler is disabled or replaced:
 
 ##### Function Name: i2c_read_byte
 
-**Purpose:** Read a byte at a given offset from a given I2C device
-**Call address:** $FEC6
-**Communication registers:** .A, .X, .Y
-**Preparatory routines:** None
-**Error returns:** .C = 1 in case of error
-**Stack requirements:** [?]
-**Registers affected:** .A
+**Purpose:** Read a byte at a given offset from a given I2C device  
+**Call address:** $FEC6  
+**Communication registers:** .A, .X, .Y  
+**Preparatory routines:** None  
+**Error returns:** .C = 1 in case of error  
+**Stack requirements:** [?]  
+**Registers affected:** .A  
 
 **Description:** The routine `i2c_read_byte` reads a single byte at offset .Y from I2C device .X and returns the result in .A. .C is 0 if the read was successful, and 1 if no such device exists.
 
@@ -1145,13 +1145,13 @@ If the default interrupt handler is disabled or replaced:
 
 ##### Function Name: i2c_write_byte
 
-**Purpose:** Write a byte at a given offset to a given I2C device
-**Call address:** $FEC9
-**Communication registers:** .A, .X, .Y
-**Preparatory routines:** None
-**Error returns:** .C = 1 in case of error
-**Stack requirements:** [?]
-**Registers affected:** .A
+**Purpose:** Write a byte at a given offset to a given I2C device  
+**Call address:** $FEC9  
+**Communication registers:** .A, .X, .Y  
+**Preparatory routines:** None  
+**Error returns:** .C = 1 in case of error  
+**Stack requirements:** [?]  
+**Registers affected:** .A  
 
 **Description:** The routine `i2c_write_byte` writes the byte in .A at offset .Y of I2C device .X. .C is 0 if the write was successful, and 1 if no such device exists.
 
@@ -1176,7 +1176,7 @@ If the default interrupt handler is disabled or replaced:
 
 **Purpose:** Set the image of a sprite  
 **Call address:** $FEF0  
-**Signature:** bool sprite_set_image(byte number: .a, width: .x, height: .y, apply_mask: .c, word pixels: r0, word mask: r1, byte bpp: r2L);
+**Signature:** bool sprite_set_image(byte number: .a, width: .x, height: .y, apply_mask: .c, word pixels: r0, word mask: r1, byte bpp: r2L);  
 **Error returns:** .C = 1 in case of error
 
 **Description:** This function sets the image of a sprite. The number of the sprite is given in .A, The bits per pixel (bpp) in r2L, and the width and height in .X and .Y. The pixel data at r0 is interpreted accordingly and converted into the graphics hardware's native format. If the .C flag is set, the transparency mask pointed to by r1 is applied during the conversion. The function returns .C = 0 if converting the data was successful, and .C = 1 otherwise. Note that this does not change the visibility of the sprite.
