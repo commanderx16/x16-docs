@@ -725,7 +725,7 @@ For PCM playback, VERA contains a 4kB FIFO buffer. This buffer needs to be fille
 
 Using a value of 128 will give the best quality (lowest distortion); at this value for every output sample, an input sample from the FIFO is read. Lower values will output the same sample multiple times to the audio DAC. Input samples are always read as a complete set (being 1/2/4 bytes).
 
-*NOTE: When setting up for PCM playback it is adviced to first set the sample rate at 0 to stop playback. First fill the FIFO buffer with some initial data and then set the desired sample rate. This can prevent undesired FIFO underruns.*
+*NOTE: When setting up for PCM playback it is advised to first set the sample rate at 0 to stop playback. First fill the FIFO buffer with some initial data and then set the desired sample rate. This can prevent undesired FIFO underruns.*
 
 
 ### Audio data formats
