@@ -25,14 +25,14 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
       * [New Control Characters](#new-control-characters)
       * [Keyboard Layouts](#keyboard-layouts)
       * [New Statements and Functions](#new-statements-and-functions)
-      	 * [BIN$](#bin)
+         * [BIN$](#bin)
          * [CHAR](#char)
          * [CLS](#cls)
          * [COLOR](#color)
          * [DOS](#dos)
          * [FRAME](#frame)
          * [GEOS](#geos)
-      	 * [HEX$](#hex)
+         * [HEX$](#hex)
          * [JOY](#joy)
          * [LINE](#line)
          * [LOCATE](#locate)
@@ -48,10 +48,10 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
          * [VPOKE](#vpoke)
          * [VLOAD](#vload)
       * [Other New Features](#other-new-features)
-          * [Hexadecimal and Binary Literals](#hexadecimal-and-binary-literals)
-          * [Different Text Modes](#different-text-modes)
-          * [LOAD into VRAM](#load-into-vram)
-          * [Default Device Numbers](#default-device-numbers)
+         * [Hexadecimal and Binary Literals](#hexadecimal-and-binary-literals)
+         * [Different Text Modes](#different-text-modes)
+         * [LOAD into VRAM](#load-into-vram)
+         * [Default Device Numbers](#default-device-numbers)
       * [Internal Representation](#internal-representation)
    * [KERNAL](#kernal)
       * [KERNAL Version](#kernal-version)
@@ -70,13 +70,14 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
             * [Function Name: kbdbuf_put](#function-name-kbdbuf_put)
          * [Mouse](#mouse-1)
             * [Function Name: mouse_config](#function-name-mouse_config)
+            * [Function Name: mouse_scan](#function-name-mouse_scan)
             * [Function Name: mouse_get](#function-name-mouse_get)
          * [Joystick](#joystick)
             * [Function Name: joystick_scan](#function-name-joystick_scan)
             * [Function Name: joystick_get](#function-name-joystick_get)
-          * [I2C](#i2c)
-             * [Function Name: i2c_read_byte](#function-name-i2c_read_byte)
-             * [Function Name: i2c_write_byte](#function-name-i2c_write_byte)
+         * [I2C](#i2c)
+            * [Function Name: i2c_read_byte](#function-name-i2c_read_byte)
+            * [Function Name: i2c_write_byte](#function-name-i2c_write_byte)
          * [Sprites](#sprites)
             * [Function Name: sprite_set_image](#function-name-sprite_set_image)
             * [Function Name: sprite_set_position](#function-name-sprite_set_position)
@@ -121,10 +122,16 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
             * [Function Name: memory_decompress](#function-name-memory_decompress)
             * [Function Name: entropy_get](#function-name-entropy_get)
             * [Function Name: monitor](#function-name-monitor)
+            * [Function Name: enter_basic](#function-name-enter_basic)
             * [Function Name: screen_mode](#function-name-screen_mode)
             * [Function Name: screen_set_charset](#function-name-screen_set_charset)
             * [Function Name: JSRFAR](#function-name-jsrfar)
    * [Math Library](#math-library)
+      * [Format Conversions](#format-conversions)
+      * [Math Functions](#math-functions)
+      * [Movement](#movement)
+      * [X16 Additions](#x16-additions)
+      * [Notes](#notes)
    * [Machine Language Monitor](#machine-language-monitor)
    * [Memory Map](#memory-map)
       * [Banked Memory](#banked-memory)
@@ -136,7 +143,10 @@ This describes the "Proto2" board revision and the emulator/ROM versions r39 and
    * [Video Programming](#video-programming)
    * [Sound Programming](#sound-programming)
    * [I/O Programming](#io-programming)
-   * [Real-Time-Clock Programming](#real-time-clock-programming)
+      * [Custom keyboard scan code handler](#custom-keyboard-scan-code-handler)
+      * [I2C Bus](#i2c-bus)
+         * [System Management Controller](#system-management-controller)
+         * [Real-Time-Clock](#real-time-clock)
 
 
 ## Overview
@@ -961,7 +971,7 @@ $FF6B: `mouse_get` - get state of mouse
 
 Purpose: Configure the mouse pointer
 Call address: $FF68
-Communication registers: .A, .X
+Communication registers: .A, .X, .Y
 Preparatory routines: None
 Error returns: None
 Stack requirements: 0
