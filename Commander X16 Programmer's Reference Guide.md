@@ -163,13 +163,16 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 	* 256 colors from a palette of 4096
 	* 128 sprites
 	* VGA, NTSC and RGB output
-* *[sound controller TBD]*
+* * three sound generators
+	* Yamaha YM2151: 8 channels, FM synthesis
+	* VERA PSG: 16 channels, 4 waveforms
+	* VERA PCM: 48 kHz, 16 bit, stereo
 * Connectivity:
 	* PS/2 keyboard and mouse
 	* 4 NES/SNES controllers
 	* SD card
 	* Commodore Serial Bus ("IEC")
-	* several free GPIOs ("user port")
+	* many free GPIOs ("user port")
 
 As a modern sibling of the line of Commodore home computers, the Commander X16 is reasonably compatible with computers of that line.
 
@@ -720,7 +723,7 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 * a PS/2 keyboard driver
 * a PS/2 mouse driver
 * an NES/SNES controller driver
-* a Commodore Serial Bus ("IEC") driver *[not yet working]*
+* a Commodore Serial Bus ("IEC") driver
 * "Channel I/O" for abstracting devices
 * simple memory management
 * timekeeping
@@ -1957,7 +1960,8 @@ Application software is free to use any part of video RAM if it does not use the
 
 ## Sound Programming
 
-*[TODO]*
+* For information on the YM2151 chip, please refer to its documentation.
+* VERA PSG and PCM, refer to the [VERA Programmer's Reference](VERA%20Programmer's%20Reference.md).
 
 ## I/O Programming
 
@@ -1981,12 +1985,14 @@ The following tables describe the connections of the I/O pins:
 | PB0 | PS2MDAT  | PS/2 DATA mouse                 |
 | PB1 | PS2MCLK  | PS/2 CLK  mouse                 |
 | PB2 | I2CDATA  | I2C DATA                        |
-| PB3 | IECATTO  | Serial ATN  out                 |
-| PB4 | IECCLKO  | Serial CLK  out                 |
-| PB5 | IECDATAO | Serial DATA out                 |
-| PB6 | IECCLKI  | Serial CLK  in                  |
-| PB7 | IECDATAI | Serial DATA in                  |
+| PB3 | SERATNO  | Serial ATN  out                 |
+| PB4 | SERCLKO  | Serial CLK  out                 |
+| PB5 | SERDATAO | Serial DATA out                 |
+| PB6 | SERCLKI  | Serial CLK  in                  |
+| PB7 | SERDATAI | Serial DATA in                  |
 | CB2 | I2CCLK   | I2C CLK                         |
+
+The KERNAL uses VIA#1 Timer 1 for the 60 Hz timer interrupt and Timer 2 for timing of transmissions on the Serial Bus.
 
 **VIA#2**
 
@@ -1994,8 +2000,7 @@ The second VIA is completely unused by the system. All its 16 GPIOs and 4 handsh
 
 ### Custom keyboard scan code handler
 
-On receiving a keyboard scan code, the KERNAL jumps to the address stored in $032E-032F. This makes
-it possible to implement custom scan code handlers that extend or override the default behavior of the KERNAL.
+On receiving a keyboard scan code, the KERNAL jumps to the address stored in $032E-032F. This makes it possible to implement custom scan code handlers that extend or override the default behavior of the KERNAL.
 
 Input set by the KERNAL: .X = PS/2 prefix, .A = PS/2 scan code, carry clear if key down and set if key up event.
 

@@ -735,7 +735,7 @@ Depending on the selected mode the data needs to be written to the FIFO in the f
 
 | Mode          | Order in which to write data to FIFO                                                        |
 | ------------- | ------------------------------------------------------------------------------------------- |
-| 8-bit mono    | \<mono sample\>                                                                             |
-| 8-bit stereo  | \<left sample\> \<right sample\>                                                            |
-| 16-bit mono   | \<mono sample (7:0)\> \<mono sample (15:8)\>                                                |
-| 16-bit stereo | \<left sample (7:0)\> \<left sample (15:8)\> \<right sample (7:0)\> \<right sample (15:8)\> |
+| 8-bit mono    | &lt;mono sample&gt;                                                                             |
+| 8-bit stereo  | &lt;left sample&gt; &lt;right sample&gt;                                                            |
+| 16-bit mono   | &lt;mono sample (7:0)&gt; &lt;mono sample (15:8)&gt;                                                |
+| 16-bit stereo | &lt;left sample (7:0)&gt; &lt;left sample (15:8)&gt; &lt;right sample (7:0)&gt; &lt;right sample (15:8)&gt; |
