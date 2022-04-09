@@ -1647,13 +1647,13 @@ Error returns: Does not return
 
 Purpose: Get/Set the screen mode
 Call address: $FF5F
-Communication registers: .A, .C
+Communication registers: .A, .X, .Y, .C
 Preparatory routines: None
 Error returns: .C = 1 in case of error
-Stack requirements: [?]
+Stack requirements: 4
 Registers affected: .A, .X, .Y
 
-**Description:** If .C is set, a call to this routine gets the current screen mode in .A. If .C is clear, it sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. If the mode is unsupported, .C will be set, otherwise cleared.
+**Description:** If .C is set, a call to this routine gets the current screen mode in .A, the width (in tiles) of the screen in .X, and the height (in tiles) of the screen in .Y. If .C is clear, it sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. If the mode is unsupported, .C will be set, otherwise cleared.
 
 **EXAMPLE:**
 
