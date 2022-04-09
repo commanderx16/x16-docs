@@ -1869,7 +1869,7 @@ This is the allocation of the banks of banked ROM:
 
 |Bank|Name   |Description                                            |
 |----|-------|-------------------------------------------------------|
-|0   |KERNAL |character sets (uploaded into VRAM), MONITOR, KERNAL   |
+|0   |KERNAL |KERNAL operating system and drivers                    |
 |1   |KEYBD  |Keyboard layout tables                                 |
 |2   |CBDOS  |The computer-based CBM-DOS for FAT32 SD cards          |
 |3   |GEOS   |GEOS KERNAL                                            |
@@ -2064,7 +2064,5 @@ For more information, please refer to this device's datasheet.
 <hr>
 
 [^1]: Current development systems have 2 MB of bankable RAM. Actual hardware is currently planned to have an option of either 512 KB or 2 MB of RAM.
-
-[^3]: The pin assignment of the NES/SNES controller is likely to change.
 
 [^4]: [https://github.com/emmanuel-marty/lzsa](https://github.com/emmanuel-marty/lzsa)
