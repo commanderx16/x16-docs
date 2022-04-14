@@ -2004,7 +2004,7 @@ On receiving a keyboard scan code, the KERNAL jumps to the address stored in $03
 
 Input set by the KERNAL: .X = PS/2 prefix, .A = PS/2 scan code, carry clear if key down and set if key up event.
 
-Return from a custom handler with RTS. The KERNAL will continue handling the scan code according to the values of .X, .A and carry.  The KERNAL will, however, ignore the scan code if the zero flag is set.
+Return from a custom handler with RTS. The KERNAL will continue handling the scan code according to the values of .X, .A and carry. To remove a keypress, return .A = 0.
 
 ```
 ;EXAMPLE: A custom handler that prints "A" on Alt key down
