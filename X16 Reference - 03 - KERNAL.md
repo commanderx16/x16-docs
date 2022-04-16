@@ -1,3 +1,10 @@
+<!--
+********************************************************************************
+NOTICE: This file uses two trailing spaces to indicate line breaks for GitHub's
+Markdown flavor. Do not remove!
+********************************************************************************
+-->
+
 ## Chapter 3: KERNAL
 
 The Commander X16 contains a version of KERNAL as its operating system in ROM. It contains

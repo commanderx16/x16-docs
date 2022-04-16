@@ -1,3 +1,10 @@
+<!--
+********************************************************************************
+NOTICE: This file uses two trailing spaces to indicate line breaks for GitHub's
+Markdown flavor. Do not remove!
+********************************************************************************
+-->
+
 ## Chapter 2: BASIC Programming
 
 ### Commodore 64 Compatibility
