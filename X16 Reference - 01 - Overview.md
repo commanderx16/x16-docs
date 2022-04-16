@@ -12,7 +12,7 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 	* 256 colors from a palette of 4096
 	* 128 sprites
 	* VGA, NTSC and RGB output
-* * three sound generators
+* three sound generators
 	* Yamaha YM2151: 8 channels, FM synthesis
 	* VERA PSG: 16 channels, 4 waveforms
 	* VERA PCM: 48 kHz, 16 bit, stereo
@@ -26,5 +26,5 @@ The Commander X16 is a modern home computer in the philosophy of Commodore compu
 As a modern sibling of the line of Commodore home computers, the Commander X16 is reasonably compatible with computers of that line.
 
 * Pure BASIC programs are fully backwards compatible with the VIC-20 and the C64.
-* POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID controllers, for example.)
+* POKEs for video and audio are not compatible with any Commodore computer. (There are no VIC or SID chips, for example.)
 * Pure machine language programs ($FF81+ KERNAL API) are compatible with Commodore computers.

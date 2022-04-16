@@ -9,16 +9,14 @@ Markdown flavor. Do not remove!
 
 The Commander X16 contains a version of KERNAL as its operating system in ROM. It contains
 
-* "Channel I/O" API for abstracting devices
-* a variable size screen editor
-* a color bitmap graphics API with proportional fonts
+* a 40/80 character screen driver
+* a PS/2 keyboard driver
+* a PS/2 mouse driver
+* an NES/SNES controller driver
+* a Commodore Serial Bus ("IEC") driver
+* "Channel I/O" for abstracting devices
 * simple memory management
 * timekeeping
-* drivers
-        * PS/2 keyboard and mouse
-        * NES/SNES controller
-        * Commodore Serial Bus ("IEC")
-        * I2C bus
 
 ### KERNAL Version
 
