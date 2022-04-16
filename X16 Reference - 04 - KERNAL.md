@@ -18,6 +18,10 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 * simple memory management
 * timekeeping
 
+The following common KERNAL features are not available:
+* device 1: tape
+* device 2: RS-232
+
 ### KERNAL Version
 
 The KERNAL version can be read from location $FF80 in ROM. A value of $FF indicates a custom build. All other values encode the build number. Positive numbers are release versions ($02 = release version 2), two's complement negative numbers are prerelease versions ($FE = $100 - 2 = prerelease version 2).
