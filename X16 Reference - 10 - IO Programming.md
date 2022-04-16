@@ -4,7 +4,7 @@
 
 There are two 65C22 "Versatile Interface Adapter" (VIA) I/O controllers in the system, VIA#1 at address $9F60 and VIA#2 at address $9F70. The IRQ out lines of VIA#1 is connected to the CPU's NMI line, while the IRQ out line of VIA#2 is connected to the CPU's IRQ line.
 
-The following tables describe the connections of the I/O pins:
+The-following tables describe the connections of the I/O pins:
 
 **VIA#1**
 
@@ -35,65 +35,61 @@ The KERNAL uses Timer 2 for timing transmissions on the Serial Bus.
 
 The second VIA is completely unused by the system. All its 16 GPIOs and 4 handshake I/Os can be freely used.
 
-### Custom keyboard scan code handler
-
-On receiving a keyboard scan code, the KERNAL jumps to the address stored in $032E-032F. This makes it possible to implement custom scan code handlers that extend or override the default behavior of the KERNAL.
-
-Input set by the KERNAL: .X = PS/2 prefix, .A = PS/2 scan code, carry clear if key down and set if key up event.
-
-Return from a custom handler with RTS. The KERNAL will continue handling the scan code according to the values of .X, .A and carry. To remove a keypress, return .A = 0.
-
-```
-;EXAMPLE: A custom handler that prints "A" on Alt key down
-
-setup:
-    sei
-    lda #<keyhandler
-    sta $032e
-    lda #>keyhandler
-    sta $032f
-    cli
-    rts
-
-keyhandler:
-    php         ;Save input on stack
-    pha
-    phx
-
-    bcs exit    ;C=1 is key up
-
-    cmp #$11    ;Alt key scan code
-    bne exit    
-
-    lda #'a'
-    jsr $ffd2
-
-exit:
-    plx		;Restore input
-    pla
-    plp
-    rts		;Return control to Kernal
-```
-
 ### I2C Bus
 
 The Commander X16 contains an I2C bus, which is implemented through two pins of VIA#1. The system management controller (SMC) and the real-time clock (RTC) are connected through this bus. The KERNAL APIs `i2c_read_byte` and `i2c_write_byte` allow talking to these devices.
 
 #### System Management Controller
 
-The system management controller (SMC) controls the power and activity LEDs, and an be used to power down the system or inject RESET or NMI signals.
+The system management controller (SMC) is device $42 on the I2C bus. It controls the power and activity LEDs, and can be used to power down the system or inject RESET and NMI signals.
 
-| Register | Value      | Description             |
-|----------|------------|-------------------------|
-| 0x01     | 0x00       | Power off               |
-| 0x01     | 0x01       | Hard reboot             |
-| 0x02     | 0x00       | Inject RESET            |
-| 0x03     | 0x00       | Inject NMI              |
-| 0x04     | 0x00..0xFF | Power LED brightness    |
-| 0x05     | 0x00..0xFF | Activity LED brightness |
+| Register | Value    | Description             |
+|----------|----------|-------------------------|
+| $01      | $00      | Power off               |
+| $01      | $01      | Hard reboot             |
+| $02      | $00      | Inject RESET            |
+| $03      | $00      | Inject NMI              |
+| $04      | $00..$FF | Power LED brightness    |
+| $05      | $00..$FF | Activity LED brightness |
 
 #### Real-Time-Clock
 
-The Commander X16 contains a battery-backed Microchip MCP7940N real-time-clock (RTC) chip. It provide a real-time clock/calendar, two alarms and 64 bytes of RAM.
+The Commander X16 contains a battery-backed Microchip MCP7940N real-time-clock (RTC) chip as device $6F. It provide a real-time clock/calendar, two alarms and 64 bytes of RAM.
+
+| Register | Description        |
+|----------|--------------------|
+| $00      | Clock seconds      |
+| $01      | Clock minutes      |
+| $02      | Clock hours        |
+| $03      | Clock weekday      |
+| $04      | Clock day          |
+| $05      | Clock month        |
+| $06      | Clock year         |
+| $07      | Control            |
+| $08      | Oscillator trim    |
+| $09      | *reserved*         |
+| $0A      | Alarm 0 seconds    |
+| $0B      | Alarm 0 minutes    |
+| $0C      | Alarm 0 hours      |
+| $0D      | Alarm 0 weekday    |
+| $0E      | Alarm 0 day        |
+| $0F      | Alarm 0 month      |
+| $10      | *reserved*         |
+| $11      | Alarm 1 seconds    |
+| $12      | Alarm 1 minutes    |
+| $13      | Alarm 1 hours      |
+| $14      | Alarm 1 weekday    |
+| $15      | Alarm 1 day        |
+| $16      | Alarm 1 month      |
+| $17      | *reserved*         |
+| $18      | Power-fail minutes |
+| $19      | Power-fail hours   |
+| $1A      | Power-fail day     |
+| $1B      | Power-fail month   |
+| $1C      | Power-up minutes   |
+| $1D      | Power-up hours     |
+| $1E      | Power-up day       |
+| $1F      | Power-up month     |
+| $20-$5F  | 64 Bytes SRAM      |
 
 For more information, please refer to this device's datasheet.

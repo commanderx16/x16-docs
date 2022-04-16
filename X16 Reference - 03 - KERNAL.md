@@ -1005,6 +1005,46 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
       .WORD $C000 ; ADDRESS
       .BYTE 1     ; BANK
 
+### Custom Keyboard Scan Code Handler
+
+On receiving a keyboard scan code, the KERNAL jumps to the address stored in $032E-032F. This makes it possible to implement custom scan code handlers that extend or override the default behavior of the KERNAL.
+
+Input set by the KERNAL: .X = PS/2 prefix, .A = PS/2 scan code, carry clear if key down and set if key up event.
+
+Return from a custom handler with RTS. The KERNAL will continue handling the scan code according to the values of .X, .A and carry. To remove a keypress, return .A = 0.
+
+```
+;EXAMPLE: A custom handler that prints "A" on Alt key down
+
+setup:
+    sei
+    lda #<keyhandler
+    sta $032e
+    lda #>keyhandler
+    sta $032f
+    cli
+    rts
+
+keyhandler:
+    php         ;Save input on stack
+    pha
+    phx
+
+    bcs exit    ;C=1 is key up
+
+    cmp #$11    ;Alt key scan code
+    bne exit
+
+    lda #'a'
+    jsr $ffd2
+
+exit:
+    plx		;Restore input
+    pla
+    plp
+    rts		;Return control to Kernal
+```
+
 ---
 
 [^1]: [https://github.com/emmanuel-marty/lzsa](https://github.com/emmanuel-marty/lzsa)

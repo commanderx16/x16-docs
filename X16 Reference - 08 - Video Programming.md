@@ -4,8 +4,6 @@ The VERA video chip supports resolutions up to 640x480 with up to 256 colors fro
 
 See the [VERA Programmer's Reference](VERA%20Programmer's%20Reference.md) for the complete reference.
 
-**IMPORTANT**: The VERA register layout has changed between 0.7 and 0.8. Here is the old documentation: [vera-module v0.7.pdf](https://github.com/commanderx16/x16-docs/blob/master/old/vera-module%20v0.7.pdf)
-
 The X16 KERNAL uses the following video memory layout:
 
 |Addresses    |Description                                   |
@@ -19,4 +17,4 @@ The X16 KERNAL uses the following video memory layout:
 |$1F800-$1F9BF|*unused*                                      |
 |$1F9C0-$1FFFF|VERA internal (PSG, Palette, Sprite Registers)|
 
-Application software is free to use any part of video RAM if it does not use the corresponding KERNAL functionality. To restore text mode, it just hast to call `CINT` ($FF81).
+Application software is free to use any part of video RAM if it does not use the corresponding KERNAL functionality. To restore text mode, call `CINT` ($FF81).
