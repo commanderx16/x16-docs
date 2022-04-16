@@ -52,7 +52,7 @@ This is the encoding:
 ISO mode can be enabled and disabled using two new control codes:
 
 * `CHR$($0F)`: enable ISO mode
-* `CHR$($8F)`: disable ISO mode (default)
+* `CHR$($8F)`: enable PETSCII mode (default)
 
 You can also enable ISO mode in direct mode by pressing Ctrl+`O`.
 
@@ -74,13 +74,17 @@ To set the background color of the complete screen, it just has to be cleared af
 
       PRINT CHR$(147);
 
+### Scrolling
+
+The C64 editor could only scroll the screen up (when overflowing the last line or printing or entering DOWN on the last line). The X16 editor scrolls both ways: When the cursor is on the first line and UP is printed or entered, the screen contents scroll down by a line.
+
 ### New Control Characters
 
 This is the set of all supported PETSCII control characters. Descriptions in bold indicate new codes compared to the C64:
 
 | Code |                            |                           | Code |
 |------|----------------------------|---------------------------|------|
-| $00  | NULL                       | VERBATIM MODE             | $80  |
+| $00  | NULL                       | **VERBATIM MODE**         | $80  |
 | $01  | **SWAP COLORS**            | COLOR: ORANGE             | $81  |
 | $02  <td colspan=2 align="center"> -                          | $82  |
 | $03  <td colspan=2 align="center"> STOP/RUN                   | $83  |
@@ -117,7 +121,7 @@ This is the set of all supported PETSCII control characters. Descriptions in bol
 
 * $01: SWAP COLORS swaps the foreground and background colors in text mode
 * $04/$06/$0B/$0C: the new attribute change codes only have an effect in graphics mode
-* $07/$08/$09/$0A/$18: have been added for ASCII compatibility *[NYI]*
+* $07/$08/$09/$0A/$18: have been added for ASCII compatibility *[$08/$09/$0A/$18 are NYI]*
 * $08/$09: Charset switch enable/disable not supported
 * $80: VERBATIM MODE prints the next character (only!) as a glyph without interpretation. This is similar to quote mode, but also includes codes CR ($13) and DEL ($14).
 * F9-F12, HELP: these codes match the C65 additions
