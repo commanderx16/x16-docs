@@ -1,3 +1,10 @@
+<!--
+********************************************************************************
+NOTICE: This file uses two trailing spaces to indicate line breaks for GitHub's
+Markdown flavor. Do not remove!
+********************************************************************************
+-->
+
 ## Chapter 2: BASIC Programming
 
 ### Commodore 64 Compatibility
@@ -134,7 +141,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 #### BIN$
 
-**TYPE: String Function**
+**TYPE: String Function**  
 **FORMAT: BIN$(n)**
 
 **Action:** Return a string representing the binary value of n. If n <= 255, 8 characters are returned and if 255 < n <= 65535, 16 characters are returned.
@@ -146,7 +153,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 
 #### CHAR
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: CHAR &lt;x&gt;,&lt;y&gt;,&lt;color&gt;,&lt;string&gt;**
 
 **Action:** This command draws a text string on the graphics screen in a given color.
@@ -166,7 +173,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 #### CLS
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: CLS**
 
 **Action:** Clears the screen. Same effect as `?CHR$(147);`.
@@ -177,7 +184,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 #### COLOR
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: COLOR &lt;fgcol&gt;[,&lt;bgcol&gt;]**
 
 **Action:** This command works sets the text mode foreground color, and optionally the background color.
@@ -189,7 +196,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 #### DOS
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: DOS &lt;string&gt;**
 
 **Action:** This command works with the command/status channel or the directory of a Commodore DOS device and has different functionality depending on the type of argument.
@@ -207,7 +214,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 #### FRAME
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: FRAME &lt;x1&gt;,&lt;y1&gt;,&lt;x2&gt;,&lt;y2&gt;,&lt;color&gt;**
 
 **Action:** This command draws a rectangle frame on the graphics screen in a given color.
@@ -220,14 +227,14 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 #### GEOS
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: GEOS**
 
 **Action:** Enter the GEOS UI.
 
 #### HEX$
 
-**TYPE: String Function**
+**TYPE: String Function**  
 **FORMAT: HEX$(n)**
 
 **Action:** Return a string representing the hexadecimal value of n. If n <= 255, 2 characters are returned and if 255 < n <= 65535, 4 characters are returned.
@@ -239,7 +246,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 #### JOY
 
-**TYPE: Integer Function**
+**TYPE: Integer Function**  
 **FORMAT: JOY(n)**
 
 **Action:** Return the state of a joystick.
@@ -282,7 +289,7 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 
 #### LINE
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: LINE &lt;x1&gt;,&lt;y1&gt;,&lt;x2&gt;,&lt;y2&gt;,&lt;color&gt;**
 
 **Action:** This command draws a line on the graphics screen in a given color.
@@ -296,7 +303,7 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 
 #### LOCATE
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: LOCATE &lt;line&gt;[,&lt;column&gt;]**
 
 **Action:** This command positions the text mode cursor at the given location. The values are 1-based. If no column is given, only the line is changed.
@@ -316,7 +323,7 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 
 #### MON
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: MON (Alternative: MONITOR)**
 
 **Action:** This command enters the machine language monitor. See the dedicated chapter for a  description.
@@ -328,7 +335,7 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 
 #### MOUSE
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: MOUSE &lt;mode&gt;**
 
 **Action:** This command configures the mouse pointer.
@@ -350,9 +357,9 @@ The size of the mouse pointer's area will be configured according to the current
 
 #### MX/MY/MB
 
-**TYPE: Integer Function**
-**FORMAT: MX**
-**FORMAT: MY**
+**TYPE: Integer Function**  
+**FORMAT: MX**  
+**FORMAT: MY**  
 **FORMAT: MB**
 
 **Action:** Return the horizontal (`MX`) or vertical (`MY`) position of the mouse pointer, or the mouse button state (`MB`).
@@ -381,7 +388,7 @@ The size of the mouse pointer's area will be configured according to the current
 
 #### OLD
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: OLD**
 
 **Action:** This command recovers the BASIC program in RAM that has been previously deleted using the `NEW` command or through a RESET.
@@ -392,7 +399,7 @@ The size of the mouse pointer's area will be configured according to the current
 
 #### PSET
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: PSET &lt;x&gt;,&lt;y&gt;,&lt;color&gt;**
 
 **Action:** This command sets a pixel on the graphics screen to a given color.
@@ -405,7 +412,7 @@ The size of the mouse pointer's area will be configured according to the current
 
 #### RECT
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: RECT &lt;x1&gt;,&lt;y1&gt;,&lt;x2&gt;,&lt;y2&gt;,&lt;color&gt;**
 
 **Action:** This command draws a solid rectangle on the graphics screen in a given color.
@@ -418,7 +425,7 @@ The size of the mouse pointer's area will be configured according to the current
 
 #### RESET
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: RESET**
 
 **Action:** Performs a software reset of the system.
@@ -429,7 +436,7 @@ The size of the mouse pointer's area will be configured according to the current
 
 #### SCREEN
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: SCREEN &lt;mode&gt;**
 
 **Action:** This command switches the screen mode. Modes $80 (128) and above are graphics modes.
@@ -454,7 +461,7 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 #### VPEEK
 
-**TYPE: Integer Function**
+**TYPE: Integer Function**  
 **FORMAT: VPEEK (&lt;bank&gt;, &lt;address&gt;)**
 
 **Action:** Return a byte from the video address space. The video address space has 20 bit addresses, which is exposed as 16 banks of 65536 addresses each.
@@ -465,7 +472,7 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 #### VPOKE
 
-**TYPE: Command**
+**TYPE: Command**  
 **FORMAT: VPOKE &lt;bank&gt;, &lt;address&gt;, &lt;value&gt;**
 
 **Action:** Set a byte in the video address space. The video address space has 20 bit addresses, which is exposed as 16 banks of 65536 addresses each.
@@ -477,8 +484,8 @@ Note that in text/graphics mode ($80), text color 0 is now translucent instead o
 
 #### VLOAD
 
-**TYPE: Command**
-	**FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
+**TYPE: Command**  
+**FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
 	
 **Action:** Loads a file directly into VERA RAM. 
 
