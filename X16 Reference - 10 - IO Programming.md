@@ -1,4 +1,4 @@
-# Chapter 9: Commander X16 Programmer's Reference Guide
+# Chapter 10: Commander X16 Programmer's Reference Guide
 
 ## I/O Programming
 

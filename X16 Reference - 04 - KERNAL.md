@@ -5,7 +5,7 @@ Markdown flavor. Do not remove!
 ********************************************************************************
 -->
 
-## Chapter 3: KERNAL
+## Chapter 4: KERNAL
 
 The Commander X16 contains a version of KERNAL as its operating system in ROM. It contains
 

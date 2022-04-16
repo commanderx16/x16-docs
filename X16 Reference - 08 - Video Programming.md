@@ -1,4 +1,4 @@
-## Chapter 7: Video Programming
+## Chapter 8: Video Programming
 
 The VERA video chip supports resolutions up to 640x480 with up to 256 colors from a palette of 4096, two layers of either a bitmap or tiles, 128 sprites of up to 64x64 pixels in size. It can output VGA as well as a 525 line interlaced signal, either as NTSC or as RGB (Amiga-style).
 

@@ -1,4 +1,4 @@
-## Chapter 5: Machine Language Monitor
+## Chapter 6: Machine Language Monitor
 
 The built-in machine language monitor can be started with the `MON` BASIC command. It is based on the monitor of the Final Cartridge III and supports all its features. See the [Final Cartridge III Manual](https://rr.pokefinder.org/rrwiki/images/7/70/Final_Cartridge_III_english_Manual.pdf) more more information.
 

@@ -1,4 +1,4 @@
-## Chapter 6: Memory Map
+## Chapter 7: Memory Map
 
 The Commander X16 has 64 KB of ROM and 2,088 KB (2 MB[^1] + 40 KB) of RAM. Some of the ROM and RAM is always visible at certain address ranges, while the remaining ROM and RAM is banked into one of two address windows.
 

@@ -5,7 +5,7 @@ Markdown flavor. Do not remove!
 ********************************************************************************
 -->
 
-## Chapter 2: BASIC Programming
+## Chapter 3: BASIC Programming
 
 ### Commodore 64 Compatibility
 
