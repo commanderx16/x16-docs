@@ -29,7 +29,7 @@ The following tables describe the connections of the I/O pins:
 | PB7 | SERDATAI | Serial DATA in                  |
 | CB2 | I2CCLK   | I2C CLK                         |
 
-The KERNAL uses VIA#1 Timer 1 for the 60 Hz timer interrupt and Timer 2 for timing of transmissions on the Serial Bus.
+The KERNAL uses Timer 2 for timing transmissions on the Serial Bus.
 
 **VIA#2**
 
