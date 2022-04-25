@@ -644,7 +644,7 @@ The audio functionality contains of 2 independent systems. The first is the PSG 
 		<th>Bit&nbsp;7</th>
 		<th>Bit&nbsp;6</th>
 		<th>Bit&nbsp;5</th>
-		<th>Bit&nbsp;Bit&nbsp;4</th>
+		<th>Bit&nbsp;4</th>
 		<th>Bit&nbsp;3</th>
 		<th>Bit&nbsp;2</th>
 		<th>Bit&nbsp;1</th>
