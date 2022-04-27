@@ -830,7 +830,9 @@ Signature: void memory_fill(word address: r0, word num_bytes: r1, byte value: .a
 Purpose: Fill a memory region with a byte value.  
 Call address: $FEE4
 
-**Description:** This function fills the memory region specified by an address (r0) and a size in bytes (r1) with the constant byte value passed in .A.
+**Description:** This function fills the memory region specified by an address (r0) and a size in bytes (r1) with the constant byte value passed in .A. r0 and .A are preserved, r1 is destroyed.
+
+If the target address is in the $9F00-$9FFF range, all bytes will be written to the same address (r0), i.e. the address will not be incremented. This is useful for filling VERA memory ($9F23 or $9F24), for example.
 
 ##### Function Name: memory_copy
 
@@ -838,7 +840,9 @@ Signature: void memory_copy(word source: r0, word target: r1, word num_bytes: r2
 Purpose: Copy a memory region to a different region.  
 Call address: $FEE7
 
-**Description:** This function copies one memory region specified by an address (r0) and a size in bytes (r2) to a different region specified by its start address (r1). The two regions may overlap.
+**Description:** This function copies one memory region specified by an address (r0) and a size in bytes (r2) to a different region specified by its start address (r1). The two regions may overlap. r0 and r1 are preserved, r2 is destroyed.
+
+Like with `memory_fill`, source and destination addresses in the $9F00-$9FFF range will not be incremented during the copy. This allows, for instance, uploading data from RAM to VERA (destination of $9F23 or $9F24), downloading data from VERA (source $9F23 or $9F24) or copying data inside VERA (source $9F23, destination $9F24). This functionality can also be used to upload, download or transfer data with other I/O devices that have an 8 bit data port.
 
 ##### Function Name: memory_crc
 
@@ -846,7 +850,9 @@ Signature: (word result: r2) memory_crc(word address: r0, word num_bytes: r1);
 Purpose: Calculate the CRC16 of a memory region.  
 Call address: $FEEA
 
-**Description:** This function calculates the CRC16 checksum of the memory region specified by an address (r0) and a size in bytes (r1). The result is returned in r2.
+**Description:** This function calculates the CRC16 checksum of the memory region specified by an address (r0) and a size in bytes (r1). The result is returned in r2. r0 is preserved, r1 is destroyed.
+
+Like `memory_fill`, this function does not increment the address if it is in the range of $9F00-$9FFF, which allows checksumming VERA memory or data streamed from any other I/O device.
 
 ##### Function Name: memory_decompress
 
