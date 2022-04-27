@@ -240,9 +240,9 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 |------|------------------------------------------|
 | 0    | Hide mouse                               |
 | 1    | Show mouse, set default mouse pointer    |
-| $FF  | Show mouse, don't configure mouse cursor |
+| -1   | Show mouse, don't configure mouse cursor |
 
-`MOUSE 1` turns on the mouse pointer and `MOUSE 0` turns it off. If the BASIC program has its own mouse pointer sprite configured, it can use `MOUSE $FF`, which will turn the mouse pointer on, but not set the default pointer sprite.
+`MOUSE 1` turns on the mouse pointer and `MOUSE 0` turns it off. If the BASIC program has its own mouse pointer sprite configured, it can use `MOUSE -1`, which will turn the mouse pointer on, but not set the default pointer sprite.
 
 The size of the mouse pointer's area will be configured according to the current screen mode. If the screen mode is changed, the MOUSE statement has to be repeated.
 
@@ -337,13 +337,13 @@ The size of the mouse pointer's area will be configured according to the current
 
 **Action:** This command switches screen modes.
 
-For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%20-%20Editor.md). The value of $FF (255) toggles between modes $00 and $03.
+For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%20-%20Editor.md). The value of -1 toggles between modes $00 and $03.
 
 **EXAMPLE of SCREEN Statement:**
 
       SCREEN 3 : REM SWITCH TO 40 CHARACTER MODE
       SCREEN 0 : REM SWITCH TO 80 CHARACTER MODE
-      SCREEN 255 : REM SWITCH BETWEEN 40 and 80 CHARACTER MODE
+      SCREEN -1 : REM SWITCH BETWEEN 40 and 80 CHARACTER MODE
 
 #### VPEEK
 
