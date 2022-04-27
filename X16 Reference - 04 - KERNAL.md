@@ -5,22 +5,20 @@ Markdown flavor. Do not remove!
 ********************************************************************************
 -->
 
-## Chapter 4: KERNAL
+## Chapter 3: KERNAL
 
 The Commander X16 contains a version of KERNAL as its operating system in ROM. It contains
 
-* a 40/80 character screen driver
-* a PS/2 keyboard driver
-* a PS/2 mouse driver
-* an NES/SNES controller driver
-* a Commodore Serial Bus ("IEC") driver
-* "Channel I/O" for abstracting devices
+* "Channel I/O" API for abstracting devices
+* a variable size screen editor
+* a color bitmap graphics API with proportional fonts
 * simple memory management
 * timekeeping
-
-The following common KERNAL features are not available:
-* device 1: tape
-* device 2: RS-232
+* drivers
+	* PS/2 keyboard and mouse
+	* NES/SNES controller
+	* Commodore Serial Bus ("IEC")
+	* I2C bus
 
 ### KERNAL Version
 
@@ -936,6 +934,7 @@ Error returns: Does not return
 	CLC
 	JMP enter_basic ; returns to the "READY." prompt
 
+
 ##### Function Name: screen_mode
 
 Purpose: Get/Set the screen mode  
@@ -946,7 +945,7 @@ Error returns: .C = 1 in case of error
 Stack requirements: 4  
 Registers affected: .A, .X, .Y
 
-**Description:** If .C is set, a call to this routine gets the current screen mode in .A, the width (in tiles) of the screen in .X, and the height (in tiles) of the screen in .Y. If .C is clear, it sets the current screen mode to the value in .A. For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%20-%20Editor.md). The value of $FF (255) toggles between modes $00 and $03. If the mode is unsupported, .C will be set, otherwise cleared.
+**Description:** If .C is set, a call to this routine gets the current screen mode in .A, the width (in tiles) of the screen in .X, and the height (in tiles) of the screen in .Y. If .C is clear, it sets the current screen mode to the value in .A. For a list of possible values, see the basic statement `SCREEN`. If the mode is unsupported, .C will be set, otherwise cleared.
 
 **EXAMPLE:**
 
@@ -1005,6 +1004,46 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
       JSR JSRFAR
       .WORD $C000 ; ADDRESS
       .BYTE 1     ; BANK
+
+### Custom Keyboard Scan Code Handler
+
+On receiving a keyboard scan code, the KERNAL jumps to the address stored in $032E-032F. This makes it possible to implement custom scan code handlers that extend or override the default behavior of the KERNAL.
+
+Input set by the KERNAL: .X = PS/2 prefix, .A = PS/2 scan code, carry clear if key down and set if key up event.
+
+Return from a custom handler with RTS. The KERNAL will continue handling the scan code according to the values of .X, .A and carry. To remove a keypress, return .A = 0.
+
+```
+;EXAMPLE: A custom handler that prints "A" on Alt key down
+
+setup:
+    sei
+    lda #<keyhandler
+    sta $032e
+    lda #>keyhandler
+    sta $032f
+    cli
+    rts
+
+keyhandler:
+    php         ;Save input on stack
+    pha
+    phx
+
+    bcs exit    ;C=1 is key up
+
+    cmp #$11    ;Alt key scan code
+    bne exit
+
+    lda #'a'
+    jsr $ffd2
+
+exit:
+    plx		;Restore input
+    pla
+    plp
+    rts		;Return control to Kernal
+```
 
 ---
 
