@@ -47,6 +47,17 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 	PRINT BIN$(200)   : REM PRINTS 11001000 AS BINARY REPRESENTATION OF 200
 	PRINT BIN$(45231) : REM PRINTS 1011000010101111 TO REPRESENT 16 BITS
 
+#### BOOT
+
+**TYPE: Command**  
+**FORMAT: BOOT**
+
+**Action:** Load and run a PRG file starting with `AUTOBOOT.X16` from device 8. If the file is not found, nothing is done and no error is printed.
+
+**EXAMPLE of BOOT Statement:**
+
+	BOOT
+
 #### CHAR
 
 **TYPE: Command**  
@@ -182,6 +193,18 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 	100 IF V AND 2 THEN PRINT"LEFT ";
 	110 IF V AND 1 THEN PRINT"RIGHT ";
 	120 GOTO50
+
+#### KEYMAP
+
+**TYPE: Command**  
+**FORMAT: KEYMAP &lt;string&gt;**
+
+**Action:** This command sets the current keyboard layout. It can be put into an AUTOBOOT file to always set the keyboard layout on boot.
+
+**EXAMPLE of KEYMAP Statement:**
+
+	10 KEYMAP"SV-SE"    :REM SMALL BASIC PROGRAM TO SET LAYOUT TO SWEDISH/SWEDEN
+	SAVE"AUTOBOOT.X16"  :REM SAVE AS AUTOBOOT FILE
 
 #### LINE
 
@@ -417,3 +440,11 @@ Like on the C64, BASIC keywords are tokenized.
 * The unreleased BASIC V10 extended the escaped tokens up to $CE-$0D (`RPALETTE`) and $FE-$45 (`EDIT`).
 
 The X16 BASIC aims to be as compatible as possible with this encoding. Keywords added to X16 BASIC that also exist in other versions of BASIC match the token, and new keywords are encoded in the ranges $CE-$80+ and $FE-$80+.
+
+### Auto-Boot
+
+When BASIC starts, it automatically executes the `BOOT` command, which tries to load a PRG file beginning with `AUTOBOOT.X16` from device 8 and, if successful, runs it. Here are some use cases for this:
+
+* An SD card with a game can auto-boot this way.
+* An SD card with a collection of applications can show a menu that allows selecting an application to load.
+* The user's "work" SD card can contain a small auto-boot BASIC program that sets the keyboard layout and changes the screen colors, for example.

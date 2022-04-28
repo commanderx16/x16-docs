@@ -211,6 +211,7 @@ On the Commander X16, the *jiffies* field is unsupported and will always read ba
 $FEBD: `kbdbuf_peek` - get first char in keyboard queue and queue length  
 $FEC0: `kbdbuf_get_modifiers` - get currently pressed modifiers  
 $FEC3: `kbdbuf_put` - append a char to the keyboard queue
+$FED2: `keymap` - set or get the current keyboard layout
 
 ##### Function Name: kbdbuf_peek
 
@@ -255,6 +256,20 @@ Stack requirements: 0
 Registers affected: .X
 
 **Description:** The routine `kbdbuf_put` appends the char in .A to the keyboard queue.
+
+##### Function Name: keymap
+
+Purpose: Set or get the current keyboard layout
+Call address: $FED2  
+Communication registers: .X , .Y
+Preparatory routines: None  
+Error returns: .C = 1 in case of error    
+Stack requirements: 0  
+Registers affected: -
+
+**Description:** If .C is set, the routine `keymap` returns a pointer to a zero-terminated string with the current keyboard layout identifier in .X/.Y. If .C is clear, it sets the keyboard layout to the zero-terminated identifier pointed to by .X/.Y. On return, .C is set in case the keyboard layout is unsupported.
+
+Keyboard layout identifiers are in the form "DE", "DE-CH" etc.
 
 #### Mouse
 
