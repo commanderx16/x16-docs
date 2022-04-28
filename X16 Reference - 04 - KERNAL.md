@@ -956,7 +956,7 @@ Registers affected: .A, .X, .Y
 **EXAMPLE:**
 
 	LDA #$80
-	clc
+	CLC
 	JSR screen_mode ; SET 320x200@256C MODE
 	BCS FAILURE
 
