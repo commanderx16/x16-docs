@@ -80,7 +80,7 @@ The C64 editor could only scroll the screen up (when overflowing the last line o
 
 ### New Control Characters
 
-This is the set of all supported PETSCII control characters. Descriptions in bold indicate new codes compared to the C64:
+This is the set of all supported PETSCII control characters. Entries in bold indicate new codes compared to the C64:
 
 | Code |                            |                           | Code |
 |------|----------------------------|---------------------------|------|
@@ -88,7 +88,7 @@ This is the set of all supported PETSCII control characters. Descriptions in bol
 | $01  | **SWAP COLORS**            | COLOR: ORANGE             | $81  |
 | $02  <td colspan=2 align="center"> -                          | $82  |
 | $03  <td colspan=2 align="center"> STOP/RUN                   | $83  |
-| $04  | -                          | **HELP**                  | $84  |
+| $04  <td colspan=2 align="center"> -                          | $84  |
 | $05  | COLOR: WHITE               | F1                        | $85  |
 | $06  | -                          | F3                        | $86  |
 | $07  | **BELL**                   | F5                        | $87  |
@@ -123,7 +123,7 @@ This is the set of all supported PETSCII control characters. Descriptions in bol
 * $07/$08/$09/$0A/$18: have been added for ASCII compatibility *[$08/$09/$0A/$18 are NYI]*
 * $08/$09: Charset switch enable/disable not supported
 * $80: VERBATIM MODE prints the next character (only!) as a glyph without interpretation. This is similar to quote mode, but also includes codes CR ($13) and DEL ($14).
-* F9-F12, HELP: these codes match the C65 additions
+* F9-F12: these codes match the C65 additions
 * Additionally, the codes $04/$06/$0B/$0C are interpreted when printing in graphics mode using `GRAPH_put_char`.
 
 ### Keyboard Layouts
