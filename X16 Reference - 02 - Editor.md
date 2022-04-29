@@ -111,7 +111,7 @@ This is the set of all supported PETSCII control characters. Entries in bold ind
 | $18  | **SHIFT+TAB**              | COLOR: MIDDLE GRAY        | $98  |
 | $19  | -                          | COLOR: LIGHT GREEN        | $99  |
 | $1A  | -                          | COLOR: LIGHT BLUE         | $9A  |
-| $1B  | -                          | COLOR: LIGHT GRAY         | $9B  |
+| $1B  | ESC                        | COLOR: LIGHT GRAY         | $9B  |
 | $1C  | COLOR: RED                 | COLOR: PURPLE             | $9C  |
 | $1D  | CURSOR: RIGHT              | CURSOR: LEFT              | $9D  |
 | $1E  | COLOR: GREEN               | COLOR: YELLOW             | $9E  |
@@ -120,9 +120,9 @@ This is the set of all supported PETSCII control characters. Entries in bold ind
 **Notes:**
 
 * $01: SWAP COLORS swaps the foreground and background colors in text mode
-* $07/$08/$09/$0A/$18: have been added for ASCII compatibility *[$08/$09/$0A/$18 are NYI]*
+* $07/$08/$09/$0A/$18/$1B: have been added for ASCII compatibility *[$08/$09/$0A/$18 are NYI]*
 * $08/$09: Charset switch enable/disable not supported
-* $80: VERBATIM MODE prints the next character (only!) as a glyph without interpretation. This is similar to quote mode, but also includes codes CR ($13) and DEL ($14).
+* $80: VERBATIM MODE prints the next character (only!) as a glyph without interpretation. This is similar to quote mode, but also includes codes CR ($0D) and DEL ($14).
 * F9-F12: these codes match the C65 additions
 * Additionally, the codes $04/$06/$0B/$0C are interpreted when printing in graphics mode using `GRAPH_put_char`.
 
