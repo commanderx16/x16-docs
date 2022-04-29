@@ -88,21 +88,21 @@ This is the set of all supported PETSCII control characters. Descriptions in bol
 | $01  | **SWAP COLORS**            | COLOR: ORANGE             | $81  |
 | $02  <td colspan=2 align="center"> -                          | $82  |
 | $03  <td colspan=2 align="center"> STOP/RUN                   | $83  |
-| $04  | **ATTRIBUTES: UNDERLINE**  | **HELP**                  | $84  |
+| $04  | -                          | **HELP**                  | $84  |
 | $05  | COLOR: WHITE               | F1                        | $85  |
-| $06  | **ATTRIBUTES: BOLD**       | F3                        | $86  |
+| $06  | -                          | F3                        | $86  |
 | $07  | **BELL**                   | F5                        | $87  |
 | $08  | **BACKSPACE**              | F7                        | $88  |
 | $09  | **TAB**                    | F2                        | $89  |
 | $0A  | **LF**                     | F4                        | $8A  |
-| $0B  | **ATTRIBUTES: ITALICS**    | F6                        | $8B  |
-| $0C  | **ATTRIBUTES: OUTLINE**    | F8                        | $8C  |
+| $0B  | -                          | F6                        | $8B  |
+| $0C  | -                          | F8                        | $8C  |
 | $0D  <td colspan=2 align="center"> REGULAR/SHIFTED RETURN     | $8D  |
 | $0E  <td colspan=2 align="center"> CHARSET: LOWER/UPPER CASE  | $8E  |
 | $0F  <td colspan=2 align="center"> **CHARSET: ISO ON/OFF**    | $8F  |
 | $10  | **F9**                     | COLOR: BLACK              | $90  |
 | $11  <td colspan=2 align="center"> CURSOR: DOWN/UP            | $91  |
-| $12  | ATTRIBUTES: REVERSE        | ATTRIBUTES: CLEAR ALL     | $92  |
+| $12  <td colspan=2 align="center"> REVERSE ON/OFF             | $92  |
 | $13  <td colspan=2 align="center"> HOME/CLEAR                 | $93  |
 | $14  <td colspan=2 align="center"> DEL/INSERT                 | $94  |
 | $15  | **F10**                    | COLOR: BROWN              | $95  |
@@ -120,11 +120,11 @@ This is the set of all supported PETSCII control characters. Descriptions in bol
 **Notes:**
 
 * $01: SWAP COLORS swaps the foreground and background colors in text mode
-* $04/$06/$0B/$0C: the new attribute change codes only have an effect in graphics mode
 * $07/$08/$09/$0A/$18: have been added for ASCII compatibility *[$08/$09/$0A/$18 are NYI]*
 * $08/$09: Charset switch enable/disable not supported
 * $80: VERBATIM MODE prints the next character (only!) as a glyph without interpretation. This is similar to quote mode, but also includes codes CR ($13) and DEL ($14).
 * F9-F12, HELP: these codes match the C65 additions
+* Additionally, the codes $04/$06/$0B/$0C are interpreted when printing in graphics mode using `GRAPH_put_char`.
 
 ### Keyboard Layouts
 
