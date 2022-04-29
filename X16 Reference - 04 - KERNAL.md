@@ -245,6 +245,8 @@ Registers affected: -
 | 3   | 8     | Logo/Windows | C128: Alt      |
 | 4   | 16    | Caps         |                |
 
+This allows detecting combinations of a regular key and a modifier key in cases where there is no dedicated PETSCII code for the combination, e.g. Ctrl+Esc or Alt+F1.
+
 ##### Function Name: kbdbuf_put
 
 Purpose: Append a char to the keyboard queue  
