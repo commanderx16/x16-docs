@@ -98,7 +98,6 @@ In addition, the X16 supports a subset of the C128 API additions:
 $FF4A: `CLOSE_ALL` – close all files on a device  
 $FF8D: `LKUPLA` – search tables for given LA  
 $FF8A: `LKUPSA` – search tables for given SA  
-$FF62: `DLCHR` - activate a text mode font in the video hardware *[not yet implemented]*  
 $FF65: `PFKEY` – program a function key *[not yet implemented]*  
 $FF74: `FETCH` – LDA (fetvec),Y from any bank  
 $FF77: `STASH` – STA (stavec),Y to any bank  
@@ -107,6 +106,7 @@ $FF7D: `PRIMM` – print string following the caller’s code
 
 Some notes:
 
+* The calls `SWAPPER` ($FF5F) `DLCHR` ($FF62) are not supported, but these addresses host functions with equivalent functionality (`screen_mode`, `screen_set_charset`).
 * `FETCH`, `STASH` and `CMPARE` require the caller to set the zero page location containing the address in memory beforehand. These are different than on the C128:
 
 |Call    |Label   |Address |
@@ -119,7 +119,7 @@ Some notes:
 
 ### New API for the Commander X16
 
-There are lots of new APIs. Please note that their addresses and their behavior is still prelimiary and can change between revisions.
+There are lots of new APIs. Please note that their addresses and their behavior is still preliminary and can change between revisions.
 
 Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc.
 
