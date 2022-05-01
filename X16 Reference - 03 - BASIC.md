@@ -52,7 +52,7 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 **TYPE: Command**  
 **FORMAT: BOOT**
 
-**Action:** Load and run a PRG file starting with `AUTOBOOT.X16` from device 8. If the file is not found, nothing is done and no error is printed.
+**Action:** Load and run a PRG file named `AUTOBOOT.X16` from device 8. If the file is not found, nothing is done and no error is printed.
 
 **EXAMPLE of BOOT Statement:**
 
@@ -443,7 +443,7 @@ The X16 BASIC aims to be as compatible as possible with this encoding. Keywords 
 
 ### Auto-Boot
 
-When BASIC starts, it automatically executes the `BOOT` command, which tries to load a PRG file beginning with `AUTOBOOT.X16` from device 8 and, if successful, runs it. Here are some use cases for this:
+When BASIC starts, it automatically executes the `BOOT` command, which tries to load a PRG file named `AUTOBOOT.X16` from device 8 and, if successful, runs it. Here are some use cases for this:
 
 * An SD card with a game can auto-boot this way.
 * An SD card with a collection of applications can show a menu that allows selecting an application to load.
