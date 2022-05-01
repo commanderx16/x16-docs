@@ -62,24 +62,21 @@ The following calls are not part of the C128/C65 API.
 
 | X16   | Symbol   | Description                                     |
 |-------|----------|-------------------------------------------------|
-| $FE81 | FADDH    | FAC += .5                                       |
-| $FE84 | ZEROFC   | FAC = 0                                         |
-| $FE87 | NORMAL   | Normalize FAC                                   |
-| $FE8A | NEGFAC   | FAC = -FAC                                      |
-| $FE8D | MUL10    | FAC *= 10                                       |
-| $FE90 | DIV10    | FAC /= 10                                       |
-| $FE93 | MOVEF    | ARG = FAC                                       |
-| $FE96 | SGN      | FAC = sgn(FAC)                                  |
-| $FE99 | FLOAT    | FAC = (u8).A                                    |
-| $FE9C | FLOATS   | FAC = (s16)facho+1:facho                        |
-| $FE9F | QINT     | facho:facho+1:facho+2:facho+2 = u32(FAC)        |
-| $FEA2 | FINLOG   | FAC += (s8).A                                   |
-| $FEA5 | FOUTC    | Convert FAC to ASCIIZ string at fbuffr - 1 + .Y |
-
-<!-- https://github.com/commanderx16/x16-rom/issues/245
-| $FEA8 | POLYX    | Polynomial Evaluation 1 (SIN/COS/ATN/LOG)       |
-| $FEAB | POLY     | Polynomial Evaluation 2 (EXP)                   |
--->
+| $FE6F | FADDH    | FAC += .5                                       |
+| $FE72 | ZEROFC   | FAC = 0                                         |
+| $FE75 | NORMAL   | Normalize FAC                                   |
+| $FE78 | NEGFAC   | FAC = -FAC                                      |
+| $FE7B | MUL10    | FAC *= 10                                       |
+| $FE7E | DIV10    | FAC /= 10                                       |
+| $FE81 | MOVEF    | ARG = FAC                                       |
+| $FE84 | SGN      | FAC = sgn(FAC)                                  |
+| $FE87 | FLOAT    | FAC = (u8).A                                    |
+| $FE8A | FLOATS   | FAC = (s16)facho+1:facho                        |
+| $FE8D | QINT     | facho:facho+1:facho+2:facho+2 = u32(FAC)        |
+| $FE90 | FINLOG   | FAC += (s8).A                                   |
+| $FE93 | FOUTC    | Convert FAC to ASCIIZ string at fbuffr - 1 + .Y |
+| $FE96 | POLYX    | Polynomial Evaluation 1 (SIN/COS/ATN/LOG)       |
+| $FE99 | POLY     | Polynomial Evaluation 2 (EXP)                   |
 
 ### Notes
 
