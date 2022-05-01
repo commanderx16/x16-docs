@@ -879,6 +879,8 @@ Call address: $FEED
 
 **Description:** This function decompresses an LZSA2-compressed data block from the location passed in r0 and outputs the decompressed data at the location passed in r1. After the call, r1 will be updated with the location of the last output byte plus one.
 
+If the target address is in the $9F00-$9FFF range, all bytes will be written to the same address (r0), i.e. the address will not be incremented. This is useful for decompressing directly into VERA memory ($9F23 or $9F24), for example. Note that decompressing *from* I/O is not supported.
+
 **Notes**:
 
 * To create compressed data, use the `lzsa` tool[^1] like this:
