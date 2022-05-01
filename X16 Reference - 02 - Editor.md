@@ -128,7 +128,11 @@ This is the set of all supported PETSCII control characters. Entries in bold ind
 
 ### Keyboard Layouts
 
-The editor supports multiple keyboard layouts. The default is the US layout ("EN-US"). Pressing the `F9` key cycles through the available keyboard layouts, in the following order:
+The editor supports multiple keyboard layouts.
+
+#### ROM Keyboard Layouts
+
+After boot, the US layout ("EN-US") is active. Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the following order:
 
 * EN-US
 * EN-GB
@@ -142,3 +146,99 @@ The editor supports multiple keyboard layouts. The default is the US layout ("EN
 * DE-CH
 * FR-BE
 * PT-BR
+
+Additionally, the BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file.
+
+#### Loadable Keyboard Layouts
+
+The tables for the active keyboard layout reside in banked RAM, at $A000 on bank 0.
+
+| Adresses    | Description                            |
+|-------------|----------------------------------------|
+| $A000-$A07F | PS/2 scancode → PETSCII (unshifted)    |
+| $A080-$A0FF | PS/2 scancode → PETSCII (Shift)        |
+| $A100-$A17F | PS/2 scancode → PETSCII (Ctrl)         |
+| $A180-$A1FF | PS/2 scancode → PETSCII (Alt)          |
+| $A200-$A27F | PS/2 scancode → PETSCII (AltGr)        |
+| $A280-$A07F | PS/2 scancode → ISO (unshifted)        |
+| $A300-$A37F | PS/2 scancode → ISO (Shift)            |
+| $A380-$A3FF | PS/2 scancode → ISO (Ctrl)             |
+| $A400-$A47F | PS/2 scancode → ISO (Alt)              |
+| $A480-$A4FF | PS/2 scancode → ISO (AltGr)            |
+| $A500-$A50F | big-endian bitfield:<br/>PS/2 scancodes for which CAPS means SHIFT |
+| $A510-$A515 | uppercase ASCIIZ locale (e.g. "EN-US") |
+
+**Notes:**
+
+* The regular PS/2 scancode for the F7 key is $83, but in these tables, F7 has a scancode of $02.
+* Keys with $E0/$E1-prefixed PS/2 scancodes (cursor keys etc.) are hardcoded and cannot be changed using these tables.
+
+Custom layouts can be loaded like from disk this:
+
+	LOAD"KEYMAP",8,0,$A000
+
+Here is an example that activates a layout derived from "EN-US", with Y and Z swapped:
+
+	KEYMAP"EN-US"              :REM START WITH US LAYOUT
+	POKE0,0                    :REM ACTIVATE RAM BANK 0
+	POKE$A000+$1A,ASC("Y")     :REM SET SCAN CODE $1A ('Z') to 'Y'
+	POKE$A000+$35,ASC("Z")     :REM SET SCAN CODE $35 ('Y') to 'Z'
+	POKE$A080+$1A,ASC("Y")+$80 :REM SAME FOR SHIFTED
+	POKE$A080+$35,ASC("Z")+$80 :REM SAME FOR SHIFTED
+	REM
+	REM *** DOING THE SAME FOR THE MAPPING IN ISO MODE
+	REM *** IS LEFT AS AN EXERCISE TO THE READER
+
+#### Custom Keyboard Scancode Handler
+
+If you need more control over the translation of scancodes into PETSCII/ISO codes, or if you need to intercept any key down or up event, you can hook the custom scancode handler vector at $032E/$032F.
+
+On all key down and key up events, the keyboard driver calls this vector with
+
+* .X: PS/2 prefix ($00, $E0 or $E1)
+* .A: PS/2 scancode
+* .C: clear if key down, set if key up event
+
+The handler has to return a key event the same way in .X/.A/.C.
+
+* To remove a keypress so that it is not added to the keyboard queue, return .A = 0.
+* To manually add a key to the keyboard queue, use the `kbdbuf_put` KERNAL API.
+
+You can even write a completely custom keyboard translation layer:
+* Place the code at $A000-$A50F – this is safe, since the tables won't be used in this case.
+* Fill the locale at $A510.
+* For every scancode that should produce a PETSCII/ISO code, use `kbdbuf_put` to store it in the keyboard buffer.
+* For all scancodes, return .A = 0.
+
+
+```
+;EXAMPLE: A custom handler that prints "A" on Alt key down
+
+setup:
+    sei
+    lda #<keyhandler
+    sta $032e
+    lda #>keyhandler
+    sta $032f
+    cli
+    rts
+
+keyhandler:
+    php         ;Save input on stack
+    pha
+    phx
+
+    bcs exit    ;C=1 is key up
+
+    cmp #$11    ;Alt key scancode
+    bne exit
+
+    lda #'a'
+    jsr $ffd2
+
+exit:
+    plx		;Restore input
+    pla
+    plp
+    rts
+```
