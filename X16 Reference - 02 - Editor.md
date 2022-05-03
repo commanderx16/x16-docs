@@ -145,10 +145,7 @@ After boot, the US layout ("EN-US") is active. Pressing the `F9` key cycles thro
 * FR
 * DE-CH
 * FR-BE
-<!---
-[currently disabled for size reasons]
 * PT-BR
---->
 
 Additionally, the BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file.
 
@@ -169,8 +166,8 @@ The tables for the active keyboard layout reside in banked RAM, at $A000 on bank
 | $A400-$A47F | Table 8     |
 | $A480-$A4FF | Table 9     |
 | $A500-$A57F | Table 10    |
-| $A500-$A50F | big-endian bitfield:<br/>PS/2 scancodes for which Caps means Shift |
-| $A510-$A515 | uppercase ASCIIZ locale (e.g. "EN-US") |
+| $A580-$A58F | big-endian bitfield:<br/>PS/2 scancodes for which Caps means Shift |
+| $A590-$A595 | uppercase ASCIIZ locale (e.g. "EN-US") |
 
 The first byte of each of the 11 tables is the table identifier which contains the encoding and the combination of modifiers that this table is for.
 
@@ -219,8 +216,8 @@ The handler has to return a key event the same way in .X/.A/.C.
 * To manually add a key to the keyboard queue, use the `kbdbuf_put` KERNAL API.
 
 You can even write a completely custom keyboard translation layer:
-* Place the code at $A000-$A50F – this is safe, since the tables won't be used in this case.
-* Fill the locale at $A510.
+* Place the code at $A000-$A58F – this is safe, since the tables won't be used in this case.
+* Fill the locale at $A590.
 * For every scancode that should produce a PETSCII/ISO code, use `kbdbuf_put` to store it in the keyboard buffer.
 * For all scancodes, return .A = 0.
 
