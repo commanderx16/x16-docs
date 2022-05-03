@@ -99,23 +99,22 @@ $FF4A: `CLOSE_ALL` – close all files on a device
 $FF8D: `LKUPLA` – search tables for given LA  
 $FF8A: `LKUPSA` – search tables for given SA  
 $FF65: `PFKEY` – program a function key *[not yet implemented]*  
-$FF74: `FETCH` – LDA (fetvec),Y from any bank  
-$FF77: `STASH` – STA (stavec),Y to any bank  
-$FF7A: `CMPARE` – CMP (cmpvec),Y to any bank  
 $FF7D: `PRIMM` – print string following the caller’s code  
 
-Some notes:
+The following C128 APIs have equivalent functionality on the X16 but are not compatible:
 
-* The calls `SWAPPER` ($FF5F) `DLCHR` ($FF62) are not supported, but these addresses host functions with equivalent functionality (`screen_mode`, `screen_set_charset`).
-* `FETCH`, `STASH` and `CMPARE` require the caller to set the zero page location containing the address in memory beforehand. These are different than on the C128:
+| Address | C128 Name | X16 Name             |
+|---------|-----------|----------------------|
+| $FF5F   | `SWAPPER` | `screen_mode`        |
+| $FF62   | `DLCHR`   | `screen_set_charset` |
+| $FF74   | `FETCH`   | `fetch`              |
+| $FF77   | `STASH`   | `stash`              |
+<!---
+*** undocumented - we might remove it
+| $FF7A   | `CMPARE`  | `cmpare`             |
+--->
 
-|Call    |Label   |Address |
-|--------|--------|--------|
-|`FETCH` |`FETVEC`|$03AF   |
-|`STASH` |`STAVEC`|$XXXX   |
-|`CMPARE`|`CMPVEC`|$XXXX   |
-
-*[Note: `STASH` and `CMPARE` are currently non-functional.]*
+They are documented in the sections below.
 
 ### New API for the Commander X16
 
@@ -141,6 +140,8 @@ The 16 bit ABI generally follows the following conventions:
 
 #### Commodore Peripheral Bus
 
+The X16 adds one new function for dealing with the Commodore Peripheral Bus ("IEEE"):
+
 $FF44: `MACPTR` - read multiple bytes from peripheral bus
 
 ##### Function Name: MACPTR
@@ -162,6 +163,84 @@ Upon return, a set .C flag indicates that the device does not support `MACPTR`, 
 If `MACPTR` is supported, .C is clear and .X (lo) and .Y (hi) contain the number of bytes read.
 
 Like with `ACPTR`, the status of the operation can be retrieved using the `READST` KERNAL call.
+
+#### Memory
+
+$FEE4: `memory_fill` - fill memory region with a byte value  
+$FEE7: `memory_copy` - copy memory region  
+$FEEA: `memory_crc` - calculate CRC16 of memory region  
+$FEED: `memory_decompress` - decompress LZSA2 block  
+$FF74: `fetch` - read a byte from any RAM or ROM bank
+$FF77: `stash` - write a byte to any RAM bank
+<!---
+*** undocumented - we might remove it
+$FF7A: `cmpare` - compare a byte on any RAM or ROM bank
+--->
+
+##### Function Name: memory_fill
+
+Signature: void memory_fill(word address: r0, word num_bytes: r1, byte value: .a);  
+Purpose: Fill a memory region with a byte value.  
+Call address: $FEE4
+
+**Description:** This function fills the memory region specified by an address (r0) and a size in bytes (r1) with the constant byte value passed in .A. r0 and .A are preserved, r1 is destroyed.
+
+If the target address is in the $9F00-$9FFF range, all bytes will be written to the same address (r0), i.e. the address will not be incremented. This is useful for filling VERA memory ($9F23 or $9F24), for example.
+
+##### Function Name: memory_copy
+
+Signature: void memory_copy(word source: r0, word target: r1, word num_bytes: r2);  
+Purpose: Copy a memory region to a different region.  
+Call address: $FEE7
+
+**Description:** This function copies one memory region specified by an address (r0) and a size in bytes (r2) to a different region specified by its start address (r1). The two regions may overlap. r0 and r1 are preserved, r2 is destroyed.
+
+Like with `memory_fill`, source and destination addresses in the $9F00-$9FFF range will not be incremented during the copy. This allows, for instance, uploading data from RAM to VERA (destination of $9F23 or $9F24), downloading data from VERA (source $9F23 or $9F24) or copying data inside VERA (source $9F23, destination $9F24). This functionality can also be used to upload, download or transfer data with other I/O devices that have an 8 bit data port.
+
+##### Function Name: memory_crc
+
+Signature: (word result: r2) memory_crc(word address: r0, word num_bytes: r1);  
+Purpose: Calculate the CRC16 of a memory region.  
+Call address: $FEEA
+
+**Description:** This function calculates the CRC16 checksum of the memory region specified by an address (r0) and a size in bytes (r1). The result is returned in r2. r0 is preserved, r1 is destroyed.
+
+Like `memory_fill`, this function does not increment the address if it is in the range of $9F00-$9FFF, which allows checksumming VERA memory or data streamed from any other I/O device.
+
+##### Function Name: memory_decompress
+
+Signature: void memory_decompress(word input: r0, inout word output: r1);  
+Purpose: Decompress an LZSA2 block  
+Call address: $FEED
+
+**Description:** This function decompresses an LZSA2-compressed data block from the location passed in r0 and outputs the decompressed data at the location passed in r1. After the call, r1 will be updated with the location of the last output byte plus one.
+
+If the target address is in the $9F00-$9FFF range, all bytes will be written to the same address (r0), i.e. the address will not be incremented. This is useful for decompressing directly into VERA memory ($9F23 or $9F24), for example. Note that decompressing *from* I/O is not supported.
+
+**Notes**:
+
+* To create compressed data, use the `lzsa` tool[^1] like this:
+`lzsa -r -f2 <original_file> <compressed_file>`
+* This function cannot be used to decompress data in-place, as the output data would overwrite the input data before it is consumed. Therefore, make sure to load the input data to a different location.
+* It is possible to have the input data stored in banked RAM, with the obvious 8 KB size restriction.
+
+##### Function Name: fetch
+
+Purpose: Read a byte from any RAM or ROM bank  
+Call address: $FF74  
+Communication registers: .A/.X/.Y/.P
+
+**Description:** This function performs an `LDA (ZP),Y` from any RAM or ROM bank. The the zero page address containing the base address is passed in .A, the bank in .X and the offset from the vector in .Y. The data byte is returned in .A. The flags are set according to .A, .X is destroyed, but .Y is preserved.
+
+##### Function Name: stash
+
+Purpose: Write a byte to any RAM bank  
+Call address: $FF77  
+Communication registers: .A/.X/.Y
+
+**Description:** This function performs an `STA (ZP),Y` to any RAM bank. The the zero page address containing the base address is passed in `stavec` ($03B2), the bank in .X and the offset from the vector in .Y. After the call, .X is destroyed, but .A and .Y are preserved.
+
+*[this API is subject to change]*
 
 #### Clock
 
@@ -831,62 +910,11 @@ Call address: $FED5
 
 #### Other
 
-$FEE4: `memory_fill` - fill memory region with a byte value  
-$FEE7: `memory_copy` - copy memory region  
-$FEEA: `memory_crc` - calculate CRC16 of memory region  
-$FEED: `memory_decompress` - decompress LZSA2 block  
 $FECF: `entropy_get` - get 24 random bits  
 $FF44: `monitor` - enter machine language monitor  
 $FF47: `enter_basic` - enter BASIC  
 $FF5F: `screen_mode` - get/set screen mode  
 $FF62: `screen_set_charset` - activate 8x8 text mode charset
-
-##### Function Name: memory_fill
-
-Signature: void memory_fill(word address: r0, word num_bytes: r1, byte value: .a);  
-Purpose: Fill a memory region with a byte value.  
-Call address: $FEE4
-
-**Description:** This function fills the memory region specified by an address (r0) and a size in bytes (r1) with the constant byte value passed in .A. r0 and .A are preserved, r1 is destroyed.
-
-If the target address is in the $9F00-$9FFF range, all bytes will be written to the same address (r0), i.e. the address will not be incremented. This is useful for filling VERA memory ($9F23 or $9F24), for example.
-
-##### Function Name: memory_copy
-
-Signature: void memory_copy(word source: r0, word target: r1, word num_bytes: r2);  
-Purpose: Copy a memory region to a different region.  
-Call address: $FEE7
-
-**Description:** This function copies one memory region specified by an address (r0) and a size in bytes (r2) to a different region specified by its start address (r1). The two regions may overlap. r0 and r1 are preserved, r2 is destroyed.
-
-Like with `memory_fill`, source and destination addresses in the $9F00-$9FFF range will not be incremented during the copy. This allows, for instance, uploading data from RAM to VERA (destination of $9F23 or $9F24), downloading data from VERA (source $9F23 or $9F24) or copying data inside VERA (source $9F23, destination $9F24). This functionality can also be used to upload, download or transfer data with other I/O devices that have an 8 bit data port.
-
-##### Function Name: memory_crc
-
-Signature: (word result: r2) memory_crc(word address: r0, word num_bytes: r1);  
-Purpose: Calculate the CRC16 of a memory region.  
-Call address: $FEEA
-
-**Description:** This function calculates the CRC16 checksum of the memory region specified by an address (r0) and a size in bytes (r1). The result is returned in r2. r0 is preserved, r1 is destroyed.
-
-Like `memory_fill`, this function does not increment the address if it is in the range of $9F00-$9FFF, which allows checksumming VERA memory or data streamed from any other I/O device.
-
-##### Function Name: memory_decompress
-
-Signature: void memory_decompress(word input: r0, inout word output: r1);  
-Purpose: Decompress an LZSA2 block  
-Call address: $FEED
-
-**Description:** This function decompresses an LZSA2-compressed data block from the location passed in r0 and outputs the decompressed data at the location passed in r1. After the call, r1 will be updated with the location of the last output byte plus one.
-
-If the target address is in the $9F00-$9FFF range, all bytes will be written to the same address (r0), i.e. the address will not be incremented. This is useful for decompressing directly into VERA memory ($9F23 or $9F24), for example. Note that decompressing *from* I/O is not supported.
-
-**Notes**:
-
-* To create compressed data, use the `lzsa` tool[^1] like this:
-`lzsa -r -f2 <original_file> <compressed_file>`
-* This function cannot be used to decompress data in-place, as the output data would overwrite the input data before it is consumed. Therefore, make sure to load the input data to a different location.
-* It is possible to have the input data stored in banked RAM, with the obvious 8 KB size restriction.
 
 ##### Function Name: entropy_get
 
