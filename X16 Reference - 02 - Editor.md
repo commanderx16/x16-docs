@@ -145,49 +145,63 @@ After boot, the US layout ("EN-US") is active. Pressing the `F9` key cycles thro
 * FR
 * DE-CH
 * FR-BE
+<!---
+[currently disabled for size reasons]
 * PT-BR
+--->
 
 Additionally, the BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file.
 
 #### Loadable Keyboard Layouts
 
-The tables for the active keyboard layout reside in banked RAM, at $A000 on bank 0.
+The tables for the active keyboard layout reside in banked RAM, at $A000 on bank 0:
 
-| Adresses    | Description                            |
-|-------------|----------------------------------------|
-| $A000-$A07F | PS/2 scancode → PETSCII (unshifted)    |
-| $A080-$A0FF | PS/2 scancode → PETSCII (Shift)        |
-| $A100-$A17F | PS/2 scancode → PETSCII (Ctrl)         |
-| $A180-$A1FF | PS/2 scancode → PETSCII (Alt)          |
-| $A200-$A27F | PS/2 scancode → PETSCII (AltGr)        |
-| $A280-$A07F | PS/2 scancode → ISO (unshifted)        |
-| $A300-$A37F | PS/2 scancode → ISO (Shift)            |
-| $A380-$A3FF | PS/2 scancode → ISO (Ctrl)             |
-| $A400-$A47F | PS/2 scancode → ISO (Alt)              |
-| $A480-$A4FF | PS/2 scancode → ISO (AltGr)            |
-| $A500-$A50F | big-endian bitfield:<br/>PS/2 scancodes for which CAPS means SHIFT |
+| Adresses    | Description |
+|-------------|-------------|
+| $A000-$A07F | Table 0     |
+| $A080-$A0FF | Table 1     |
+| $A100-$A17F | Table 2     |
+| $A180-$A1FF | Table 3     |
+| $A200-$A27F | Table 4     |
+| $A280-$A07F | Table 5     |
+| $A300-$A37F | Table 6     |
+| $A380-$A3FF | Table 7     |
+| $A400-$A47F | Table 8     |
+| $A480-$A4FF | Table 9     |
+| $A500-$A57F | Table 10    |
+| $A500-$A50F | big-endian bitfield:<br/>PS/2 scancodes for which Caps means Shift |
 | $A510-$A515 | uppercase ASCIIZ locale (e.g. "EN-US") |
 
-**Notes:**
+The first byte of each of the 11 tables is the table identifier which contains the encoding and the combination of modifiers that this table is for.
 
-* The regular PS/2 scancode for the F7 key is $83, but in these tables, F7 has a scancode of $02.
-* Keys with $E0/$E1-prefixed PS/2 scancodes (cursor keys etc.) are hardcoded and cannot be changed using these tables.
+| Bit | Description        |
+|-----|--------------------|
+| 7   | 0: PETSCII, 1: ISO |
+| 6-3 | always 0           |
+| 2   | Ctrl               |
+| 1   | Alt                |
+| 0   | Shift              |
 
-Custom layouts can be loaded like from disk this:
+AltGr is represented by Ctrl+Alt. Empty tables have an ID of $FF.
+
+The identifier is followed by 127 output codes for the scancode inputs 1-127. (Note that the regular PS/2 scancode for the F7 key is $83, but in these tables, F7 has a scancode of $02.)
+
+Keys with $E0/$E1-prefixed PS/2 scancodes (cursor keys etc.) are hardcoded and cannot be changed using these tables.
+
+Custom layouts can be loaded from disk like this:
 
 	LOAD"KEYMAP",8,0,$A000
 
-Here is an example that activates a layout derived from "EN-US", with Y and Z swapped:
+Here is an example that activates a layout derived from "EN-US", with unshifted Y and Z swapped in PETSCII mode:
 
-	KEYMAP"EN-US"              :REM START WITH US LAYOUT
-	POKE0,0                    :REM ACTIVATE RAM BANK 0
-	POKE$A000+$1A,ASC("Y")     :REM SET SCAN CODE $1A ('Z') to 'Y'
-	POKE$A000+$35,ASC("Z")     :REM SET SCAN CODE $35 ('Y') to 'Z'
-	POKE$A080+$1A,ASC("Y")+$80 :REM SAME FOR SHIFTED
-	POKE$A080+$35,ASC("Z")+$80 :REM SAME FOR SHIFTED
-	REM
-	REM *** DOING THE SAME FOR THE MAPPING IN ISO MODE
-	REM *** IS LEFT AS AN EXERCISE TO THE READER
+	100 KEYMAP"EN-US"                                 :REM START WITH US LAYOUT
+	110 POKE0,0                                       :REM ACTIVATE RAM BANK 0
+	120 FORI=0TO11:B=$A000+128*I:IFPEEK(B)<>0THENNEXT :REM SEARCH FOR TABLE $00
+	130 POKEB+$1A,ASC("Y")                            :REM SET SCAN CODE $1A ('Z') to 'Y'
+	140 POKEB+$35,ASC("Z")                            :REM SET SCAN CODE $35 ('Y') to 'Z'
+	170 REM
+	180 REM *** DOING THE SAME FOR SHIFTED CHARACTERS
+	190 REM *** IS LEFT AS AN EXERCISE TO THE READER
 
 #### Custom Keyboard Scancode Handler
 
