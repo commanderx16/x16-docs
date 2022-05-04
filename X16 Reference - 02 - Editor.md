@@ -159,6 +159,7 @@ After boot, the US layout (`EN-US`) is active. Pressing the `F9` key cycles thro
 | `IS-IS` | Icelandic                     | [0000040F](http://kbdlayout.info/0000040F) |
 | `PT-PT` | Portuguese                    | [00000816](http://kbdlayout.info/00000816) |
 | `ES-MX` | Latin American                | [0000080A](http://kbdlayout.info/0000080A) |
+| `EN!US` | United States - Colemak       |                                            |
 
 Additionally, the BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file, e.g.:
 
