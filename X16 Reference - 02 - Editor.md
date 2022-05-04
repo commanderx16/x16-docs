@@ -158,10 +158,17 @@ After boot, the US layout (`EN-US`) is active. Pressing the `F9` key cycles thro
 | `EN-CA` | Canadian French               | [00001009](http://kbdlayout.info/00001009) |
 | `IS-IS` | Icelandic                     | [0000040F](http://kbdlayout.info/0000040F) |
 | `PT-PT` | Portuguese                    | [00000816](http://kbdlayout.info/00000816) |
+| `EN!US` | United States - Colemak       | -                                          |
+| `NL-NL` | Dutch                         | [00000413](http://kbdlayout.info/00000413) |
+| `HR-HR` | Croatian                      | [0000041A](http://kbdlayout.info/0000041A) |
+| `SK-SK` | Slovak                        | [0000041B](http://kbdlayout.info/0000041B) |
+| `SQ-AL` | Albanian                      | [0000041C](http://kbdlayout.info/0000041C) |
+| `SL-SI` | Slovenian                     | [00000424](http://kbdlayout.info/00000424) |
+| `LV-LV` | Latvian                       | [00000426](http://kbdlayout.info/00000426) |
+| `LT-LT` | Lithuanian IBM                | [00000427](http://kbdlayout.info/00000427) |
 | `ES-MX` | Latin American                | [0000080A](http://kbdlayout.info/0000080A) |
-| `EN!US` | United States - Colemak       |                                            |
 
-Additionally, the BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file, e.g.:
+The BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file, e.g.:
 
 	10 KEYMAP"NB-NO"
 	SAVE"AUTOBOOT.X16
