@@ -132,22 +132,38 @@ The editor supports multiple keyboard layouts.
 
 #### ROM Keyboard Layouts
 
-After boot, the US layout ("EN-US") is active. Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the following order:
+After boot, the US layout (`EN-US`) is active. Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the following order:
 
-* EN-US
-* EN-GB
-* DE
-* SV-SE
-* IT
-* PL
-* HU
-* ES
-* FR
-* DE-CH
-* FR-BE
-* PT-BR
+| Locale  | Description                   | Code                                       |
+|---------|-------------------------------|--------------------------------------------|
+| `EN-US` | United States - International | [00020409](http://kbdlayout.info/00020409) |
+| `EN-GB` | United Kingdom                | [00000809](http://kbdlayout.info/00000809) |
+| `SV-SE` | Swedish                       | [0000041D](http://kbdlayout.info/0000041D) |
+| `DE-DE` | German                        | [00000407](http://kbdlayout.info/00000407) |
+| `DA-DK` | Danish                        | [00000406](http://kbdlayout.info/00000406) |
+| `IT-IT` | Italian                       | [00000410](http://kbdlayout.info/00000410) |
+| `PL-PL` | Polish (Programmers)          | [00000415](http://kbdlayout.info/00000415) |
+| `NB-NO` | Norwegian                     | [00000414](http://kbdlayout.info/00000414) |
+| `HU-HU` | Hungarian                     | [0000040E](http://kbdlayout.info/0000040E) |
+| `ES-ES` | Spanish                       | [0000040A](http://kbdlayout.info/0000040A) |
+| `FI-FI` | Finnish                       | [0000040B](http://kbdlayout.info/0000040B) |
+| `PT-BR` | Portuguese (Brazil ABNT)      | [00000416](http://kbdlayout.info/00000416) |
+| `CS-CZ` | Czech                         | [00000405](http://kbdlayout.info/00000405) |
+| `JA-JP` | Japanese                      | [00000411](http://kbdlayout.info/00000411) |
+| `FR-FR` | French                        | [0000040C](http://kbdlayout.info/0000040C) |
+| `DE-CH` | Swiss German                  | [00000807](http://kbdlayout.info/00000807) |
+| `EN*US` | United States - Dvorak        | [00010409](http://kbdlayout.info/00010409) |
+| `ET-EE` | Estonian                      | [00000425](http://kbdlayout.info/00000425) |
+| `FR-BE` | Belgian French                | [0000080C](http://kbdlayout.info/0000080C) |
+| `EN-CA` | Canadian French               | [00001009](http://kbdlayout.info/00001009) |
+| `IS-IS` | Icelandic                     | [0000040F](http://kbdlayout.info/0000040F) |
+| `PT-PT` | Portuguese                    | [00000816](http://kbdlayout.info/00000816) |
+| `ES-MX` | Latin American                | [0000080A](http://kbdlayout.info/0000080A) |
 
-Additionally, the BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file.
+Additionally, the BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file, e.g.:
+
+	10 KEYMAP"NB-NO"
+	SAVE"AUTOBOOT.X16
 
 #### Loadable Keyboard Layouts
 
