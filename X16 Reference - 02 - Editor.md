@@ -191,9 +191,10 @@ The tables for the active keyboard layout reside in banked RAM, at $A000 on bank
 | $A480-$A4FF | Table 9     |
 | $A500-$A57F | Table 10    |
 | $A580-$A58F | big-endian bitfield:<br/>PS/2 scancodes for which Caps means Shift |
-| $A590-$A595 | uppercase ASCIIZ locale (e.g. "EN-US") |
+| $A590-$A625 | dead key table |
+| $A626-$A62B | uppercase ASCIIZ locale (e.g. "EN-US") |
 
-The first byte of each of the 11 tables is the table identifier which contains the encoding and the combination of modifiers that this table is for.
+The first byte of each of the 11 tables is the table ID which contains the encoding and the combination of modifiers that this table is for.
 
 | Bit | Description        |
 |-----|--------------------|
@@ -205,9 +206,22 @@ The first byte of each of the 11 tables is the table identifier which contains t
 
 AltGr is represented by Ctrl+Alt. Empty tables have an ID of $FF.
 
-The identifier is followed by 127 output codes for the scancode inputs 1-127. (Note that the regular PS/2 scancode for the F7 key is $83, but in these tables, F7 has a scancode of $02.)
+The identifier is followed by 127 output codes for the scancode inputs 1-127. Dead keys (only in ISO tables) have a code of $80 and are further described in the dead key table (Note that the regular PS/2 scancode for the F7 key is $83, but in these tables, F7 has a scancode of $02.)
 
 Keys with $E0/$E1-prefixed PS/2 scancodes (cursor keys etc.) are hardcoded and cannot be changed using these tables.
+
+The dead key table has one section for every dead key with the following layout:
+
+| Byte | Description                                  |
+|------|----------------------------------------------|
+| 0    | dead key ID (PETSCII/ISO and Shift/Alt/Ctrl) |
+| 1    | dead key scancode                            |
+| 2    | full length of this table in bytes           |
+| 3    | first additional key ISO code                |
+| 4    | first effective key ISO code                 |
+| 5    | second additional key ISO code               |
+| 6    | second effective key ISO code                |
+| ...  | ...                                          |
 
 Custom layouts can be loaded from disk like this:
 
