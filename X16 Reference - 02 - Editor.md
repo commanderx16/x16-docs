@@ -132,41 +132,38 @@ The editor supports multiple keyboard layouts.
 
 #### ROM Keyboard Layouts
 
-After boot, the US layout (`EN-US`) is active. Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the following order:
+After boot, the US layout (`EN-US/MAC`) is active. Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the following order:
 
-| Locale  | Description                   | Code                                       |
-|---------|-------------------------------|--------------------------------------------|
-| `EN-US` | United States - International | [00020409](http://kbdlayout.info/00020409) |
-| `EN-GB` | United Kingdom                | [00000809](http://kbdlayout.info/00000809) |
-| `SV-SE` | Swedish                       | [0000041D](http://kbdlayout.info/0000041D) |
-| `DE-DE` | German                        | [00000407](http://kbdlayout.info/00000407) |
-| `DA-DK` | Danish                        | [00000406](http://kbdlayout.info/00000406) |
-| `IT-IT` | Italian                       | [00000410](http://kbdlayout.info/00000410) |
-| `PL-PL` | Polish (Programmers)          | [00000415](http://kbdlayout.info/00000415) |
-| `NB-NO` | Norwegian                     | [00000414](http://kbdlayout.info/00000414) |
-| `HU-HU` | Hungarian                     | [0000040E](http://kbdlayout.info/0000040E) |
-| `ES-ES` | Spanish                       | [0000040A](http://kbdlayout.info/0000040A) |
-| `FI-FI` | Finnish                       | [0000040B](http://kbdlayout.info/0000040B) |
-| `PT-BR` | Portuguese (Brazil ABNT)      | [00000416](http://kbdlayout.info/00000416) |
-| `CS-CZ` | Czech                         | [00000405](http://kbdlayout.info/00000405) |
-| `JA-JP` | Japanese                      | [00000411](http://kbdlayout.info/00000411) |
-| `FR-FR` | French                        | [0000040C](http://kbdlayout.info/0000040C) |
-| `DE-CH` | Swiss German                  | [00000807](http://kbdlayout.info/00000807) |
-| `EN*US` | United States - Dvorak        | [00010409](http://kbdlayout.info/00010409) |
-| `ET-EE` | Estonian                      | [00000425](http://kbdlayout.info/00000425) |
-| `FR-BE` | Belgian French                | [0000080C](http://kbdlayout.info/0000080C) |
-| `EN-CA` | Canadian French               | [00001009](http://kbdlayout.info/00001009) |
-| `IS-IS` | Icelandic                     | [0000040F](http://kbdlayout.info/0000040F) |
-| `PT-PT` | Portuguese                    | [00000816](http://kbdlayout.info/00000816) |
-| `EN!US` | United States - Colemak       | -                                          |
-| `NL-NL` | Dutch                         | [00000413](http://kbdlayout.info/00000413) |
-| `HR-HR` | Croatian                      | [0000041A](http://kbdlayout.info/0000041A) |
-| `SK-SK` | Slovak                        | [0000041B](http://kbdlayout.info/0000041B) |
-| `SQ-AL` | Albanian                      | [0000041C](http://kbdlayout.info/0000041C) |
-| `SL-SI` | Slovenian                     | [00000424](http://kbdlayout.info/00000424) |
-| `LV-LV` | Latvian                       | [00000426](http://kbdlayout.info/00000426) |
-| `LT-LT` | Lithuanian IBM                | [00000427](http://kbdlayout.info/00000427) |
-| `ES-MX` | Latin American                | [0000080A](http://kbdlayout.info/0000080A) |
+| Identifier  | Description                   | Code                                       |
+|-------------|-------------------------------|--------------------------------------------|
+| `EN-US/MAC` | United States - Macintosh     | -                                          |
+| `EN-US/INT` | United States - International | [00020409](http://kbdlayout.info/00020409) |
+| `EN-GB`     | United Kingdom                | [00000809](http://kbdlayout.info/00000809) |
+| `SV-SE`     | Swedish                       | [0000041D](http://kbdlayout.info/0000041D) |
+| `DE-DE`     | German                        | [00000407](http://kbdlayout.info/00000407) |
+| `DA-DK`     | Danish                        | [00000406](http://kbdlayout.info/00000406) |
+| `IT-IT`     | Italian                       | [00000410](http://kbdlayout.info/00000410) |
+| `PL-PL`     | Polish (Programmers)          | [00000415](http://kbdlayout.info/00000415) |
+| `NB-NO`     | Norwegian                     | [00000414](http://kbdlayout.info/00000414) |
+| `HU-HU`     | Hungarian                     | [0000040E](http://kbdlayout.info/0000040E) |
+| `ES-ES`     | Spanish                       | [0000040A](http://kbdlayout.info/0000040A) |
+| `FI-FI`     | Finnish                       | [0000040B](http://kbdlayout.info/0000040B) |
+| `PT-BR`     | Portuguese (Brazil ABNT)      | [00000416](http://kbdlayout.info/00000416) |
+| `CS-CZ`     | Czech                         | [00000405](http://kbdlayout.info/00000405) |
+| `JA-JP`     | Japanese                      | [00000411](http://kbdlayout.info/00000411) |
+| `FR-FR`     | French                        | [0000040C](http://kbdlayout.info/0000040C) |
+| `DE-CH`     | Swiss German                  | [00000807](http://kbdlayout.info/00000807) |
+| `EN-US/DVO` | United States - Dvorak        | [00010409](http://kbdlayout.info/00010409) |
+| `ET-EE`     | Estonian                      | [00000425](http://kbdlayout.info/00000425) |
+| `FR-BE`     | Belgian French                | [0000080C](http://kbdlayout.info/0000080C) |
+| `EN-CA`     | Canadian French               | [00001009](http://kbdlayout.info/00001009) |
+| `IS-IS`     | Icelandic                     | [0000040F](http://kbdlayout.info/0000040F) |
+| `PT-PT`     | Portuguese                    | [00000816](http://kbdlayout.info/00000816) |
+| `HR-HR`     | Croatian                      | [0000041A](http://kbdlayout.info/0000041A) |
+| `SK-SK`     | Slovak                        | [0000041B](http://kbdlayout.info/0000041B) |
+| `SL-SI`     | Slovenian                     | [00000424](http://kbdlayout.info/00000424) |
+| `LV-LV`     | Latvian                       | [00000426](http://kbdlayout.info/00000426) |
+| `LT-LT`     | Lithuanian IBM                | [00000427](http://kbdlayout.info/00000427) |
 
 The BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file, e.g.:
 
@@ -191,8 +188,8 @@ The tables for the active keyboard layout reside in banked RAM, at $A000 on bank
 | $A480-$A4FF | Table 9     |
 | $A500-$A57F | Table 10    |
 | $A580-$A58F | big-endian bitfield:<br/>PS/2 scancodes for which Caps means Shift |
-| $A590-$A625 | dead key table |
-| $A626-$A62B | uppercase ASCIIZ locale (e.g. "EN-US") |
+| $A590-$A66F | dead key table |
+| $A670-$A67E | ASCIIZ identifier (e.g. "EN-US/MAC") |
 
 The first byte of each of the 11 tables is the table ID which contains the encoding and the combination of modifiers that this table is for.
 
@@ -204,9 +201,16 @@ The first byte of each of the 11 tables is the table ID which contains the encod
 | 1   | Alt                |
 | 0   | Shift              |
 
-AltGr is represented by Ctrl+Alt. Empty tables have an ID of $FF.
+* AltGr is represented by Ctrl+Alt.
+* ID $C6 represents Alt *or* AltGr (ISO only)
+* ID $C7 represents Shift+Alt *or* Shift+AltGr (ISO only)
+* Empty tables have an ID of $FF.
 
-The identifier is followed by 127 output codes for the scancode inputs 1-127. Dead keys (only in ISO tables) have a code of $80 and are further described in the dead key table (Note that the regular PS/2 scancode for the F7 key is $83, but in these tables, F7 has a scancode of $02.)
+The identifier is followed by 127 output codes for the scancode inputs 1-127.
+
+* The regular PS/2 scancode for the F7 key is $83, but in these tables, F7 has a scancode of $02.
+* Dead keys (i.e. keys that don't generate anything by themselves but modify the next key) have a code of 0 and are further described in the dead key table (ISO only)
+* Keys that produce nothing have an entry of 0. (They can be distinguished from dead keys as they don't have an entry in the dead key table.)
 
 Keys with $E0/$E1-prefixed PS/2 scancodes (cursor keys etc.) are hardcoded and cannot be changed using these tables.
 
@@ -222,14 +226,16 @@ The dead key table has one section for every dead key with the following layout:
 | 5    | second additional key ISO code               |
 | 6    | second effective key ISO code                |
 | ...  | ...                                          |
+| n-1  | terminator 0xFF                              |
+
 
 Custom layouts can be loaded from disk like this:
 
 	LOAD"KEYMAP",8,0,$A000
 
-Here is an example that activates a layout derived from "EN-US", with unshifted Y and Z swapped in PETSCII mode:
+Here is an example that activates a layout derived from "EN-US/MAC", with unshifted Y and Z swapped in PETSCII mode:
 
-	100 KEYMAP"EN-US"                                 :REM START WITH US LAYOUT
+	100 KEYMAP"EN-US/MAC"                             :REM START WITH US LAYOUT
 	110 POKE0,0                                       :REM ACTIVATE RAM BANK 0
 	120 FORI=0TO11:B=$A000+128*I:IFPEEK(B)<>0THENNEXT :REM SEARCH FOR TABLE $00
 	130 POKEB+$1A,ASC("Y")                            :REM SET SCAN CODE $1A ('Z') to 'Y'
