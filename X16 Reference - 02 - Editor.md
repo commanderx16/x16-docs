@@ -135,29 +135,73 @@ The editor supports multiple keyboard layouts.
 On boot, the US layout (`EN-US`) is active:
 
 * In PETSCII mode, it matches the US layout where possible, and can reach all PETSCII symbols.
-* In ISO mode, it matches the Macintosh US keyboard and can reach all ISO-8859-1 characters, some of which either through (Shift+)Alt/AltGr (e.g. Alt+Shift+`q` will produce `Œ`) or by combining certain (Shift+)Alt/AltGr keys with a second key (e.g. Alt+`u` followed by `a` will produce `ä`).
+* In ISO mode, it matches the Macintosh US keyboard and can reach all ISO-8859-1 characters. Some characters are reachable through key combinations:
+
+| Key               | Result |
+|-------------------|--------|
+| Alt+`1`           | ¡      |
+| Alt+`3`           | £      |
+| Alt+`4`           | ¢      |
+| Alt+`5`           | §      |
+| Alt+`7`           | ¶      |
+| Alt+`9`           | ª      |
+| Alt+`0`           | º      |
+| Alt+`Q`           | œ      |
+| Alt+`R`           | ®      |
+| Alt+`T`           | Þ      |
+| Alt+`Y`           | ¥      |
+| Alt+`O`           | ø      |
+| Alt+`\`           | «      |
+| Alt+`S`           | ß      |
+| Alt+`D`           | ð      |
+| Alt+`G`           | ©      |
+| Alt+`'`           | æ      |
+| Alt+`X`           | .      |
+| Alt+`/`           | ÷      |
+| Shift+Alt+`2`     | €      |
+| Shift+Alt+`8`     | °      |
+| Shift+Alt+`9`     | ·      |
+| Shift+Alt+`=`     | ±      |
+| Shift+Alt+`Q`     | Œ      |
+| Shift+Alt+`T`     | þ      |
+| Shift+Alt+`\`     | »      |
+| Shift+Alt+`D`     | Ð      |
+| Shift+Alt+`'`     | Æ      |
+| Shift+Alt+`/`     | ¿      |
 
 
-| Key          | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt |
-|--------------|---|---|---|---|-----|-----|---|---|-----|---|---|
-|<tt>&#96;</tt>| ▢ |   | `Q` | œ | Œ | `A` | ▢ |   | `Z` |   |   |
-| `1`          | ¡ |   | `W` |   |   | `S` | ß | ▢ | `X` | . |   |
-| `2`          |   | € | `E` | ▢ |   | `D` | ð | Ð | `C` | ▢ |   |
-| `3`          | £ |   | `R` | ® |   | `F` |   |   | `V` | ▢ |   |
-| `4`          | ¢ |   | `T` | Þ | þ | `G` | © |   | `B` |   |   |
-| `5`          | § |   | `Y` | ¥ |   | `H` |   |   | `N` | ▢ |   |
-| `6`          | ▢ |   | `U` | ▢ |   | `J` |   |   | `M` |   |   |
-| `7`          | ¶ |   | `I` |   |   | `K` | ▢ |   | `,` | ▢ |   |
-| `8`          |   | ° | `O` | ø |   | `L` | ▢ |   | `.` |   |   |
-| `9`          | ª | · | `P` |   |   | `;` | ▢ |   | `/` | ÷ | ¿ |
-| `0`          | º |   | `[` |   |   | `'` | æ | Æ |
-| `-`          |   |   | `]` |   |   |
-| `=`          |   | ± | `\` | « | » |
+The following combinations are dead keys:
 
-The combinations with a "▢" symbol in the table above are dead keys. They generate additional characters when combined with a second keypress:
+* Alt+<tt>&#96;</tt>
+* Alt+`6`
+* Alt+`E`
+* Alt+`U`
+* Alt+`A`
+* Alt+`K`
+* Alt+`L`
+* Alt+`;`
+* Alt+`C`
+* Alt+`V`
+* Alt+`N`
+* Alt+`,`
+* Alt+`.`
+* Shift+Alt+`S`
+
+They generate additional characters when combined with a second keypress:
 
 | First<br/>Key      | Second<br/>Key | Result |
 |--------------------|-----|---|
+| Alt+<tt>&#96;</tt> | `a` | à |
+| Alt+<tt>&#96;</tt> | `e` | è |
+| Alt+<tt>&#96;</tt> | `i` | ì |
+| Alt+<tt>&#96;</tt> | `o` | ò |
+| Alt+<tt>&#96;</tt> | `u` | ù |
+| Alt+<tt>&#96;</tt> | `A` | À |
+| Alt+<tt>&#96;</tt> | `E` | È |
+| Alt+<tt>&#96;</tt> | `I` | Ì |
+| Alt+<tt>&#96;</tt> | `O` | Ò |
+| Alt+<tt>&#96;</tt> | `U` | Ù |
+| Alt+<tt>&#96;</tt> | `␣` | ` |
 | Alt+`6`            | `e` | ê |
 | Alt+`6`            | `u` | û |
 | Alt+`6`            | `i` | î |
@@ -192,24 +236,11 @@ The combinations with a "▢" symbol in the table above are dead keys. They gene
 | Alt+`u`            | `I` | Ï |
 | Alt+`u`            | `O` | Ö |
 | Alt+`u`            | `A` | Ä |
-| Alt+`,`            | `␣` | , |
 | Alt+`a`            | `␣` | ¯ |
 | Alt+`k`            | `a` | å |
 | Alt+`k`            | `A` | Å |
 | Alt+`l`            | `␣` | - |
 | Alt+`;`            | `=` | × |
-| Alt+<tt>&#96;</tt> | `a` | à |
-| Alt+<tt>&#96;</tt> | `e` | è |
-| Alt+<tt>&#96;</tt> | `i` | ì |
-| Alt+<tt>&#96;</tt> | `o` | ò |
-| Alt+<tt>&#96;</tt> | `u` | ù |
-| Alt+<tt>&#96;</tt> | `A` | À |
-| Alt+<tt>&#96;</tt> | `E` | È |
-| Alt+<tt>&#96;</tt> | `I` | Ì |
-| Alt+<tt>&#96;</tt> | `O` | Ò |
-| Alt+<tt>&#96;</tt> | `U` | Ù |
-| Alt+<tt>&#96;</tt> | `␣` | ` |
-| Alt+`.`            | `␣` | . |
 | Alt+`c`            | `c` | ç |
 | Alt+`c`            | `C` | Ç |
 | Alt+`v`            | `s` | š |
@@ -222,6 +253,8 @@ The combinations with a "▢" symbol in the table above are dead keys. They gene
 | Alt+`n`            | `O` | Õ |
 | Alt+`n`            | `A` | Ã |
 | Alt+`n`            | `N` | Ñ |
+| Alt+`,`            | `␣` | , |
+| Alt+`.`            | `␣` | . |
 | Shift+Alt+`s`      | `␣` | \xa0 |
 
 "␣" denotes the space bar.
