@@ -138,22 +138,93 @@ On boot, the US layout (`EN-US`) is active:
 * In ISO mode, it matches the Macintosh US keyboard and can reach all ISO-8859-1 characters, some of which either through (Shift+)Alt/AltGr (e.g. Alt+Shift+`q` will produce `Œ`) or by combining certain (Shift+)Alt/AltGr keys with a second key (e.g. Alt+`u` followed by `a` will produce `ä`).
 
 
-| Key  | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt |
-|-----|---|---|---|---|-----|-----|---|---|-----|---|---|
-| `1` | ¡ |   | `Q` | œ | Œ | `A` |   |   | `Z` |   |   |
-| `2` |   | € | `W` |   |   | `S` | ß |   | `X` | . |   |
-| `3` | £ |   | `E` |   |   | `D` | ð | Ð | `C` |   |   |
-| `4` | ¢ |   | `R` | ® | ‰ | `F` |   |   | `V` |   |   |
-| `5` | § |   | `T` | Þ | þ | `G` | © |   | `B` |   |   |
-| `6` |   |   | `Y` | ¥ |   | `H` |   |   | `N` |   |   |
-| `7` | ¶ |   | `U` |   |   | `J` |   |   | `M` |   |   |
-| `8` |   | ° | `I` |   |   | `K` |   |   | `,` |   |   |
-| `9` | ª | · | `O` | ø |   | `L` |   |   | `.` |   |   |
-| `0` | º |   | `P` |   |   | `;` |   |   | `/` | ÷ | ¿ |
-| `-` |   |   | `[` |   |   | `'` | æ | Æ |
-| `=` |   | ± | `]` |   |   |
-|     |   |   | `\` | « | » |
+| Key          | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt |
+|--------------|---|---|---|---|-----|-----|---|---|-----|---|---|
+|<tt>&#96;</tt>| ▢ |   | `Q` | œ | Œ | `A` | ▢ |   | `Z` |   |   |
+| `1`          | ¡ |   | `W` |   |   | `S` | ß | ▢ | `X` | . |   |
+| `2`          |   | € | `E` | ▢ |   | `D` | ð | Ð | `C` | ▢ |   |
+| `3`          | £ |   | `R` | ® |   | `F` |   |   | `V` | ▢ |   |
+| `4`          | ¢ |   | `T` | Þ | þ | `G` | © |   | `B` |   |   |
+| `5`          | § |   | `Y` | ¥ |   | `H` |   |   | `N` | ▢ |   |
+| `6`          | ▢ |   | `U` | ▢ |   | `J` |   |   | `M` |   |   |
+| `7`          | ¶ |   | `I` |   |   | `K` | ▢ |   | `,` | ▢ |   |
+| `8`          |   | ° | `O` | ø |   | `L` | ▢ |   | `.` |   |   |
+| `9`          | ª | · | `P` |   |   | `;` | ▢ |   | `/` | ÷ | ¿ |
+| `0`          | º |   | `[` |   |   | `'` | æ | Æ |
+| `-`          |   |   | `]` |   |   |
+| `=`          |   | ± | `\` | « | » |
 
+The combinations with a "▢" symbol in the table above are dead keys. They generate additional characters when combined with a second keypress:
+
+| First<br/>Key      | Second<br/>Key | Result |
+|--------------------|-----|---|
+| Alt+`6`            | `e` | ê |
+| Alt+`6`            | `u` | û |
+| Alt+`6`            | `i` | î |
+| Alt+`6`            | `o` | ô |
+| Alt+`6`            | `a` | â |
+| Alt+`6`            | `E` | Ê |
+| Alt+`6`            | `U` | Û |
+| Alt+`6`            | `I` | Î |
+| Alt+`6`            | `O` | Ô |
+| Alt+`6`            | `A` | Â |
+| Alt+`e`            | `e` | é |
+| Alt+`e`            | `y` | ý |
+| Alt+`e`            | `u` | ú |
+| Alt+`e`            | `i` | í |
+| Alt+`e`            | `o` | ó |
+| Alt+`e`            | `a` | á |
+| Alt+`e`            | `E` | É |
+| Alt+`e`            | `Y` | Ý |
+| Alt+`e`            | `U` | Ú |
+| Alt+`e`            | `I` | Í |
+| Alt+`e`            | `O` | Ó |
+| Alt+`e`            | `A` | Á |
+| Alt+`u`            | `e` | ë |
+| Alt+`u`            | `y` | ÿ |
+| Alt+`u`            | `u` | ü |
+| Alt+`u`            | `i` | ï |
+| Alt+`u`            | `o` | ö |
+| Alt+`u`            | `a` | ä |
+| Alt+`u`            | `E` | Ë |
+| Alt+`u`            | `Y` | Ÿ |
+| Alt+`u`            | `U` | Ü |
+| Alt+`u`            | `I` | Ï |
+| Alt+`u`            | `O` | Ö |
+| Alt+`u`            | `A` | Ä |
+| Alt+`,`            | `␣` | , |
+| Alt+`a`            | `␣` | ¯ |
+| Alt+`k`            | `a` | å |
+| Alt+`k`            | `A` | Å |
+| Alt+`l`            | `␣` | - |
+| Alt+`;`            | `=` | × |
+| Alt+<tt>&#96;</tt> | `a` | à |
+| Alt+<tt>&#96;</tt> | `e` | è |
+| Alt+<tt>&#96;</tt> | `i` | ì |
+| Alt+<tt>&#96;</tt> | `o` | ò |
+| Alt+<tt>&#96;</tt> | `u` | ù |
+| Alt+<tt>&#96;</tt> | `A` | À |
+| Alt+<tt>&#96;</tt> | `E` | È |
+| Alt+<tt>&#96;</tt> | `I` | Ì |
+| Alt+<tt>&#96;</tt> | `O` | Ò |
+| Alt+<tt>&#96;</tt> | `U` | Ù |
+| Alt+<tt>&#96;</tt> | `␣` | ` |
+| Alt+`.`            | `␣` | . |
+| Alt+`c`            | `c` | ç |
+| Alt+`c`            | `C` | Ç |
+| Alt+`v`            | `s` | š |
+| Alt+`v`            | `z` | ž |
+| Alt+`v`            | `S` | Š |
+| Alt+`v`            | `Z` | Ž |
+| Alt+`n`            | `o` | õ |
+| Alt+`n`            | `a` | ã |
+| Alt+`n`            | `n` | ñ |
+| Alt+`n`            | `O` | Õ |
+| Alt+`n`            | `A` | Ã |
+| Alt+`n`            | `N` | Ñ |
+| Shift+Alt+`s`      | `␣` | \xa0 |
+
+"␣" denotes the space bar.
 
 #### ROM Keyboard Layouts
 
