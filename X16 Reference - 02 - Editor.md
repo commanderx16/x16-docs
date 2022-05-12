@@ -130,40 +130,67 @@ This is the set of all supported PETSCII control characters. Entries in bold ind
 
 The editor supports multiple keyboard layouts.
 
+### Default Layout
+
+On boot, the US layout (`EN-US`) is active:
+
+* In PETSCII mode, it matches the US layout where possible, and can reach all PETSCII symbols.
+* In ISO mode, it matches the Macintosh US keyboard and can reach all ISO-8859-1 characters, some of which either through (Shift+)Alt/AltGr (e.g. Alt+Shift+`q` will produce `Œ`) or by combining certain (Shift+)Alt/AltGr keys with a second key (e.g. Alt+`u` followed by `a` will produce `ä`).
+
+
+| Key  | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt | Key  | Alt  | S+Alt |
+|-----|---|---|---|---|-----|-----|---|---|-----|---|---|
+| `1` | ¡ |   | `Q` | œ | Œ | `A` |   |   | `Z` |   |   |
+| `2` |   | € | `W` |   |   | `S` | ß |   | `X` | . |   |
+| `3` | £ |   | `E` |   |   | `D` | ð | Ð | `C` |   |   |
+| `4` | ¢ |   | `R` | ® | ‰ | `F` |   |   | `V` |   |   |
+| `5` | § |   | `T` | Þ | þ | `G` | © |   | `B` |   |   |
+| `6` |   |   | `Y` | ¥ |   | `H` |   |   | `N` |   |   |
+| `7` | ¶ |   | `U` |   |   | `J` |   |   | `M` |   |   |
+| `8` |   | ° | `I` |   |   | `K` |   |   | `,` |   |   |
+| `9` | ª | · | `O` | ø |   | `L` |   |   | `.` |   |   |
+| `0` | º |   | `P` |   |   | `;` |   |   | `/` | ÷ | ¿ |
+| `-` |   |   | `[` |   |   | `'` | æ | Æ |
+| `=` |   | ± | `]` |   |   |
+|     |   |   | `\` | « | » |
+
+
 #### ROM Keyboard Layouts
 
-After boot, the US layout (`EN-US/MAC`) is active. Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the following order:
+Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the following order:
 
-| Identifier  | Description                   | Code                                       |
-|-------------|-------------------------------|--------------------------------------------|
-| `EN-US/MAC` | United States - Macintosh     | -                                          |
-| `EN-US/INT` | United States - International | [00020409](http://kbdlayout.info/00020409) |
-| `EN-GB`     | United Kingdom                | [00000809](http://kbdlayout.info/00000809) |
-| `SV-SE`     | Swedish                       | [0000041D](http://kbdlayout.info/0000041D) |
-| `DE-DE`     | German                        | [00000407](http://kbdlayout.info/00000407) |
-| `DA-DK`     | Danish                        | [00000406](http://kbdlayout.info/00000406) |
-| `IT-IT`     | Italian                       | [00000410](http://kbdlayout.info/00000410) |
-| `PL-PL`     | Polish (Programmers)          | [00000415](http://kbdlayout.info/00000415) |
-| `NB-NO`     | Norwegian                     | [00000414](http://kbdlayout.info/00000414) |
-| `HU-HU`     | Hungarian                     | [0000040E](http://kbdlayout.info/0000040E) |
-| `ES-ES`     | Spanish                       | [0000040A](http://kbdlayout.info/0000040A) |
-| `FI-FI`     | Finnish                       | [0000040B](http://kbdlayout.info/0000040B) |
-| `PT-BR`     | Portuguese (Brazil ABNT)      | [00000416](http://kbdlayout.info/00000416) |
-| `CS-CZ`     | Czech                         | [00000405](http://kbdlayout.info/00000405) |
-| `JA-JP`     | Japanese                      | [00000411](http://kbdlayout.info/00000411) |
-| `FR-FR`     | French                        | [0000040C](http://kbdlayout.info/0000040C) |
-| `DE-CH`     | Swiss German                  | [00000807](http://kbdlayout.info/00000807) |
-| `EN-US/DVO` | United States - Dvorak        | [00010409](http://kbdlayout.info/00010409) |
-| `ET-EE`     | Estonian                      | [00000425](http://kbdlayout.info/00000425) |
-| `FR-BE`     | Belgian French                | [0000080C](http://kbdlayout.info/0000080C) |
-| `EN-CA`     | Canadian French               | [00001009](http://kbdlayout.info/00001009) |
-| `IS-IS`     | Icelandic                     | [0000040F](http://kbdlayout.info/0000040F) |
-| `PT-PT`     | Portuguese                    | [00000816](http://kbdlayout.info/00000816) |
-| `HR-HR`     | Croatian                      | [0000041A](http://kbdlayout.info/0000041A) |
-| `SK-SK`     | Slovak                        | [0000041B](http://kbdlayout.info/0000041B) |
-| `SL-SI`     | Slovenian                     | [00000424](http://kbdlayout.info/00000424) |
-| `LV-LV`     | Latvian                       | [00000426](http://kbdlayout.info/00000426) |
-| `LT-LT`     | Lithuanian IBM                | [00000427](http://kbdlayout.info/00000427) |
+| Identifier  | Description                         | Code                                       |
+|-------------|-------------------------------------|--------------------------------------------|
+| `EN-US`     | United States (with Mac extensions) | -                                          |
+| `EN-US/INT` | United States - International       | [00020409](http://kbdlayout.info/00020409) |
+| `EN-GB`     | United Kingdom                      | [00000809](http://kbdlayout.info/00000809) |
+| `SV-SE`     | Swedish                             | [0000041D](http://kbdlayout.info/0000041D) |
+| `DE-DE`     | German                              | [00000407](http://kbdlayout.info/00000407) |
+| `DA-DK`     | Danish                              | [00000406](http://kbdlayout.info/00000406) |
+| `IT-IT`     | Italian                             | [00000410](http://kbdlayout.info/00000410) |
+| `PL-PL`     | Polish (Programmers)                | [00000415](http://kbdlayout.info/00000415) |
+| `NB-NO`     | Norwegian                           | [00000414](http://kbdlayout.info/00000414) |
+| `HU-HU`     | Hungarian                           | [0000040E](http://kbdlayout.info/0000040E) |
+| `ES-ES`     | Spanish                             | [0000040A](http://kbdlayout.info/0000040A) |
+| `FI-FI`     | Finnish                             | [0000040B](http://kbdlayout.info/0000040B) |
+| `PT-BR`     | Portuguese (Brazil ABNT)            | [00000416](http://kbdlayout.info/00000416) |
+| `CS-CZ`     | Czech                               | [00000405](http://kbdlayout.info/00000405) |
+| `JA-JP`     | Japanese                            | [00000411](http://kbdlayout.info/00000411) |
+| `FR-FR`     | French                              | [0000040C](http://kbdlayout.info/0000040C) |
+| `DE-CH`     | Swiss German                        | [00000807](http://kbdlayout.info/00000807) |
+| `EN-US/DVO` | United States - Dvorak              | [00010409](http://kbdlayout.info/00010409) |
+| `ET-EE`     | Estonian                            | [00000425](http://kbdlayout.info/00000425) |
+| `FR-BE`     | Belgian French                      | [0000080C](http://kbdlayout.info/0000080C) |
+| `EN-CA`     | Canadian French                     | [00001009](http://kbdlayout.info/00001009) |
+| `IS-IS`     | Icelandic                           | [0000040F](http://kbdlayout.info/0000040F) |
+| `PT-PT`     | Portuguese                          | [00000816](http://kbdlayout.info/00000816) |
+| `HR-HR`     | Croatian                            | [0000041A](http://kbdlayout.info/0000041A) |
+| `SK-SK`     | Slovak                              | [0000041B](http://kbdlayout.info/0000041B) |
+| `SL-SI`     | Slovenian                           | [00000424](http://kbdlayout.info/00000424) |
+| `LV-LV`     | Latvian                             | [00000426](http://kbdlayout.info/00000426) |
+| `LT-LT`     | Lithuanian IBM                      | [00000427](http://kbdlayout.info/00000427) |
+
+All remaining keyboards are based on the respective Windows layouts. `EN-US/INT` differs from `EN-US` only in Alt/AltGr combinations and some dead keys.
 
 The BASIC command `KEYMAP` allows activating a specific keyboard layout. It can be added to the auto-boot file, e.g.:
 
