@@ -146,43 +146,43 @@ On boot, the US layout (`EN-US`) is active:
 | Alt+`7`           | ¶      |
 | Alt+`9`           | ª      |
 | Alt+`0`           | º      |
-| Alt+`Q`           | œ      |
-| Alt+`R`           | ®      |
-| Alt+`T`           | Þ      |
-| Alt+`Y`           | ¥      |
-| Alt+`O`           | ø      |
+| Alt+`q`           | œ      |
+| Alt+`r`           | ®      |
+| Alt+`t`           | Þ      |
+| Alt+`y`           | ¥      |
+| Alt+`o`           | ø      |
 | Alt+`\`           | «      |
-| Alt+`S`           | ß      |
-| Alt+`D`           | ð      |
-| Alt+`G`           | ©      |
+| Alt+`s`           | ß      |
+| Alt+`d`           | ð      |
+| Alt+`g`           | ©      |
 | Alt+`'`           | æ      |
-| Alt+`X`           | .      |
 | Alt+`/`           | ÷      |
 | Shift+Alt+`2`     | €      |
 | Shift+Alt+`8`     | °      |
 | Shift+Alt+`9`     | ·      |
 | Shift+Alt+`=`     | ±      |
-| Shift+Alt+`Q`     | Œ      |
-| Shift+Alt+`T`     | þ      |
+| Shift+Alt+`q`     | Œ      |
+| Shift+Alt+`t`     | þ      |
 | Shift+Alt+`\`     | »      |
-| Shift+Alt+`D`     | Ð      |
+| Shift+Alt+`d`     | Ð      |
 | Shift+Alt+`'`     | Æ      |
 | Shift+Alt+`/`     | ¿      |
-
 
 The following combinations are dead keys:
 
 * Alt+<tt>&#96;</tt>
 * Alt+`6`
-* Alt+`E`
-* Alt+`U`
-* Alt+`A`
-* Alt+`K`
-* Alt+`L`
+* Alt+`e`
+* Alt+`u`
+* Alt+`p`
+* Alt+`a`
+* Alt+`k`
+* Alt+`l`
 * Alt+`;`
-* Alt+`C`
-* Alt+`V`
-* Alt+`N`
+* Alt+`x`
+* Alt+`c`
+* Alt+`v`
+* Alt+`n`
 * Alt+`,`
 * Alt+`.`
 * Shift+Alt+`S`
@@ -236,11 +236,12 @@ They generate additional characters when combined with a second keypress:
 | Alt+`u`            | `I` | Ï |
 | Alt+`u`            | `O` | Ö |
 | Alt+`u`            | `A` | Ä |
+| Alt+`p`            | `␣` | , |
 | Alt+`a`            | `␣` | ¯ |
 | Alt+`k`            | `a` | å |
 | Alt+`k`            | `A` | Å |
 | Alt+`l`            | `␣` | - |
-| Alt+`;`            | `=` | × |
+| Alt+`x`            | `␣` | . |
 | Alt+`c`            | `c` | ç |
 | Alt+`c`            | `C` | Ç |
 | Alt+`v`            | `s` | š |
@@ -253,9 +254,8 @@ They generate additional characters when combined with a second keypress:
 | Alt+`n`            | `O` | Õ |
 | Alt+`n`            | `A` | Ã |
 | Alt+`n`            | `N` | Ñ |
-| Alt+`,`            | `␣` | , |
-| Alt+`.`            | `␣` | . |
 | Shift+Alt+`s`      | `␣` | \xa0 |
+| Shift+Alt+`;`      | `=` | × |
 
 "␣" denotes the space bar.
 
