@@ -132,7 +132,7 @@ The editor supports multiple keyboard layouts.
 
 ### Default Layout
 
-On boot, the US layout (`EN-US`) is active:
+On boot, the US layout (`ABC/X16`) is active:
 
 * In PETSCII mode, it matches the US layout where possible, and can reach all PETSCII symbols.
 * In ISO mode, it matches the Macintosh US keyboard and can reach all ISO-8859-1 characters. Some characters are reachable through key combinations:
@@ -155,7 +155,9 @@ On boot, the US layout (`EN-US`) is active:
 | Alt+`s`           | ß      |
 | Alt+`d`           | ð      |
 | Alt+`g`           | ©      |
+| Alt+`l`           | ¬      |
 | Alt+`'`           | æ      |
+| Alt+`m`           | µ      |
 | Alt+`/`           | ÷      |
 | Shift+Alt+`2`     | €      |
 | Shift+Alt+`8`     | °      |
@@ -177,7 +179,6 @@ The following combinations are dead keys:
 * Alt+`p`
 * Alt+`a`
 * Alt+`k`
-* Alt+`l`
 * Alt+`;`
 * Alt+`x`
 * Alt+`c`
@@ -240,7 +241,6 @@ They generate additional characters when combined with a second keypress:
 | Alt+`a`            | `␣` | ¯ |
 | Alt+`k`            | `a` | å |
 | Alt+`k`            | `A` | Å |
-| Alt+`l`            | `␣` | - |
 | Alt+`x`            | `␣` | . |
 | Alt+`c`            | `c` | ç |
 | Alt+`c`            | `C` | Ç |
@@ -265,7 +265,7 @@ Pressing the `F9` key cycles through the keyboard layouts stored in ROM, in the 
 
 | Identifier  | Description                         | Code                                       |
 |-------------|-------------------------------------|--------------------------------------------|
-| `EN-US`     | United States (with Mac extensions) | -                                          |
+| `ABC/X16`   | ABC - Extended (X16)                | -                                          |
 | `EN-US/INT` | United States - International       | [00020409](http://kbdlayout.info/00020409) |
 | `EN-GB`     | United Kingdom                      | [00000809](http://kbdlayout.info/00000809) |
 | `SV-SE`     | Swedish                             | [0000041D](http://kbdlayout.info/0000041D) |
@@ -320,7 +320,7 @@ The tables for the active keyboard layout reside in banked RAM, at $A000 on bank
 | $A500-$A57F | Table 10    |
 | $A580-$A58F | big-endian bitfield:<br/>PS/2 scancodes for which Caps means Shift |
 | $A590-$A66F | dead key table |
-| $A670-$A67E | ASCIIZ identifier (e.g. "EN-US/MAC") |
+| $A670-$A67E | ASCIIZ identifier (e.g. "ABC/X16") |
 
 The first byte of each of the 11 tables is the table ID which contains the encoding and the combination of modifiers that this table is for.
 
@@ -364,9 +364,9 @@ Custom layouts can be loaded from disk like this:
 
 	LOAD"KEYMAP",8,0,$A000
 
-Here is an example that activates a layout derived from "EN-US/MAC", with unshifted Y and Z swapped in PETSCII mode:
+Here is an example that activates a layout derived from "ABC/X16", with unshifted Y and Z swapped in PETSCII mode:
 
-	100 KEYMAP"EN-US/MAC"                             :REM START WITH US LAYOUT
+	100 KEYMAP"ABC/X16"                               :REM START WITH DEFAULT LAYOUT
 	110 POKE0,0                                       :REM ACTIVATE RAM BANK 0
 	120 FORI=0TO11:B=$A000+128*I:IFPEEK(B)<>0THENNEXT :REM SEARCH FOR TABLE $00
 	130 POKEB+$1A,ASC("Y")                            :REM SET SCAN CODE $1A ('Z') to 'Y'
