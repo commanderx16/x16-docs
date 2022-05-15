@@ -31,23 +31,27 @@ In addition to PETSCII, the X16 also supports the ISO-8859-15 character encoding
 
 This is the encoding:
 
-	   0123456789ABCDEF
-	0x|                |
-	1x|                |
-	2x| !"#$%&'()*+,-./|
-	3x|0123456789:;<=>?|
-	4x|@ABCDEFGHIJKLMNO|
-	5x|PQRSTUVWXYZ[\]^_|
-	6x|`abcdefghijklmno|
-	7x|pqrstuvwxyz{|}~ |
-	8x|                |
-	9x|                |
-	Ax| ¡¢£€¥Š§š©ª«¬ ®¯|
-	Bx|°±²³Žµ¶·ž¹º»ŒœŸ¿|
-	Cx|ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ|
-	Dx|ÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß|
-	Ex|àáâãäåæçèéêëìíîï|
-	Fx|ðñòóôõö÷øùúûüýþÿ|
+|        |x0 |x1 |x2 |x3 |x4 |x5 |x6 |x7 |x8 |x9 |xA |xB |xC |xD |xE |xF |
+|--------|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **0x** |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+| **1x** |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+| **2x** |   | ! | " | # | $ | % | & | ' | ( | ) | * | + | , | - | . | / |
+| **3x** | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | : | ; | < | = | > | ? |
+| **4x** | @ | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O |
+| **5x** | P | Q | R | S | T | U | V | W | X | Y | Z | [ | \ | ] | ^ | _ |
+| **6x** | ` | a | b | c | d | e | f | g | h | i | j | k | l | m | n | o |
+| **7x** | p | q | r | s | t | u | v | w | x | y | z | { | | | } | ~ |   |
+| **8x** |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+| **9x** |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+| **Ax** |   | ¡ | ¢ | £ | € | ¥ | Š | § | š | © | ª | « | ¬ | 🦋 | ® | ¯ |
+| **Bx** | ° | ± | ² | ³ | Ž | µ | ¶ | · | ž | ¹ | º | » | Œ | œ | Ÿ | ¿ |
+| **Cx** | À | Á | Â | Ã | Ä | Å | Æ | Ç | È | É | Ê | Ë | Ì | Í | Î | Ï |
+| **Dx** | Ð | Ñ | Ò | Ó | Ô | Õ | Ö | × | Ø | Ù | Ú | Û | Ü | Ý | Þ | ß |
+| **Ex** | à | á | â | ã | ä | å | æ | ç | è | é | ê | ë | ì | í | î | ï |
+| **Fx** | ð | ñ | ò | ó | ô | õ | ö | ÷ | ø | ù | ú | û | ü | ý | þ | ÿ |
+
+* The non-printable areas $00-$1F and $80-$9F in the character set are filled with inverted variants of the codes $40-$5F and $60-$7F, respectively.
+* The code $AD is a non-printable soft hyphen in ISO-8859-1. The ROM character set contains the Commander X16 logo at this location.
 
 ISO mode can be enabled and disabled using two new control codes:
 
@@ -162,17 +166,20 @@ On boot, the US layout (`ABC/X16`) is active:
 | Shift+Alt+`2`     | €      |
 | Shift+Alt+`8`     | °      |
 | Shift+Alt+`9`     | ·      |
-| Shift+Alt+`-`     | \xad (SHY) |
+| Shift+Alt+`-`     | X16 logo |
 | Shift+Alt+`=`     | ±      |
 | Shift+Alt+`q`     | Œ      |
 | Shift+Alt+`t`     | þ      |
 | Shift+Alt+`\`     | »      |
 | Shift+Alt+`a`     | ¹      |
 | Shift+Alt+`d`     | Ð      |
+| Shift+Alt+`k`     | X16 logo |
 | Shift+Alt+`'`     | Æ      |
 | Shift+Alt+`c`     | ³      |
 | Shift+Alt+`b`     | ²      |
 | Shift+Alt+`/`     | ¿      |
+
+(The X16 logo is code point \xad, SHY, soft-hyphen.)
 
 The following combinations are dead keys:
 
