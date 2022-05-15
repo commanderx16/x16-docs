@@ -162,12 +162,16 @@ On boot, the US layout (`ABC/X16`) is active:
 | Shift+Alt+`2`     | €      |
 | Shift+Alt+`8`     | °      |
 | Shift+Alt+`9`     | ·      |
+| Shift+Alt+`-`     | \xad (SHY) |
 | Shift+Alt+`=`     | ±      |
 | Shift+Alt+`q`     | Œ      |
 | Shift+Alt+`t`     | þ      |
 | Shift+Alt+`\`     | »      |
+| Shift+Alt+`a`     | ¹      |
 | Shift+Alt+`d`     | Ð      |
 | Shift+Alt+`'`     | Æ      |
+| Shift+Alt+`c`     | ³      |
+| Shift+Alt+`b`     | ²      |
 | Shift+Alt+`/`     | ¿      |
 
 The following combinations are dead keys:
