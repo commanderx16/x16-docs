@@ -139,7 +139,7 @@ The editor supports multiple keyboard layouts.
 On boot, the US layout (`ABC/X16`) is active:
 
 * In PETSCII mode, it matches the US layout where possible, and can reach all PETSCII symbols.
-* In ISO mode, it matches the Macintosh US keyboard and can reach all ISO-8859-1 characters. Some characters are reachable through key combinations:
+* In ISO mode, it matches the Macintosh US keyboard and can reach all ISO-8859-15 characters. Some characters are reachable through key combinations:
 
 | Key               | Result |
 |-------------------|--------|
