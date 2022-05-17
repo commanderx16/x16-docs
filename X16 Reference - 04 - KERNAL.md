@@ -28,7 +28,8 @@ The KERNAL version can be read from location $FF80 in ROM. A value of $FF indica
 
 For applications to remain compatible between different versions of the ROM, they can rely upon:
 
-* the KERNAL API
+* the KERNAL API calls at $FF81-$FFF3
+* the KERNAL vectors at $0314-$0333
 
 The following features must not be relied upon:
 
@@ -89,7 +90,24 @@ Some notes:
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
 * The `MEMTOP` call additionally returns the number of available RAM banks in the .A register.
 * The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200+) are generally **not** compatible with the C64.
-* The vectors ($0300-$0333) are fully compatible with the C64.
+
+The KERNAL vectors ($0314-$0333) are fully compatible with the C64:
+
+$0314-$0315: `CINV` – IRQ Interrupt Routine  
+$0316-$0317: `CBINV` – BRK Instruction Interrupt  
+$0318-$0319: `NMINV` – Non-Maskable Interrupt  
+$031A-$031B: `IOPEN` – Kernal OPEN Routine  
+$031C-$031D: `ICLOSE` – Kernal CLOSE Routine  
+$031E-$031F: `ICHKIN` – Kernal CHKIN Routine  
+$0320-$0321: `ICKOUT` – Kernal CKOUT Routine  
+$0322-$0323: `ICLRCH` – Kernal CLRCHN Routine  
+$0324-$0325: `IBASIN` – Kernal CHRIN Routine  
+$0326-$0327: `IBSOUT` – Kernal CHROUT Routine  
+$0328-$0329: `ISTOP` – Kernal STOP Routine  
+$032A-$032B: `IGETIN` – Kernal GETIN Routine  
+$032C-$032D: `ICLALL` – Kernal CLALL Routine  
+$0330-$0331: `ILOAD` – Kernal LOAD Routine  
+$0332-$0333: `ISAVE` – Kernal SAVE Routine  
 
 ### Commodore 128 API Compatibility
 
