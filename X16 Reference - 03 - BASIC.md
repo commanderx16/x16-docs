@@ -20,8 +20,8 @@ The Commander X16 BASIC interpreter is 100% backwards-compatible with the Commod
 	* `CHR$(18)`: reverse
 	* `CHR$(14)`: switch to upper/lowercase font
 	* `CHR$(142)`: switch to uppercase/graphics font
-* The BASIC vector table ($0300-0$30B)
-* SYS arguments in RAM ($0300-$0312).
+* The BASIC vector table ($0300-0$30B, $0311/$0312)
+* SYS arguments in RAM ($030C-$030F).
 	* `$030C`: X Register
 	* `$030D`: Y Register
 	* `$030E`: Status Register/Flags
