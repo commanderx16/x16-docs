@@ -20,13 +20,14 @@ The Commander X16 BASIC interpreter is 100% backwards-compatible with the Commod
 	* `CHR$(18)`: reverse
 	* `CHR$(14)`: switch to upper/lowercase font
 	* `CHR$(142)`: switch to uppercase/graphics font
+* The BASIC vector table and SYS arguments in RAM ($0300-$0312)
 
 Because of the differences in hardware, the following functions and statements are incompatible between C64 and X16 BASIC programs.
 
 * `POKE`: write to a memory address
 * `PEEK`: read from a memory address
 * `WAIT`: wait for memory contents
-* `SYS`: execute machine language code
+* `SYS`: execute machine language code (when used with ROM code)
 
 The BASIC interpreter also currently shares all problems of the C64 version, like the slow garbage collector.
 
