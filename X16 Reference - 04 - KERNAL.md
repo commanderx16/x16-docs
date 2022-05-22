@@ -188,8 +188,9 @@ $FEE4: `memory_fill` - fill memory region with a byte value
 $FEE7: `memory_copy` - copy memory region  
 $FEEA: `memory_crc` - calculate CRC16 of memory region  
 $FEED: `memory_decompress` - decompress LZSA2 block  
-$FF74: `fetch` - read a byte from any RAM or ROM bank
+$FF74: `fetch` - read a byte from any RAM or ROM bank  
 $FF77: `stash` - write a byte to any RAM bank
+
 <!---
 *** undocumented - we might remove it
 $FF7A: `cmpare` - compare a byte on any RAM or ROM bank
