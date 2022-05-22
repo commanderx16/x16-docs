@@ -114,8 +114,8 @@ $0332-$0333: `ISAVE` – Kernal SAVE Routine
 In addition, the X16 supports a subset of the C128 API additions:
 
 $FF4A: `CLOSE_ALL` – close all files on a device  
-$FF8D: `LKUPLA` – search tables for given LA  
-$FF8A: `LKUPSA` – search tables for given SA  
+$FF59: `LKUPLA` – search tables for given LA  
+$FF5C: `LKUPSA` – search tables for given SA  
 $FF65: `PFKEY` – program a function key *[not yet implemented]*  
 $FF7D: `PRIMM` – print string following the caller’s code  
 
