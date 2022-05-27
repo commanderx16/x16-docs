@@ -51,7 +51,7 @@ This is the encoding:
 | **Fx** | ð | ñ | ò | ó | ô | õ | ö | ÷ | ø | ù | ú | û | ü | ý | þ | ÿ |
 
 * The non-printable areas $00-$1F and $80-$9F in the character set are filled with inverted variants of the codes $40-$5F and $60-$7F, respectively.
-* The code $AD is a non-printable soft hyphen in ISO-8859-1. The ROM character set contains the Commander X16 logo at this location.
+* The code $AD is a non-printable soft hyphen in ISO-8859-15. The ROM character set contains the Commander X16 logo at this location.
 
 ISO mode can be enabled and disabled using two new control codes:
 
