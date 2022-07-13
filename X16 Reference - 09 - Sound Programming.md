@@ -4,7 +4,7 @@
 
 ### YM2151 (OPM) FM Synthesis
 
-The Yamaha YM2151 (OPM) synthesis chip is an FM synthesis device in the Commander X16.
+The Yamaha YM2151 (OPM) sound chip is an FM synthesizer ASIC in the Commander X16.
 It is connected to the system bus at I/O address `0x9F40` (address register) and at `0x9F41` (data register). It has 8 independent voices with 4 FM operators each. Each
 voice is capable of left/right/both audio channel output. The operators may be connected in one of 8 pre-defined "connection algorithms" in order to produce a wide
 variety of timbres.
@@ -66,6 +66,106 @@ Note that it is not *required* that you read `YM_status`, only that writes occur
     70 POKE YD,$78+1 : REM KEY-ON VOICE 1 TO PLAY THE NOTE
     80 FOR I=1 TO 100 : NEXT I : REM DELAY WHILE NOTE PLAYS
     90 POKE YD,$00+1 : REM RELEASE THE NOTE
+
+### Getting sound out of the YM2151
+
+While there is a large number of parameters that affect the sound of the YM2151, its operation can be thought of in simplified terms if you consider that there are basically three components to deal with: Instrument configuration (patch), voice pitch selection,
+and "pressing/releasing" the "key" to trigger and end notes. It's essentially the
+same as using a music keyboard. Pressing an instrument button (e.g. Marimba) makes it
+sound like a Marimba. Once this is done, you press a key on the keyboard to play a note,
+and release it to stop the note. With the YM, loading a patch entails setting all of
+the various operator registers for the voice(s) you want the instrument to be on.
+On the music keyboard, pitch and note stop/start are done with a single piano key. In the
+YM2151, these are two distinct actions.
+
+#### Loading a patch
+
+The patch configuration is by far the most complicated aspect of using the YM. If you take as given that a
+voice has a patch loaded, then playing notes on it is fairly straightforward. For the
+moment, we will assume a pre-patched voice.
+
+  To get started quickly, here is some BASIC code to patch voice 0 with a marimba tone:
+
+    5 YA=$9F40 : YD=$9F41 : V=0
+    10 REM: MARIMBA PATCH FOR YM VOICE 0 (SET V=0..7 FOR OTHER VOICES)
+    20 DATA $DC,$00,$1B,$67,$61,$31,$21,$17,$1F,$0A,$DF,$5F,$DE
+    30 DATA $DE,$0E,$10,$09,$07,$00,$05,$07,$04,$FF,$A0,$16,$17
+    40 READ D
+    50 POKE YA,$20+V : POKE YD,D
+    60 FOR A=$38 TO $F8 STEP 8
+    70 READ D : POKE YA,A+V : POKE YD,D
+    80 NEXT A
+
+Once a voice has been patched as above, you can now POKE notes into it with very
+few commands for each note.
+
+#### Pitch Control
+
+**YM Registers:**
+* `KC` = $28 + channel number
+* `KF` = $30 + channel number
+
+For note selection, each voice has two parameters: `KC` (Key Code) and `KF` (Key Fraction).
+These are set in register ranges $28 and $30, respectively. The KC codes correspond
+directly with the notes of the chromatic scale. The `KF` value can even be ignored
+for basic musical playback, being important for vibrato or pitch bend effects. `KF` raises
+the pitch selected in `KC` by 1/64th increments of the way up to the next semitone.
+
+Like all registers in the YM, whenever a channel's `KC` or `KF` value is written, it takes effect immediately. If a note is playing, its pitch immediately changes without re-triggering the ADSR envelope. Thus, it is not important whether you write the note first or key the note first.
+
+###### Key Code (KC):
+`KC` codes are "conveniently" arranged so that the upper nybble is the octave (0-7) and the
+lower nybble is the pitch. The pitches are arranged as follows within an octave:
+
+Note|C#|D|D#|E|F|F#|G|G#|A|A#|B|C
+--|-|-|-|-|-|-|-|-|-|-|-|-
+Low Nybble (hex)|0|1|2|4|5|6|8|9|A|C|D|E
+
+(Note that every 4th value is skipped.)
+
+Combine the above with an octave to get a note's `KC` value. For instance: concert
+A (440hz) is (by sheer coincidence) `$4A`. Middle C is `$3E`, and so forth.
+
+###### Key Fraction (KF):
+`KF` values are written into the top 6 bits of the voice's `KF` register. Basically the value is `0, 1<<2, 2<<2, .. 63<<2`
+
+#### Key On/Off: (KON)
+
+YM Register $08 is the register for controlling the key on/off state for all 8 channels.
+
+Patches consist mostly of ADSR envelope parameters, one set for each of the 4 operators
+in the channel. Whenever a note begins (key ON), the operators go through the progression
+of attack, decay, sustain. Whenever an active note is released (key OFF) it goes through
+the release cycle until the volume reaches zero, and remains silent until the next key ON
+event. If you are familiar with the C64 SID chip, this is the same as the "gate" bit on
+that chip.
+
+The YM2151 allows you to gate the ADSR envelopes of the 4 operators of a channel independently. However, for basic operation, you can simply key all 4 together in a single
+write. The value written into register $08 contains both the desired key state (on/off) and the channel number.
+
+* Key ON = $78 + channel number
+* Key OFF = $0 + channel number
+
+So to release the note in channel 4: write $08 to `YM_address` ($9F40) and then write $04 to `YM_data` ($9F41).
+
+To begin a note on channel 7, write $08 into `YM_address` and then write $7F ($78+7) into `YM_data`
+
+If the current key state of a channel is not known, you can write key off and then key on immediately (after waiting for the YM busy period to end, of course):
+
+    POKE $9F40,$08 : REM SELECT KEY ON/OFF REGISTER
+    POKE $9F41,$07 : REM KEY OFF FOR VOICE 7
+    POKE $9F41,$7F : REM KEY ON  FOR VOICE 7
+
+Remember: BASIC is slow enough that you do not need to poll the `YM_status` byte, but assembly and other languages will need to do so.
+
+### Intro Conclusion
+
+This concludes the basic introduction to the YM2151 chip. This should be enough to
+get basic utilization of the chip working. In summary, the steps to make sound are to load patch data into the channel(s) desired for playback, then loop through music data sending notes (`KF`) and key off/on events to the chip. For instrument patch settings, you can
+either use a music tool such as a chiptune tracker or YM2151 VST plugin to interactively
+design a patch, and then write down the various parameter values for entry into the YM,
+or use OPM patch files for reference, as they contain the raw bytes in plaintext in the
+order used above in the Marimba patch BASIC code example.
 
 ### YM2151 Internal Addressing
 
