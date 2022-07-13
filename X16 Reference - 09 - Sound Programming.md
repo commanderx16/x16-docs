@@ -174,5 +174,218 @@ The YM register address space can be thought of as being divided into 3 ranges:
 Range|Type|Description
 --|---|----
 00 .. 1F|Global Values|Affect individual global parameters such as LFO frequency, noise enable, etc.
-20 .. 3F|Channel CFG|Parameters in groups of 8, one per channel. Affect the whole channel.
+20 .. 3F|Channel CFG|Parameters in groups of 8, one per channel. These affect the whole channel.
 40 .. FF|Operator CFG|Parameters in groups of 32 - these map to individual operators of each voice.
+
+### YM2151 Register Map
+
+<table>
+  <tr>
+    <th rowspan="2">Register Range</th>
+    <th colspan="8">Register bits</th>
+    <th rowspan="2">Description
+  </tr>
+  <tr>
+    <th>7</th>
+    <th>6</th>
+    <th>5</th>
+    <th>4</th>
+    <th>3</th>
+    <th>2</th>
+    <th>1</th>
+    <th>0</th>
+  </tr>
+  <tr>
+    <td>$20 + channel</td>
+    <td colspan="2">RL</td>
+    <td colspan="3">FB</td>
+    <td colspan="3">CON</td>
+    <td rowspan="4">
+      <dl>
+        <dt>RL</dt><dd>Right/Left Output Enable</dd>
+        <dt>FB</dt><dd>M1 Feedback Level</dd>
+        <dt>CON</dt><dd>Operator connection algorithm</dd>
+        <dt>KC</dt><dd>Key Code</dd>
+        <dt>KF</dt><dd>Key Fraction</dd>
+        <dt>PMS</dt><dd>Phase Modulation Sensitivity</dd>
+        <dt>AMS</dt><dd>Amplitude Modulation Sensitivity</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>$28 + channel</td>
+    <td>X</td>
+    <td colspan="7">KC</td>
+  </tr>
+  <tr>
+    <td>$30 + channel</td>
+    <td colspan="6">KF</td>
+    <td>X</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>$38 + channel</td>
+    <td>X</td>
+    <td colspan="3">PMS</td>
+    <td>X</td>
+    <td>X</td>
+    <td colspan="2">AMS</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th rowspan="2">Register<br />Range</th>
+    <th rowspan="2">Operator</th>
+    <th colspan="8">Register Bits</th>
+    <th rowspan="2">Description</th>
+  </tr>
+  <tr>
+    <th>7</th>
+    <th>6</th>
+    <th>5</th>
+    <th>4</th>
+    <th>3</th>
+    <th>2</th>
+    <th>1</th>
+    <th>0</th>
+  </tr>
+  <tr>
+    <td rowspan="4" valign="top">$40</td>
+    <td>M1: $40+channel</td>
+    <td rowspan="4" >X</td>
+    <td rowspan="4" colspan="3">DT1</td>
+    <td rowspan="4" colspan="4">MUL</td>
+    <td rowspan="4" valign="top">
+      <dl>
+        <dt>DT1</dt><dd>Detune Amount (fine)</dd>
+        <dt>MUL</dt><dd>Frequency Multiplier</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>M2: $48+channel</td>
+  </tr>
+  <tr>
+    <td>C1: $50+channel</td>
+  </tr>
+  <tr>
+    <td>C2: $58+channel</td>
+  </tr>
+  <tr>
+    <td rowspan="4" valign="top">$60</td>
+    <td>M1: $60+channel</td>
+    <td rowspan="4" >X</td>
+    <td rowspan="4" colspan="7">TL</td>
+    <td rowspan="4" valign="top">
+      <dl>
+        <dt>TL</dt><dd>Total Level (volume attenuation)<br/>
+                       (0=max, $7F=min)
+        </dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>M2: $68+channel</td>
+  </tr>
+  <tr>
+    <td>C1: $70+channel</td>
+  </tr>
+  <tr>
+    <td>C2: $78+channel</td>
+  </tr>
+  <tr>
+    <td rowspan="4" valign="top">$80</td>
+    <td>M1: $80+channel</td>
+    <td rowspan="4" colspan="2">KS</td>
+    <td rowspan="4" >X</td>
+    <td rowspan="4" colspan="5">AR</td>
+    <td rowspan="4" valign="top">
+      <dl>
+        <dt>KS</dt><dd>Key Scaling (ADSR rate scaling)</dd>
+        <dt>AR</dt><dd>Attack Rate</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>M2: $88+channel</td>
+  </tr>
+  <tr>
+    <td>C1: $90+channel</td>
+  </tr>
+  <tr>
+    <td>C2: $98+channel</td>
+  </tr>
+  <tr>
+    <td rowspan="4" valign="top">$A0</td>
+    <td>M1: $A0+channel</td>
+    <td rowspan="4">A<br />M<br /><br />E<br />n<br />a</td>
+    <td rowspan="4" >X</td>
+    <td rowspan="4" >X</td>
+    <td rowspan="4" colspan="5">D1R</td>
+    <td rowspan="4" valign="top">
+      <dl>
+        <dt>AM-Ena</dt><dd>Amplitude Modulation Enable</dd>
+        <dt>D1R</dt><dd>Decay Rate 1<br />
+                        (From peak down to sustain level)
+        </dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>M2: $A8+channel</td>
+  </tr>
+  <tr>
+    <td>C1: $B0+channel</td>
+  </tr>
+  <tr>
+    <td>C2: $B8+channel</td>
+  </tr>
+  <tr>
+    <td rowspan="4" valign="top">$C0</td>
+    <td>M1: $C0+channel</td>
+    <td rowspan="4" colspan="2">DT2</td>
+    <td rowspan="4" >X</td>
+    <td rowspan="4" colspan="5">D2R</td>
+    <td rowspan="4" valign="top">
+      <dl>
+        <dt>DT2</dt><dd>Detune Amount (coarse)</dd>
+        <dt>D2R</dt><dd>Decay Rate 2<br />
+                        (During sustain phase)
+        </dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>M2: $C8+channel</td>
+  </tr>
+  <tr>
+    <td>C1: $D0+channel</td>
+  </tr>
+  <tr>
+    <td>C2: $D8+channel</td>
+  </tr>
+  <tr>
+    <td rowspan="4" valign="top">$E0</td>
+    <td>M1: $E0+channel</td>
+    <td rowspan="4" colspan="4">D1L</td>
+    <td rowspan="4" colspan="4">RR</td>
+    <td rowspan="4" valign="top">
+      <dl>
+        <dt>D1L</dt><dd>Decay 1 Level (Sustain level)<br />
+                        Level at which decay switches from D1R to D2R
+        </dd>
+        <dt>RR</dt><dd>Release Rate</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>M2: $E8+channel</td>
+  </tr>
+  <tr>
+    <td>C1: $F0+channel</td>
+  </tr>
+  <tr>
+    <td>C2: $F8+channel</td>
+  </tr>
+</table>
