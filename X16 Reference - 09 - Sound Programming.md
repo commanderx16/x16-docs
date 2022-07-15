@@ -25,9 +25,9 @@ to know the values in the registers, you must store a copy of the values somewhe
 
 #### YM Write Procedure
 
-* 1: Ensure YM is not busy: Check `BUSY` flag by reading from `YM_data`
-* 2: Select the desired internal register address by writing it into `YM_address`
-* 3: Write the new value for this register into `YM_data`
+1. Ensure YM is not busy: Check `BUSY` flag by reading from `YM_data`
+2. Select the desired internal register address by writing it into `YM_address`
+3. Write the new value for this register into `YM_data`
 
 **Notes:**
 
@@ -41,19 +41,20 @@ Note that it is not *required* that you read `YM_status`, only that writes occur
 
   **Assembly language example:**
 
-      ...
-      LDX #$08  ; .X = YM internal register address
-      LDY #$04  ; .Y = Value to be written there
-      JSR ym_write
-      ...
-
     ym_write:
       BIT YM_data      ; check busy flag
       BMI ym_write     ; wait until busy flag is clear
-      STX YM_addr      ; select YM register $08 (Key-Off/On)
+      STX YM_addr      ; .X = YM register address
       NOP              ; slight pause before writing data
-      STY YM_data      ; write $04 into YM internal register $08.
+      STY YM_data      ; .Y = Value to be written into YM register
       RTS
+
+      ...
+      LDX #$08  ; Select YM register $08 (Key-Off/On)
+      LDY #$04  ; Write $04 (Release note on channel 4).
+      JSR ym_write
+      ...
+
 
   **BASIC Example:**
 
@@ -374,21 +375,21 @@ Range|Type|Description
   </tr>
   <tr>
     <td>$28 + channel</td>
-    <td>X</td>
+    <td>.</td>
     <td colspan="7">KC</td>
   </tr>
   <tr>
     <td>$30 + channel</td>
     <td colspan="6">KF</td>
-    <td>X</td>
-    <td>X</td>
+    <td>.</td>
+    <td>.</td>
   </tr>
   <tr>
     <td>$38 + channel</td>
-    <td>X</td>
+    <td>.</td>
     <td colspan="3">PMS</td>
-    <td>X</td>
-    <td>X</td>
+    <td>.</td>
+    <td>.</td>
     <td colspan="2">AMS</td>
   </tr>
 </table>
@@ -414,7 +415,7 @@ Range|Type|Description
   <tr>
     <td rowspan="4" valign="top">$40</td>
     <td>M1: $40+channel</td>
-    <td rowspan="4" >X</td>
+    <td rowspan="4" >.</td>
     <td rowspan="4" colspan="3">DT1</td>
     <td rowspan="4" colspan="4">MUL</td>
     <td rowspan="4" valign="top">
