@@ -179,6 +179,166 @@ Range|Type|Description
 
 ### YM2151 Register Map
 
+##### Global Registers:
+<table>
+  <tr>
+    <th rowspan="2">Addr</th>
+    <th rowspan="2">Register</th>
+    <th colspan="8">Bits</th>
+    <th rowspan="2">Description</th>
+  </tr>
+  <tr>
+    <th>7</th>
+    <th>6</th>
+    <th>5</th>
+    <th>4</th>
+    <th>3</th>
+    <th>2</th>
+    <th>1</th>
+    <th>0</th>
+  </tr>
+  <tr>
+    <td>$01</td>
+    <td>Test Register</td>
+    <td>!</td>
+    <td>!</td>
+    <td>!</td>
+    <td>!</td>
+    <td>!</td>
+    <td>!</td>
+    <TD>LR</TD>
+    <td>!</td>
+    <td>
+      Bit 1 is the LFO reset bit. Setting it disables the LFO and holds the oscillator at 0. Clearing it enables the LFO.<br />
+      All other bits control various test functions and should not be written into.
+    </td>
+  </tr>
+  <tr>
+    <td>$08</td>
+    <td>Key Control</td>
+    <td>.</td>
+    <td>C2</td>
+    <td>M2</td>
+    <td>C1</td>
+    <td>M1</td>
+    <td colspan="3">CHA</td>
+    <td>
+      Starts and Releases notes on the 8 channels.<br />
+      Setting/Clearing bits for M1,C1,M2,C2 controls the key state
+      for those operators on channel CHA.<br />
+      NOTE: The operator order is different than the order they
+      appear in the Operator configuration registers!
+    </td>
+  </tr>
+  <tr>
+    <td>$0F</td>
+    <td>Noise Control</td>
+    <td>NE</td>
+    <td>.</td>
+    <td>.</td>
+    <td colspan="5">NFRQ</td>
+    <td>
+      NE = Noise Enable<br />
+      NFRQ = Noise Frequency<br />
+      When eabled, C2 of channel 7 will use a noise waveform instead
+      of a sine waveform.
+    </td>
+  </tr>
+  <tr>
+    <td>$10</td>
+    <td>Ta High</td>
+    <td colspan="8">CLKA1</td>
+    <td>Top 8 bits of Timer A period setting</td>
+  </tr>
+  <tr>
+    <td>$11</td>
+    <td>Ta Low</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td colspan="2">CLKA2</td>
+    <td>Bottom 2 bits of Timer A period setting</td>
+  </tr>
+  <tr>
+    <td>$12</td>
+    <td>Timer B</td>
+    <td colspan="8">CLKB</td>
+    <td>Timer B period setting</td>
+  </tr>
+  <tr>
+    <td colspan="2"></td>
+    <th>7</th>
+    <th>6</th>
+    <th>5</th>
+    <th>4</th>
+    <th>3</th>
+    <th>2</th>
+    <th>1</th>
+    <th>0</th>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>$14</td>
+    <td>IRQ Control</td>
+    <td>CSM</td>
+    <td>.</td>
+    <td colspan="2">Clock ACK</td>
+    <td colspan="2">IRQ EN</td>
+    <td colspan="2">Clock Start</td>
+    <td>
+      CSM: When a timer expires, trigger note key-on for all channels.<br />
+      For the other 3 fields, lower bit = Timer A, upper bit = Timer B.<br />
+      Clock ACK: clears the timer's bit in the YM_status byte and acknowledges the IRQ.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>$18</td>
+    <td>LFO Freq.</td>
+    <td colspan="8">LFRQ</td>
+    <td>Sets LFO frequency.<br />
+    $00 = ~0.008Hz<br />
+    $FF = ~32.6Hz</td>
+  </tr>
+  <tr>
+    <td rowspan="2">$19</td>
+    <td rowspan="2">LFO Amplitude</td>
+    <td>0</td>
+    <td colspan="7">AMD</td>
+    <td rowspan="2">
+      AMD = Amplitude Modulation Depth<br />
+      PMD = Phase Modulation (vibrato) Depth<br />
+      Bit 7 determines which parameter is being set when writing into
+      this register.
+    </td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td colspan="7">PMD
+  <tr>
+    <td>$1B</td>
+    <td>CT / LFO Waveform</td>
+    <td colspan="2">CT</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td colspan="2">W</td>
+    <td>
+      CT: sets output pins CT1 and CT1 high or low. (not connected to anything in X16)<br />
+      W: LFO Waveform: 0-4 = Saw, Square, Triange, Noise<br />
+      For sawtooth: PM->////  AM->\\\\
+    </td>
+  </tr>
+</table>
+
+
+
+
+##### Channel CFG Registers:
 <table>
   <tr>
     <th rowspan="2">Register Range</th>
@@ -233,6 +393,7 @@ Range|Type|Description
   </tr>
 </table>
 
+##### Operator CFG Registers:
 <table>
   <tr>
     <th rowspan="2">Register<br />Range</th>
@@ -275,7 +436,7 @@ Range|Type|Description
   <tr>
     <td rowspan="4" valign="top">$60</td>
     <td>M1: $60+channel</td>
-    <td rowspan="4" >X</td>
+    <td rowspan="4" >.</td>
     <td rowspan="4" colspan="7">TL</td>
     <td rowspan="4" valign="top">
       <dl>
@@ -298,7 +459,7 @@ Range|Type|Description
     <td rowspan="4" valign="top">$80</td>
     <td>M1: $80+channel</td>
     <td rowspan="4" colspan="2">KS</td>
-    <td rowspan="4" >X</td>
+    <td rowspan="4" >.</td>
     <td rowspan="4" colspan="5">AR</td>
     <td rowspan="4" valign="top">
       <dl>
@@ -320,8 +481,8 @@ Range|Type|Description
     <td rowspan="4" valign="top">$A0</td>
     <td>M1: $A0+channel</td>
     <td rowspan="4">A<br />M<br /><br />E<br />n<br />a</td>
-    <td rowspan="4" >X</td>
-    <td rowspan="4" >X</td>
+    <td rowspan="4" >.</td>
+    <td rowspan="4" >.</td>
     <td rowspan="4" colspan="5">D1R</td>
     <td rowspan="4" valign="top">
       <dl>
@@ -345,7 +506,7 @@ Range|Type|Description
     <td rowspan="4" valign="top">$C0</td>
     <td>M1: $C0+channel</td>
     <td rowspan="4" colspan="2">DT2</td>
-    <td rowspan="4" >X</td>
+    <td rowspan="4" >.</td>
     <td rowspan="4" colspan="5">D2R</td>
     <td rowspan="4" valign="top">
       <dl>
