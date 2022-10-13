@@ -15,7 +15,7 @@ The editor's default mode is 80x60 text mode. The following text mode resolution
 | $04  | 40x15 text  |
 | $05  | 20x30 text  |
 | $06  | 20x15 text  |
-| $80  | 320x200@256c<br/>40x25 text |
+| $80  | 320x240@256c<br/>40x30 text |
 
 Mode $80 contains two layers: a text layer on top of a graphics screen. In this mode, text color 0 is translucent instead of black.
 
