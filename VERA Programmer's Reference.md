@@ -331,7 +331,7 @@ The video output mode can be selected using OUT_MODE in DC_VIDEO.
 
 Setting **'Chroma Disable'** disables output of chroma in NTSC composite mode and will give a better picture on a monochrome display. *(Setting this bit will also disable the chroma output on the S-video output.)*
 
-**'Current Field'** is a read-only bit which reflects the active interlaced field in composite and RGB modes. (0: even, 1: odd)
+**'Current Field'** is a read-only bit which reflects the active interlaced field in composite and RGB modes. In non-interlaced modes, this reflects if the current line is even or odd. (0: even, 1: odd)
 
 Setting **'Layer0 Enable'** / **'Layer1 Enable'** / **'Sprites Enable'** will respectively enable output from layer0 / layer1 and the sprites renderer.
 
