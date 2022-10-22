@@ -20,6 +20,73 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 	* Commodore Serial Bus ("IEC")
 	* I2C bus
 
+
+### KERNAL calls
+
+| Label | Address | Class | Description | Inputs | Affects | Origin |
+|-|-|-|-|-|-|-|
+| `SETMSG` | `$FF90` | ChIO | Set verbosity | | | C64 |
+| `READST` | `$FFB7` | ChIO | Return status byte | | | C64 |
+| `SETLFS` | `$FFBA` | ChIO | Set LA, FA, and SA | | | C64 |
+| `SETNAM` | `$FFBD` | ChIO | Set filename | | | C64 |
+| `OPEN` | `$FFC0` | ChIO | Open a channel | | | C64 |
+| `CLOSE` | `$FFC3` | ChIO | Close a channel | | | C64 |
+| `CHKIN` | `$FFC6` | ChIO | Set channel for character input | | | C64 |
+| `CLRCHN` | `$FFCC` | ChIO | Restore character I/O to screen/keyboard | | | C64 |
+| `BASIN` | `$FFCF` | ChIO | Get character | | | C64 |
+| `BSOUT` | `$FFD2` | ChIO | Write character | | | C64 |
+| `LOAD` | `$FFD5` | ChIO | Load a file into memory | | | C64 |
+| `SAVE` | `$FFD8` | ChIO | Save a file from memory | | | C64 |
+| `CLALL` | `$FFE7` | ChIO | Close all channels | | | C64 |
+| `TALK` | `$FFB4` | CPB | Send TALK command  | | | C64 |
+| `LISTEN` | `$FFB1` | CPB | Send LISTEN command | | | C64 |
+| `UNLSN` | `$FFAE` | CPB | Send UNLISTEN command | | | C64 |
+| `UNTLK` | `$FFAB` | CPB | Send UNTALK command | | | C64 |
+| `CIOUT` | `$FFA8` | CPB | Send byte to peripheral bus | | | C64 |  
+| `ACPTR` | `$FFA5` | CPB | Read byte from peripheral bus | | | C64 |
+| `SETTMO` | `$FFA2` | CPB | Set timeout | | | C64 |
+| `TKSA` | `$FF96` | CPB | Send TALK secondary address | | | C64 |
+| `SECOND` | `$FF93` | CPB | Send LISTEN secondary address | | | C64 |
+| `MEMBOT` | `$FF9C` | Mem | Get address of start of usable RAM | | | C64 |
+| `MEMTOP` | `$FF99` | Mem | Get address of end of usable RAM | | | C64 |
+| `RDTIM` | `$FFDE` | Time | Read system clock | | | C64 |
+| `SETTIM` | `$FFDB` | Time | Write system clock | | | C64 |
+| `UDTIM` | `$FFEA` | Time | Advance clock | | | C64 |
+| `STOP` | `$FFE1` | Kbd | Test for STOP key  | | | C64 |
+| `GETIN` | `$FFE4` | Kbd | Get character from keyboard | | | C64 |
+| `SCREEN` | `$FFED` | Video | Get the screen resolution  | | | C64 |
+| `PLOT` | `$FFF0` | Video | Read/write cursor position | | | C64 |
+| `IOBASE` | `$FFF3` | Misc | Return start of I/O area | | | C64 |
+| `CLOSE_ALL` | `$FF4A` | ChIO | Close all files on a device  | | | C128 |
+| `LKUPLA` | `$FF59` | ChIO | Search tables for given LA | | | C128 |
+| `LKUPSA` | `$FF5C` | ChIO | Search tables for given SA | | | C128 |
+| `PFKEY` | `$FF65` | Kbd | Program a function key *[not yet implemented]* | | | C128 |
+| `PRIMM` | `$FF7D` | Misc | Print string following the caller’s code | | | C128 |
+| `MACPTR` | `$FF44` | CPB | Read multiple bytes from the peripheral bus | A X Y C | A X Y P | X16
+| [`memory_fill`](#function-name-memory_fill) | `$FEE4` | Mem | Fill a memory region with a byte value | A r0 r1 | r1 X Y P | X16
+| [`memory_copy`](#function-name-memory_copy) | `$FEE7` | Mem | Copy a memory region to a different region | r0 r1 r2 | r2 A X Y P | X16
+| [`memory_crc`](#function-name-memory_crc) | `$FEEA` | Mem | Calculate the CRC16 of a memory region | r0 r1 | r2 A X Y P | X16
+| [`memory_decompress`](#function-name-memory_decompress) | `$FEED` | Mem | Decompress an LZSA2 block | r0 r1 | r1 A X Y P | X16
+| [`fetch`](#function-name-fetch) | `$FF74` | Mem | Read a byte from any RAM or ROM bank | (A) X Y | A X P | X16
+| [`stash`](#function-name-stash) | `$FF77` | Mem | Write a byte to any RAM bank | stavec A X Y | X P | X16
+| [`clock_set_date_time`](#function-name-clock_set_date_time) | `$FF4D` | Time | Set the date and time | r0 r1 r2 r3L | A X Y P | X16
+| [`clock_get_date_time`](#function-name-clock_get_date_time) | `$FF50` | Time | Get the date and time | none | r0 r1 r2 r3L A X Y P | X16
+| [`kbdbuf_peek`](#function-name-kbdbuf_peek) | `$FEBD` | Kbd | Get next char and keyboard queue length | A X | A X P | X16
+| [`kbdbuf_get_modifiers`](#function-name-kbdbuf_get_modifiers) | `$FEC0` | Kbd | Get currently pressed modifiers | A | A X P | X16
+| [`kbdbuf_put`](#function-name-kbdbuf_put) | `$FEC3` | Kbd | Append a character to the keyboard queue | A | X | X16
+| [`keymap`](#function-name-keymap) | `$FED2` | Kbd | Set or get the current keyboard layout Call address | X Y C | A X Y C | X16
+| [`mouse_config`](#function-name-mouse_config) | `$FF68` | Mouse | Configure mouse pointer | A X Y | A X Y P | X16
+| [`mouse_scan`](#function-name-mouse_scan) | `$FF71` | Mouse | Poll mouse state and save it | none | A X Y P | X16
+| [`mouse_get`](#function-name-mouse_get) | `$FF6B` | Mouse | Get saved mouse sate | (X) | A P | X16
+| [`joystick_scan`](#function-name-joystick_scan) | `$FF53` | Joy | Poll controller states and save them | none | A X Y P | X16
+| [`joystick_get`](#function-name-joystick_get) | `$FF56` | Joy | Get one of the saved controller states | A | A X Y P | X16
+| [`i2c_read_byte`](#function-name-i2c_read_byte) | `$FEC6` | I2C | Read a byte from an I2C device | A X Y | A C | X16
+| [`i2c_write_byte`](#function-name-i2c_write_byte) | `$FEC9` | I2C | Write a byte to an I2C device | A X Y | A C | X16
+
+
+
+
+
 ### KERNAL Version
 
 The KERNAL version can be read from location $FF80 in ROM. A value of $FF indicates a custom build. All other values encode the build number. Positive numbers are release versions ($02 = release version 2), two's complement negative numbers are prerelease versions ($FE = $100 - 2 = prerelease version 2).
