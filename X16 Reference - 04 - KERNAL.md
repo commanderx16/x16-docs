@@ -20,13 +20,73 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 	* Commodore Serial Bus ("IEC")
 	* I2C bus
 
+### KERNAL Version
 
-### KERNAL calls
+The KERNAL version can be read from location $FF80 in ROM. A value of $FF indicates a custom build. All other values encode the build number. Positive numbers are release versions ($02 = release version 2), two's complement negative numbers are prerelease versions ($FE = $100 - 2 = prerelease version 2).
+
+### Compatibility Considerations
+
+For applications to remain compatible between different versions of the ROM, they can rely upon:
+
+* the KERNAL API calls at $FF81-$FFF3
+* the KERNAL vectors at $0314-$0333
+
+The following features must not be relied upon:
+
+* the zero page and $0200+ memory layout
+* direct function offsets in the ROM
+
+### Commodore 64 API Compatibility
+
+The KERNAL [fully supports](#kernal-api-functions) the C64 KERNAL API.
+
+### Commodore 128 API Compatibility
+
+In addition, the X16 [supports a subset](#kernal-api-functions) of the C128 API.
+
+The following C128 APIs have equivalent functionality on the X16 but are not compatible:
+
+| Address | C128 Name | X16 Name             |
+|---------|-----------|----------------------|
+| $FF5F   | `SWAPPER` | [`screen_mode`](#function-name-screenmode) |
+| $FF62   | `DLCHR`   | [`screen_set_charset`](#function-name-screensetcharset) |
+| $FF74   | `FETCH`   | [`fetch`](#function-name-fetch) |
+| $FF77   | `STASH`   | [`stash`](#function-name-stash) |
+<!---
+*** undocumented - we might remove it
+| $FF7A   | `CMPARE`  | `cmpare`             |
+--->
+
+
+### New API for the Commander X16
+
+There are lots of new APIs. Please note that their addresses and their behavior is still preliminary and can change between revisions.
+
+Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc.
+
+The 16 bit ABI generally follows the following conventions:
+
+* arguments
+    * word-sized arguments: passed in r0-r5
+    * byte-sized arguments: if three or less, passed in .A, .X, .Y; otherwise in 16 bit registers
+    * boolean arguments: .C, .N
+* return values
+	* basic rules as above
+    * function takes no arguments: r0-r5, else indirect through passed-in pointer
+    * arguments in r0-r5 can be "inout", i.e. they can be updated
+* saved/scratch registers
+    * r0-r5: arguments (saved)
+    * r6-r10: saved
+    * r11-r15: scratch
+    * .A, .X, .Y, .C, .N: scratch (unless used otherwise)
+
+
+### KERNAL API functions
 
 | Label | Address | Class | Description | Inputs | Affects | Origin |
 |-|-|-|-|-|-|-|
-| `ACPTR` | `$FFA5` | CPB | Read byte from peripheral bus | | | C64 |
-| `BASIN` | `$FFCF` | ChIO | Get character | | | C64 |
+| `ACPTR` | `$FFA5` | [CPB](# "Commodore Peripheral Bus") | Read byte from peripheral bus | | | C64 |
+| `BASIN` | `$FFCF` | [ChIO](# "Channel I/O") | Get character | | | C64 |
 | `BSOUT` | `$FFD2` | ChIO | Write character | | | C64 |
 | `CIOUT` | `$FFA8` | CPB | Send byte to peripheral bus | | | C64 |  
 | `CLALL` | `$FFE7` | ChIO | Close all channels | | | C64 |
@@ -63,7 +123,7 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 | [`GRAPH_draw_image`](#function-name-GRAPH_draw_image) | `$FF38` | Video | Draw a rectangular image | r0 r1 r2 r3 r4 | A P | X16
 | [`GRAPH_draw_line`](#function-name-GRAPH_draw_line) | `$FF2C` | Video | Draw a line | r0 r1 r2 r3 | r0 r1 r2 r3 r7 r8 r9 r10 r12 r13 A X Y P | X16
 | [`GRAPH_draw_oval`](#function-name-GRAPH_draw_oval) &#128683; | `$FF35` | Video | Draw an oval or circle | - | - | X16
-| [`GRAPH_draw_rect`](#function-name-GRAPH_draw_rect) | `$FF2F` | Video | Draw a rectangle (optionally filled) | r0 r1 r2 r3 r4 C | A P | X16
+| [`GRAPH_draw_rect`](#function-name-GRAPH_draw_rect) &#8224; | `$FF2F` | Video | Draw a rectangle (optionally filled) | r0 r1 r2 r3 r4 C | A P | X16
 | [`GRAPH_get_char_size`](#function-name-GRAPH_get_char_size) | `$FF3E` | Video | Get size and baseline of a character | A X | A X Y P | X16
 | [`GRAPH_init`](#function-name-GRAPH_init) | `$FF20` | Video | Initialize graphics | r0 | r0 r1 r2 r3 A X Y P | X16
 | [`GRAPH_move_rect`](#function-name-GRAPH_move_rect) | `$FF32` | Video | Move pixels | r0 r1 r2 r3 r4 r5 | r1 r3 r5 A X Y P | X16
@@ -122,69 +182,9 @@ The Commander X16 contains a version of KERNAL as its operating system in ROM. I
 | `UNLSN` | `$FFAE` | CPB | Send UNLISTEN command | | | C64 |
 | `UNTLK` | `$FFAB` | CPB | Send UNTALK command | | | C64 |
 
+&#128683; = Currently unimplemented<br/>
+&#8224; = Partially implemented<br/>
 
-### KERNAL Version
-
-The KERNAL version can be read from location $FF80 in ROM. A value of $FF indicates a custom build. All other values encode the build number. Positive numbers are release versions ($02 = release version 2), two's complement negative numbers are prerelease versions ($FE = $100 - 2 = prerelease version 2).
-
-### Compatibility Considerations
-
-For applications to remain compatible between different versions of the ROM, they can rely upon:
-
-* the KERNAL API calls at $FF81-$FFF3
-* the KERNAL vectors at $0314-$0333
-
-The following features must not be relied upon:
-
-* the zero page and $0200+ memory layout
-* direct function offsets in the ROM
-
-### Commodore 64 API Compatibility
-
-The KERNAL fully supports the C64 KERNAL API.
-
-**Channel I/O:**  
-$FF90: `SETMSG` – set verbosity  
-$FFB7: `READST` – return status byte  
-$FFBA: `SETLFS` – set LA, FA and SA  
-$FFBD: `SETNAM` – set filename  
-$FFC0: `OPEN` – open a channel  
-$FFC3: `CLOSE` – close a channel  
-$FFC6: `CHKIN` – set channel for character input  
-$FFC9: `CHKOUT` – set channel for character output  
-$FFCC: `CLRCHN` – restore character I/O to screen/keyboard  
-$FFCF: `BASIN` – get character  
-$FFD2: `BSOUT` – write character  
-$FFD5: `LOAD` – load a file into memory  
-$FFD8: `SAVE` – save a file from memory  
-$FFE7: `CLALL` – close all channels  
-
-**Commodore Peripheral Bus:**  
-$FFB4: `TALK` – send TALK command  
-$FFB1: `LISTEN` – send LISTEN command  
-$FFAE: `UNLSN` – send UNLISTEN command  
-$FFAB: `UNTLK` – send UNTALK command  
-$FFA8: `CIOUT` – send byte to peripheral bus  
-$FFA5: `ACPTR` – read byte from peripheral bus  
-$FFA2: `SETTMO` – set timeout  
-$FF96: `TKSA` – send TALK secondary address  
-$FF93: `SECOND` – send LISTEN secondary address  
-
-**Memory:**  
-$FF9C: `MEMBOT` – read/write address of start of usable RAM  
-$FF99: `MEMTOP` – read/write address of end of usable RAM  
-
-**Time:**  
-$FFDE: `RDTIM` – read system clock  
-$FFDB: `SETTIM` – write system clock  
-$FFEA: `UDTIM` – advance clock  
-
-**Other:**  
-$FFE1: `STOP` – test for STOP key  
-$FFE4: `GETIN` – get character from keyboard  
-$FFED: `SCREEN` – get the screen resolution  
-$FFF0: `PLOT` – read/write cursor position  
-$FFF3: `IOBASE` – return start of I/O area  
 
 Some notes:
 
@@ -212,52 +212,6 @@ $032C-$032D: `ICLALL` – Kernal CLALL Routine
 $0330-$0331: `ILOAD` – Kernal LOAD Routine  
 $0332-$0333: `ISAVE` – Kernal SAVE Routine  
 
-### Commodore 128 API Compatibility
-
-In addition, the X16 supports a subset of the C128 API additions:
-
-$FF4A: `CLOSE_ALL` – close all files on a device  
-$FF59: `LKUPLA` – search tables for given LA  
-$FF5C: `LKUPSA` – search tables for given SA  
-$FF65: `PFKEY` – program a function key *[not yet implemented]*  
-$FF7D: `PRIMM` – print string following the caller’s code  
-
-The following C128 APIs have equivalent functionality on the X16 but are not compatible:
-
-| Address | C128 Name | X16 Name             |
-|---------|-----------|----------------------|
-| $FF5F   | `SWAPPER` | `screen_mode`        |
-| $FF62   | `DLCHR`   | `screen_set_charset` |
-| $FF74   | `FETCH`   | `fetch`              |
-| $FF77   | `STASH`   | `stash`              |
-<!---
-*** undocumented - we might remove it
-| $FF7A   | `CMPARE`  | `cmpare`             |
---->
-
-They are documented in the sections below.
-
-### New API for the Commander X16
-
-There are lots of new APIs. Please note that their addresses and their behavior is still preliminary and can change between revisions.
-
-Some new APIs use the "16 bit" ABI, which uses virtual 16 bit registers r0 through r15, which are located in zero page locations $02 through $21: r0 = r0L = $02, r0H = $03, r1 = r1L = $04 etc.
-
-The 16 bit ABI generally follows the following conventions:
-
-* arguments
-    * word-sized arguments: passed in r0-r5
-    * byte-sized arguments: if three or less, passed in .A, .X, .Y; otherwise in 16 bit registers
-    * boolean arguments: .C, .N
-* return values
-	* basic rules as above
-    * function takes no arguments: r0-r5, else indirect through passed-in pointer
-    * arguments in r0-r5 can be "inout", i.e. they can be updated
-* saved/scratch registers
-    * r0-r5: arguments (saved)
-    * r6-r10: saved
-    * r11-r15: scratch
-    * .A, .X, .Y, .C, .N: scratch (unless used otherwise)
 
 #### Commodore Peripheral Bus
 
