@@ -126,8 +126,8 @@ The 16 bit ABI generally follows the following conventions:
 | [`GRAPH_draw_rect`](#function-name-GRAPH_draw_rect) &#8224; | `$FF2F` | Video | Draw a rectangle (optionally filled) | r0 r1 r2 r3 r4 C | A P | X16
 | [`GRAPH_get_char_size`](#function-name-GRAPH_get_char_size) | `$FF3E` | Video | Get size and baseline of a character | A X | A X Y P | X16
 | [`GRAPH_init`](#function-name-GRAPH_init) | `$FF20` | Video | Initialize graphics | r0 | r0 r1 r2 r3 A X Y P | X16
-| [`GRAPH_move_rect`](#function-name-GRAPH_move_rect) | `$FF32` | Video | Move pixels | r0 r1 r2 r3 r4 r5 | r1 r3 r5 A X Y P | X16
-| [`GRAPH_put_char`](#function-name-GRAPH_put_char) | `$FF41` | Video | Print a character | r0 r1 A | r0 r1 A X Y P | X16
+| [`GRAPH_move_rect`](#function-name-GRAPH_move_rect) &#8224; | `$FF32` | Video | Move pixels | r0 r1 r2 r3 r4 r5 | r1 r3 r5 A X Y P | X16
+| [`GRAPH_put_char`](#function-name-GRAPH_put_char) &#8224;| `$FF41` | Video | Print a character | r0 r1 A | r0 r1 A X Y P | X16
 | [`GRAPH_set_colors`](#function-name-GRAPH_set_colors) | `$FF29` | Video | Set stroke, fill and background colors | A X Y | none | X16
 | [`GRAPH_set_font`](#function-name-GRAPH_set_font) | `$FF3B` | Video | Set the current font | r0 | r0 A Y P | X16
 | [`GRAPH_set_window`](#function-name-GRAPH_set_window) &#8224;| `$FF26` | Video | Set clipping region | r0 r1 r2 r3 | A P | X16
@@ -157,7 +157,7 @@ The 16 bit ABI generally follows the following conventions:
 | [`mouse_get`](#function-name-mouse_get) | `$FF6B` | Mouse | Get saved mouse sate | X | A (X) P | X16
 | [`mouse_scan`](#function-name-mouse_scan) | `$FF71` | Mouse | Poll mouse state and save it | none | A X Y P | X16
 | `OPEN` | `$FFC0` | ChIO | Open a channel | | | C64 |
-| `PFKEY` | `$FF65` | Kbd | Program a function key *[not yet implemented]* | | | C128 |
+| `PFKEY` &#128683; | `$FF65` | Kbd | Program a function key *[not yet implemented]* | | | C128 |
 | `PLOT` | `$FFF0` | Video | Read/write cursor position | | | C64 |
 | `PRIMM` | `$FF7D` | Misc | Print string following the caller’s code | | | C128 |
 | `RDTIM` | `$FFDE` | Time | Read system clock | | | C64 |
