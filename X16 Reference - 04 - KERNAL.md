@@ -48,8 +48,8 @@ The following C128 APIs have equivalent functionality on the X16 but are not com
 
 | Address | C128 Name | X16 Name             |
 |---------|-----------|----------------------|
-| $FF5F   | `SWAPPER` | [`screen_mode`](#function-name-screenmode) |
-| $FF62   | `DLCHR`   | [`screen_set_charset`](#function-name-screensetcharset) |
+| $FF5F   | `SWAPPER` | [`screen_mode`](#function-name-screen_mode) |
+| $FF62   | `DLCHR`   | [`screen_set_charset`](#function-name-screen_set_charset) |
 | $FF74   | `FETCH`   | [`fetch`](#function-name-fetch) |
 | $FF77   | `STASH`   | [`stash`](#function-name-stash) |
 <!---
@@ -172,7 +172,7 @@ The 16 bit ABI generally follows the following conventions:
 | `SETNAM` | `$FFBD` | ChIO | Set filename | | | C64 |
 | `SETTIM` | `$FFDB` | Time | Write system clock | | | C64 |
 | `SETTMO` | `$FFA2` | CPB | Set timeout | | | C64 |
-| [`sprite_set_image`](#function-name-sprite_set_image) | `$FEF0` | Video | Set the image of a sprite | r0 r1 r2L A X Y C | A P | X16
+| [`sprite_set_image`](#function-name-sprite_set_image) &#8224; | `$FEF0` | Video | Set the image of a sprite | r0 r1 r2L A X Y C | A P | X16
 | [`sprite_set_position`](#function-name-sprite_set_position) | `$FEF3` | Video | Set the position of a sprite | r0 r1 A | A X P | X16
 | [`stash`](#function-name-stash) | `$FF77` | Mem | Write a byte to any RAM bank | stavec A X Y | (stavec) X P | X16
 | `STOP` | `$FFE1` | Kbd | Test for STOP key  | | | C64 |
