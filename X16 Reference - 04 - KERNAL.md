@@ -85,8 +85,8 @@ The 16 bit ABI generally follows the following conventions:
 
 | Label | Address | Class | Description | Inputs | Affects | Origin |
 |-|-|-|-|-|-|-|
-| `ACPTR` | `$FFA5` | [CPB](# "Commodore Peripheral Bus") | Read byte from peripheral bus | | | C64 |
-| `BASIN` | `$FFCF` | [ChIO](# "Channel I/O") | Get character | | | C64 |
+| `ACPTR` | `$FFA5` | [CPB](#kernal-api-functions "Commodore Peripheral Bus") | Read byte from peripheral bus | | | C64 |
+| `BASIN` | `$FFCF` | [ChIO](#kernal-api-functions "Channel I/O") | Get character | | | C64 |
 | `BSOUT` | `$FFD2` | ChIO | Write character | | | C64 |
 | `CIOUT` | `$FFA8` | CPB | Send byte to peripheral bus | | | C64 |  
 | `CLALL` | `$FFE7` | ChIO | Close all channels | | | C64 |
@@ -130,7 +130,7 @@ The 16 bit ABI generally follows the following conventions:
 | [`GRAPH_put_char`](#function-name-GRAPH_put_char) | `$FF41` | Video | Print a character | r0 r1 A | r0 r1 A X Y P | X16
 | [`GRAPH_set_colors`](#function-name-GRAPH_set_colors) | `$FF29` | Video | Set stroke, fill and background colors | A X Y | none | X16
 | [`GRAPH_set_font`](#function-name-GRAPH_set_font) | `$FF3B` | Video | Set the current font | r0 | r0 A Y P | X16
-| [`GRAPH_set_window`](#function-name-GRAPH_set_window) | `$FF26` | Video | Set clipping region | r0 r1 r2 r3 | A P | X16
+| [`GRAPH_set_window`](#function-name-GRAPH_set_window) &#8224;| `$FF26` | Video | Set clipping region | r0 r1 r2 r3 | A P | X16
 | [`i2c_read_byte`](#function-name-i2c_read_byte) | `$FEC6` | I2C | Read a byte from an I2C device | A X Y | A C | X16
 | [`i2c_write_byte`](#function-name-i2c_write_byte) | `$FEC9` | I2C | Write a byte to an I2C device | A X Y | A C | X16
 | `IOBASE` | `$FFF3` | Misc | Return start of I/O area | | | C64 |
