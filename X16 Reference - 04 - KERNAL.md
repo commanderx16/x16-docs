@@ -189,7 +189,7 @@ The 16 bit ABI generally follows the following conventions:
 Some notes:
 
 * For device #8, the Commodore Peripheral Bus calls first talk to the "Computer DOS" built into the ROM to detect an SD card, before falling back to the Commodore Serial Bus.
-* The `IOBASE` call returns $9F60, the location of the first VIA controller.
+* The `IOBASE` call returns $9F00, the location of the first VIA controller.
 * The `SETTMO` call has been a no-op since the Commodore VIC-20, and has no function on the X16 either.
 * The `MEMTOP` call additionally returns the number of available RAM banks in the .A register.
 * The layout of the zero page ($0000-$00FF) and the KERNAL/BASIC variable space ($0200+) are generally **not** compatible with the C64.
