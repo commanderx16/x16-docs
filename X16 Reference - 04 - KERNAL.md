@@ -184,8 +184,8 @@ The 16 bit ABI generally follows the following conventions:
 | `UNLSN` | `$FFAE` | CPB | Send UNLISTEN command | | | C64 |
 | `UNTLK` | `$FFAB` | CPB | Send UNTALK command | | | C64 |
 
-&#128683; = Currently unimplemented<br/>
-&#8224; = Partially implemented<br/>
+&#128683; = Currently unimplemented  
+&#8224; = Partially implemented  
 
 
 Some notes:
