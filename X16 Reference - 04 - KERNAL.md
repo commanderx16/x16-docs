@@ -85,15 +85,17 @@ The 16 bit ABI generally follows the following conventions:
 
 | Label | Address | Class | Description | Inputs | Affects | Origin |
 |-|-|-|-|-|-|-|
-| `ACPTR` | `$FFA5` | [CPB](#kernal-api-functions "Commodore Peripheral Bus") | Read byte from peripheral bus | | | C64 |
-| `BASIN` | `$FFCF` | [ChIO](#kernal-api-functions "Channel I/O") | Get character | | | C64 |
+| [`ACPTR`](#function-name-acptr) | `$FFA5` | [CPB](#commodore-peripheral-bus "Commodore Peripheral Bus") | Read byte from peripheral bus | | | C64 |
+| `BASIN` | `$FFCF` | [ChIO](#channel-io "Channel I/O") | Get character | | | C64 |
 | `BSOUT` | `$FFD2` | ChIO | Write character | | | C64 |
 | `CIOUT` | `$FFA8` | CPB | Send byte to peripheral bus | | | C64 |  
 | `CLALL` | `$FFE7` | ChIO | Close all channels | | | C64 |
-| [`CLOSE`](#function-name-close) | `$FFC3` | ChIO | Close a channel | A | A X Y | C64 |
+| [`CLOSE`](#function-name-close) | `$FFC3` | ChIO | Close a channel | A | A X Y P | C64 |
 | `CHKIN` | `$FFC6` | ChIO | Set channel for character input | | | C64 |
 | [`clock_get_date_time`](#function-name-clock_get_date_time) | `$FF50` | Time | Get the date and time | none | r0 r1 r2 r3L A X Y P | X16
 | [`clock_set_date_time`](#function-name-clock_set_date_time) | `$FF4D` | Time | Set the date and time | r0 r1 r2 r3L | A X Y P | X16
+| `CHRIN` | `$FFCF` | ChIO | Alias for `BASIN` | | | C64 |
+| `CHROUT` | `$FFD2` | ChIO | Alias for `BSOUT` | | | C64 |
 | `CLOSE_ALL` | `$FF4A` | ChIO | Close all files on a device  | | | C128 |
 | `CLRCHN` | `$FFCC` | ChIO | Restore character I/O to screen/keyboard | | | C64 |
 | [`console_init`](#function-name-console_init) | `$FEDB` | Video | Initialize console mode | none | r0 A P | X16
@@ -218,13 +220,26 @@ ___
 The X16 adds one new function for dealing with the Commodore Peripheral Bus ("IEEE"):
 
 $FF44: `MACPTR` - read multiple bytes from peripheral bus
+
+___
+##### Function Name: ACPTR
+___
+Purpose: Read a byte from the peripheral bus  
+Call address: $FFA5  
+Communication registers: .A
+Preparatory routines: `SETNAM`, `SETLFS`, `OPEN`, `CHKIN`  
+Error returns: None  
+Registers affected: .A, .X, .Y, .P
+
+**Description:** This routine gets a byte of data off the peripheral bus. The data is returned in the accumulator.  Errors are returned in the status word which can be read via the `READST` API call.
+
 ___
 ##### Function Name: MACPTR
 ___
 Purpose: Read multiple bytes from the peripheral bus  
 Call address: $FF44  
 Communication registers: .A, .X, .Y  
-Preparatory routines: `FILNAM`, `FILPAR`, `OPEN`, `CHKIN`  
+Preparatory routines: `SETNAM`, `SETLFS`, `OPEN`, `CHKIN`  
 Error returns: None  
 Stack requirements: ...  
 Registers affected: .A, .X, .Y
@@ -245,12 +260,14 @@ ___
 ___
 ##### Function Name: `CLOSE`
 
-Purpose: Close a logical file
-Call address: $FFC3
-Communication registers: None
-Preparatory routines: None
-Error returns: None
-Registers affected: .A, .X, .Y
+Purpose: Close a logical file  
+Call address: $FFC3  
+Communication registers: .A  
+Preparatory routines: None  
+Error returns: None  
+Registers affected: .A, .X, .Y, .P
+
+**Description:** `CLOSE` releases resources associated with a logical file number.  If the associated device is a serial device on the IEC bus or is a simulated serial device such as CMDR-DOS backed by the X16 SD card, and the file was opened with a secondary address, a close command is sent to the device or to CMDR-DOS.  
 ___
 
 #### Memory
@@ -322,7 +339,7 @@ ___
 
 Purpose: Read a byte from any RAM or ROM bank  
 Call address: $FF74  
-Communication registers: .A/.X/.Y/.P
+Communication registers: .A, .X, .Y, .P
 
 **Description:** This function performs an `LDA (ZP),Y` from any RAM or ROM bank. The the zero page address containing the base address is passed in .A, the bank in .X and the offset from the vector in .Y. The data byte is returned in .A. The flags are set according to .A, .X is destroyed, but .Y is preserved.
 
@@ -331,7 +348,7 @@ ___
 
 Purpose: Write a byte to any RAM bank  
 Call address: $FF77  
-Communication registers: .A/.X/.Y
+Communication registers: .A, .X, .Y
 
 **Description:** This function performs an `STA (ZP),Y` to any RAM bank. The the zero page address containing the base address is passed in `stavec` ($03B2), the bank in .X and the offset from the vector in .Y. After the call, .X is destroyed, but .A and .Y are preserved.
 
