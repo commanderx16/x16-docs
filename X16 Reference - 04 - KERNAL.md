@@ -180,7 +180,7 @@ The 16 bit ABI generally follows the following conventions:
 | `STOP` | `$FFE1` | Kbd | Test for STOP key  | | | C64 |
 | `TALK` | `$FFB4` | CPB | Send TALK command  | | | C64 |
 | `TKSA` | `$FF96` | CPB | Send TALK secondary address | | | C64 |
-| `UDTIM` | `$FFEA` | Time | Advance clock | | | C64 |
+| `UDTIM` | `$FFEA` | Time | Increment the jiffies clock | | | C64 |
 | `UNLSN` | `$FFAE` | CPB | Send UNLISTEN command | | | C64 |
 | `UNTLK` | `$FFAB` | CPB | Send UNTALK command | | | C64 |
 
