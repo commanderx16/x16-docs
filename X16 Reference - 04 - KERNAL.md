@@ -1,7 +1,7 @@
 <!--
 ********************************************************************************
-NOTICE: This file uses two trailing spaces to indicate line breaks for GitHub's
-Markdown flavor. Do not remove!
+NOTICE: This file uses two trailing spaces on some lines to indicate line
+breaks for GitHub's Markdown flavor. Do not remove!
 ********************************************************************************
 -->
 
@@ -226,7 +226,7 @@ ___
 ___
 Purpose: Read a byte from the peripheral bus  
 Call address: $FFA5  
-Communication registers: .A
+Communication registers: .A  
 Preparatory routines: `SETNAM`, `SETLFS`, `OPEN`, `CHKIN`  
 Error returns: None  
 Registers affected: .A, .X, .Y, .P
