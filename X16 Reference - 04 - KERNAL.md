@@ -1,7 +1,7 @@
 <!--
 ********************************************************************************
-NOTICE: This file uses two trailing spaces to indicate line breaks for GitHub's
-Markdown flavor. Do not remove!
+NOTICE: This file uses two trailing spaces on some lines to indicate line
+breaks for GitHub's Markdown flavor. Do not remove!
 ********************************************************************************
 -->
 
@@ -85,15 +85,17 @@ The 16 bit ABI generally follows the following conventions:
 
 | Label | Address | Class | Description | Inputs | Affects | Origin |
 |-|-|-|-|-|-|-|
-| `ACPTR` | `$FFA5` | [CPB](#kernal-api-functions "Commodore Peripheral Bus") | Read byte from peripheral bus | | | C64 |
-| `BASIN` | `$FFCF` | [ChIO](#kernal-api-functions "Channel I/O") | Get character | | | C64 |
+| [`ACPTR`](#function-name-acptr) | `$FFA5` | [CPB](#commodore-peripheral-bus "Commodore Peripheral Bus") | Read byte from peripheral bus | | | C64 |
+| `BASIN` | `$FFCF` | [ChIO](#channel-io "Channel I/O") | Get character | | | C64 |
 | `BSOUT` | `$FFD2` | ChIO | Write character | | | C64 |
 | `CIOUT` | `$FFA8` | CPB | Send byte to peripheral bus | | | C64 |  
 | `CLALL` | `$FFE7` | ChIO | Close all channels | | | C64 |
-| `CLOSE` | `$FFC3` | ChIO | Close a channel | | | C64 |
+| [`CLOSE`](#function-name-close) | `$FFC3` | ChIO | Close a channel | A | A X Y P | C64 |
 | `CHKIN` | `$FFC6` | ChIO | Set channel for character input | | | C64 |
 | [`clock_get_date_time`](#function-name-clock_get_date_time) | `$FF50` | Time | Get the date and time | none | r0 r1 r2 r3L A X Y P | X16
 | [`clock_set_date_time`](#function-name-clock_set_date_time) | `$FF4D` | Time | Set the date and time | r0 r1 r2 r3L | A X Y P | X16
+| `CHRIN` | `$FFCF` | ChIO | Alias for `BASIN` | | | C64 |
+| `CHROUT` | `$FFD2` | ChIO | Alias for `BSOUT` | | | C64 |
 | `CLOSE_ALL` | `$FF4A` | ChIO | Close all files on a device  | | | C128 |
 | `CLRCHN` | `$FFCC` | ChIO | Restore character I/O to screen/keyboard | | | C64 |
 | [`console_init`](#function-name-console_init) | `$FEDB` | Video | Initialize console mode | none | r0 A P | X16
@@ -178,12 +180,12 @@ The 16 bit ABI generally follows the following conventions:
 | `STOP` | `$FFE1` | Kbd | Test for STOP key  | | | C64 |
 | `TALK` | `$FFB4` | CPB | Send TALK command  | | | C64 |
 | `TKSA` | `$FF96` | CPB | Send TALK secondary address | | | C64 |
-| `UDTIM` | `$FFEA` | Time | Advance clock | | | C64 |
+| `UDTIM` | `$FFEA` | Time | Increment the jiffies clock | | | C64 |
 | `UNLSN` | `$FFAE` | CPB | Send UNLISTEN command | | | C64 |
 | `UNTLK` | `$FFAB` | CPB | Send UNTALK command | | | C64 |
 
-&#128683; = Currently unimplemented<br/>
-&#8224; = Partially implemented<br/>
+&#128683; = Currently unimplemented  
+&#8224; = Partially implemented  
 
 
 Some notes:
@@ -212,19 +214,32 @@ $032C-$032D: `ICLALL` – Kernal CLALL Routine
 $0330-$0331: `ILOAD` – Kernal LOAD Routine  
 $0332-$0333: `ISAVE` – Kernal SAVE Routine  
 
-
+___
 #### Commodore Peripheral Bus
 
 The X16 adds one new function for dealing with the Commodore Peripheral Bus ("IEEE"):
 
 $FF44: `MACPTR` - read multiple bytes from peripheral bus
 
-##### Function Name: MACPTR
+___
+##### Function Name: ACPTR
+___
+Purpose: Read a byte from the peripheral bus  
+Call address: $FFA5  
+Communication registers: .A  
+Preparatory routines: `SETNAM`, `SETLFS`, `OPEN`, `CHKIN`  
+Error returns: None  
+Registers affected: .A, .X, .Y, .P
 
+**Description:** This routine gets a byte of data off the peripheral bus. The data is returned in the accumulator.  Errors are returned in the status word which can be read via the `READST` API call.
+
+___
+##### Function Name: MACPTR
+___
 Purpose: Read multiple bytes from the peripheral bus  
 Call address: $FF44  
 Communication registers: .A, .X, .Y  
-Preparatory routines: `FILNAM`, `FILPAR`, `OPEN`, `CHKIN`  
+Preparatory routines: `SETNAM`, `SETLFS`, `OPEN`, `CHKIN`  
 Error returns: None  
 Stack requirements: ...  
 Registers affected: .A, .X, .Y
@@ -239,6 +254,22 @@ If `MACPTR` is supported, .C is clear and .X (lo) and .Y (hi) contain the number
 
 Like with `ACPTR`, the status of the operation can be retrieved using the `READST` KERNAL call.
 
+___
+#### Channel I/O
+
+___
+##### Function Name: `CLOSE`
+
+Purpose: Close a logical file  
+Call address: $FFC3  
+Communication registers: .A  
+Preparatory routines: None  
+Error returns: None  
+Registers affected: .A, .X, .Y, .P
+
+**Description:** `CLOSE` releases resources associated with a logical file number.  If the associated device is a serial device on the IEC bus or is a simulated serial device such as CMDR-DOS backed by the X16 SD card, and the file was opened with a secondary address, a close command is sent to the device or to CMDR-DOS.  
+___
+
 #### Memory
 
 $FEE4: `memory_fill` - fill memory region with a byte value  
@@ -252,7 +283,7 @@ $FF77: `stash` - write a byte to any RAM bank
 *** undocumented - we might remove it
 $FF7A: `cmpare` - compare a byte on any RAM or ROM bank
 --->
-
+___
 ##### Function Name: memory_fill
 
 Signature: void memory_fill(word address: r0, word num_bytes: r1, byte value: .a);  
@@ -263,6 +294,7 @@ Call address: $FEE4
 
 If the target address is in the $9F00-$9FFF range, all bytes will be written to the same address (r0), i.e. the address will not be incremented. This is useful for filling VERA memory ($9F23 or $9F24), for example.
 
+___
 ##### Function Name: memory_copy
 
 Signature: void memory_copy(word source: r0, word target: r1, word num_bytes: r2);  
@@ -273,6 +305,7 @@ Call address: $FEE7
 
 Like with `memory_fill`, source and destination addresses in the $9F00-$9FFF range will not be incremented during the copy. This allows, for instance, uploading data from RAM to VERA (destination of $9F23 or $9F24), downloading data from VERA (source $9F23 or $9F24) or copying data inside VERA (source $9F23, destination $9F24). This functionality can also be used to upload, download or transfer data with other I/O devices that have an 8 bit data port.
 
+___
 ##### Function Name: memory_crc
 
 Signature: (word result: r2) memory_crc(word address: r0, word num_bytes: r1);  
@@ -283,6 +316,7 @@ Call address: $FEEA
 
 Like `memory_fill`, this function does not increment the address if it is in the range of $9F00-$9FFF, which allows checksumming VERA memory or data streamed from any other I/O device.
 
+___
 ##### Function Name: memory_decompress
 
 Signature: void memory_decompress(word input: r0, inout word output: r1);  
@@ -300,29 +334,33 @@ If the target address is in the $9F00-$9FFF range, all bytes will be written to 
 * This function cannot be used to decompress data in-place, as the output data would overwrite the input data before it is consumed. Therefore, make sure to load the input data to a different location.
 * It is possible to have the input data stored in banked RAM, with the obvious 8 KB size restriction.
 
+___
 ##### Function Name: fetch
 
 Purpose: Read a byte from any RAM or ROM bank  
 Call address: $FF74  
-Communication registers: .A/.X/.Y/.P
+Communication registers: .A, .X, .Y, .P
 
 **Description:** This function performs an `LDA (ZP),Y` from any RAM or ROM bank. The the zero page address containing the base address is passed in .A, the bank in .X and the offset from the vector in .Y. The data byte is returned in .A. The flags are set according to .A, .X is destroyed, but .Y is preserved.
 
+___
 ##### Function Name: stash
 
 Purpose: Write a byte to any RAM bank  
 Call address: $FF77  
-Communication registers: .A/.X/.Y
+Communication registers: .A, .X, .Y
 
 **Description:** This function performs an `STA (ZP),Y` to any RAM bank. The the zero page address containing the base address is passed in `stavec` ($03B2), the bank in .X and the offset from the vector in .Y. After the call, .X is destroyed, but .A and .Y are preserved.
 
 *[this API is subject to change]*
 
+___
 #### Clock
 
 $FF4D: `clock_set_date_time` - set date and time  
 $FF50: `clock_get_date_time` - get date and time  
 
+___
 ##### Function Name: clock_set_date_time
 
 Purpose: Set the date and time  
@@ -347,6 +385,7 @@ Registers affected: .A, .X, .Y
 
 Jiffies are 1/60th seconds.
 
+___
 ##### Function Name: clock_get_date_time
 
 Purpose: Get the date and time  
@@ -361,6 +400,7 @@ Registers affected: .A, .X, .Y
 
 On the Commander X16, the *jiffies* field is unsupported and will always read back as 0.
 
+___
 #### Keyboard
 
 $FEBD: `kbdbuf_peek` - get first char in keyboard queue and queue length  
@@ -368,6 +408,7 @@ $FEC0: `kbdbuf_get_modifiers` - get currently pressed modifiers
 $FEC3: `kbdbuf_put` - append a char to the keyboard queue
 $FED2: `keymap` - set or get the current keyboard layout
 
+___
 ##### Function Name: kbdbuf_peek
 
 Purpose: Get next char and keyboard queue length  
@@ -380,6 +421,7 @@ Registers affected: -
 
 **Description:** The routine `kbdbuf_peek` returns the next character in the keyboard queue in .A, without removing it from the queue, and the current length of the queue in .X. If .X is 0, the Z flag will be set, and the value of .A is undefined.
 
+___
 ##### Function Name: kbdbuf_get_modifiers
 
 Purpose: Get currently pressed modifiers  
@@ -402,6 +444,7 @@ Registers affected: -
 
 This allows detecting combinations of a regular key and a modifier key in cases where there is no dedicated PETSCII code for the combination, e.g. Ctrl+Esc or Alt+F1.
 
+___
 ##### Function Name: kbdbuf_put
 
 Purpose: Append a char to the keyboard queue  
@@ -414,6 +457,7 @@ Registers affected: .X
 
 **Description:** The routine `kbdbuf_put` appends the char in .A to the keyboard queue.
 
+___
 ##### Function Name: keymap
 
 Purpose: Set or get the current keyboard layout
@@ -428,12 +472,14 @@ Registers affected: -
 
 Keyboard layout identifiers are in the form "DE", "DE-CH" etc.
 
+___
 #### Mouse
 
 $FF68: `mouse_config` - configure mouse pointer  
 $FF71: `mouse_scan` - query mouse  
 $FF6B: `mouse_get` - get state of mouse
 
+___
 ##### Function Name: mouse_config
 
 Purpose: Configure the mouse pointer  
@@ -457,6 +503,7 @@ The arguments in .X and .Y specify the screen resolution in 8 pixel increments. 
 	LDA #1
 	JSR mouse_config ; show the default mouse pointer
 
+___
 ##### Function Name: mouse_scan
 
 Purpose: Query the mouse and save its state  
@@ -469,6 +516,7 @@ Registers affected: .A, .X, .Y
 
 **Description:** The routine `mouse_scan` retrieves all state from the mouse and saves it. It can then be retrieved using `mouse_get`. The default interrupt handler already takes care of this, so this routine should only be called if the interrupt handler has been completely replaced.
 
+___
 ##### Function Name: mouse_get
 
 Purpose: Get the mouse state  
@@ -504,11 +552,13 @@ If a button is pressed, the corresponding bit is set.
 	BNE BUTTON_PRESSED
 
 
+___
 #### Joystick
 
 $FF53: `joystick_scan` - query joysticks  
 $FF56: `joystick_get` - get state of one joystick
 
+___
 ##### Function Name: joystick_scan
 
 Purpose: Query the joysticks and save their state  
@@ -521,6 +571,7 @@ Registers affected: .A, .X, .Y
 
 **Description:** The routine `joystick_scan` retrieves all state from the four joysticks and saves it. It can then be retrieved using `joystick_get`. The default interrupt handler already takes care of this, so this routine should only be called if the interrupt handler has been completely replaced.
 
+___
 ##### Function Name: joystick_get
 
 Purpose: Get the state of one of the joysticks  
@@ -582,11 +633,13 @@ If the default interrupt handler is disabled or replaced:
       AND #128
       BEQ A_PRESSED
 
+___
 #### I2C
 
 $FEC6: `i2c_read_byte` - read a byte from an I2C device  
 $FEC9: `i2c_write_byte` - write a byte to an I2C device
 
+___
 ##### Function Name: i2c_read_byte
 
 Purpose: Read a byte at a given offset from a given I2C device  
@@ -605,6 +658,7 @@ Registers affected: .A
 	LDY #$20 ; start of NVRAM inside RTC
 	JSR i2c_read_byte ; read first byte of NVRAM
 
+___
 ##### Function Name: i2c_write_byte
 
 Purpose: Write a byte at a given offset to a given I2C device  
@@ -629,11 +683,13 @@ Registers affected: .A
 	LDA #$00 ; magic value for system poweroff
 	JSR i2c_write_byte ; power off the system
 
+___
 #### Sprites
 
 $FEF0: `sprite_set_image` - set the image of a sprite  
 $FEF3: `sprite_set_position` - set the position of a sprite
 
+___
 ##### Function Name: sprite_set_image
 
 Purpose: Set the image of a sprite  
@@ -649,6 +705,7 @@ Error returns: .C = 1 in case of error
 * Legal values for bpp are 1, 4 and 8. If the hardware only supports lower depths, the image data is converted down.
 * apply_mask is only valid for 1 bpp data.
 
+___
 ##### Function Name: sprite_set_position
 
 Purpose: Set the position of a sprite or hide it.  
@@ -658,6 +715,7 @@ Error returns: None
 
 **Description:** This function shows a given sprite (.A) at a certain position or hides it. The position is passed in r0 and r1. If the x position is negative (>$8000), the sprite will be hidden.
 
+___
 #### Framebuffer
 
 The framebuffer API is a low-level graphics API that completely abstracts the framebuffer by exposing a minimal set of high-performance functions. It is useful as an abstraction and as a convenience library for applications that need high performance framebuffer access.
@@ -698,16 +756,19 @@ The model of this API is based on the direct-access cursor. In order to read and
 
 The default driver supports the VERA framebuffer at a resolution of 320x200 pixels and 256 colors. Using `screen_mode` to set mode $80 will enable this driver.
 
+___
 ##### Function Name: FB_init
 
 Signature: void FB_init();  
 Purpose: Enter graphics mode.
 
+___
 ##### Function Name: FB_get_info
 
 Signature: void FB_get_info(out word width: r0, out word height: r1, out byte color_depth: .a);  
 Purpose: Return the resolution and color depth
 
+___
 ##### Function Name: FB_set_palette
 
 Signature: void FB_set_palette(word pointer: r0, index: .a, byte count: .x);  
@@ -715,6 +776,7 @@ Purpose: Set (parts of) the palette
 
 [Note: This is not yet implemented.]
 
+___
 ##### Function Name: FB_cursor_position
 
 Signature: void FB_cursor_position(word x: r0, word y: r1);  
@@ -722,6 +784,7 @@ Purpose: Position the direct-access cursor
 
 **Description:** `FB_cursor_position` sets the direct-access cursor to the given screen coordinate. Future operations will access pixels at the cursor location and update the cursor.
 
+___
 ##### Function Name: FB_cursor_next_line
 
 Signature: void FB_cursor_next_line(word x: r0);  
@@ -729,11 +792,13 @@ Purpose: Move the direct-access cursor to next line
 
 **Description:** `FB_cursor_next_line` increments the y position of the direct-access cursor, and sets the x position to the same one that was passed to the previous `FB_cursor_position` call. This is useful for drawing rectangular shapes, and faster than explicitly positioning the cursor.
 
+___
 ##### Function Name: FB_get_pixel
 
 Signature: byte FB_get_pixel();  
 Purpose: Read one pixel, update cursor
 
+___
 ##### Function Name: FB_get_pixels
 
 Signature: void FB_get_pixels(word ptr: r0, word count: r1);  
@@ -741,11 +806,13 @@ Purpose: Copy pixels into RAM, update cursor
 
 **Description:** This function copies pixels into an array in RAM. The array consists of one byte per pixel.
 
+___
 ##### Function Name: FB_set_pixel
 
 Signature: void FB_set_pixel(byte color: .a);  
 Purpose: Set one pixel, update cursor
 
+___
 ##### Function Name: FB_set_pixels
 
 Signature: void FB_set_pixels(word ptr: r0, word count: r1);  
@@ -753,6 +820,7 @@ Purpose: Copy pixels from RAM, update cursor
 
 **Description:** This function sets pixels from an array of pixels in RAM. The array consists of one byte per pixel.
 
+___
 ##### Function Name: FB_set_8_pixels
 
 Signature: void FB_set_8_pixels(byte pattern: .a, byte color: .x);  
@@ -760,6 +828,7 @@ Purpose: Set 8 pixels from bit mask (transparent), update cursor
 
 **Description:** This function sets all 1-bits of the pattern to a given color and skips a pixel for every 0 bit. The order is MSB to LSB. The cursor will be moved by 8 pixels.
 
+___
 ##### Function Name: FB_set_8_pixels_opaque
 
 Signature: void FB_set_8_pixels_opaque(byte pattern: .a, byte mask: r0L, byte color1: .x, byte color2: .y);  
@@ -767,6 +836,7 @@ Purpose: Set 8 pixels from bit mask (opaque), update cursor
 
 **Description:** For every 1-bit in the mask, this function sets the pixel to color1 if the corresponding bit in the pattern is 1, and to color2 otherwise. For every 0-bit in the mask, it skips a pixel. The order is MSB to LSB. The cursor will be moved by 8 pixels.
 
+___
 ##### Function Name: FB_fill_pixels
 
 Signature: void FB_fill_pixels(word count: r0, word step: r1, byte color: .a);  
@@ -776,6 +846,7 @@ Purpose: Fill pixels with constant color, update cursor
 
 *[Note: Only the values 0/1 and screen width are currently supported.]*
 
+___
 ##### Function Name: FB_filter_pixels
 
 Signature: void FB_filter_pixels(word ptr: r0, word count: r1);  
@@ -783,6 +854,7 @@ Purpose: Apply transform to pixels, update cursor
 
 **Description:** This function allows modifying consecutive pixels. The function pointer will be called for every pixel, with the color in .a, and it needs to return the new color in .a.
 
+___
 ##### Function Name: FB_move_pixels
 
 Signature: void FB_move_pixels(word sx: r0, word sy: r1, word tx: r2, word ty: r3, word count: r4);  
@@ -790,6 +862,7 @@ Purpose: Copy horizontally consecutive pixels to a different position
 
 *[Note: Overlapping regions are not yet supported.]*
 
+___
 #### Graphics
 
 The high-level graphics API exposes a set of standard functions. It allows applications to easily perform some common high-level actions like drawing lines, rectangles and images, as well as moving parts of the screen. All commands are completely implemented on top of the framebuffer API, that is, they will continue working after replacing the framebuffer driver with one that supports a different resolution, color depth or even graphics device.
@@ -807,6 +880,7 @@ $FF3B: `GRAPH_set_font` - set the current font
 $FF3E: `GRAPH_get_char_size` - get size and baseline of a character  
 $FF41: `GRAPH_put_char` - print a character
 
+___
 ##### Function Name: GRAPH_init
 
 Signature: void GRAPH_init(word vectors: r0);  
@@ -814,11 +888,13 @@ Purpose: Activate framebuffer driver, enter and initialize graphics mode
 
 **Description**: This call activates the framebuffer driver whose vector table is passed in r0. If r0 is 0, the default driver is activated. It then switches the video hardware into graphics mode, sets the window to full screen, initializes the colors and activates the system font.
 
+___
 ##### Function Name: GRAPH_clear
 
 Signature: void GRAPH_clear();  
 Purpose: Clear the current window with the current background color.
 
+___
 ##### Function Name: GRAPH_set_window
 
 Signature: void GRAPH_set_window(word x: r0, word y: r1, word width: r2, word height: r3);  
@@ -828,6 +904,7 @@ Purpose: Set the clipping region
 
 *[Note: Only text output and GRAPH_clear currently respect the clipping region.]*
 
+___
 ##### Function Name: GRAPH_set_colors
 
 Signature: void GRAPH_set_colors(byte stroke: .a, byte fill: .x, byte background: .y);  
@@ -835,11 +912,13 @@ Purpose: Set the three colors
 
 **Description:** This function sets the three colors: The stroke color, the fill color and the background color.
 
+___
 ##### Function Name: GRAPH_draw_line
 
 Signature: void GRAPH_draw_line(word x1: r0, word y1: r1, word x2: r2, word y2: r3);  
 Purpose: Draw a line using the stroke color
 
+___
 ##### Function Name: GRAPH_draw_rect
 
 Signature: void GRAPH_draw_rect(word x: r0, word y: r1, word width: r2, word height: r3, word corner_radius: r4, bool fill: .c);  
@@ -849,6 +928,7 @@ Purpose: Draw a rectangle.
 
 *[Note: The border radius is currently unimplemented.]*
 
+___
 ##### Function Name: GRAPH_move_rect
 
 Signature: void GRAPH_move_rect(word sx: r0, word sy: r1, word tx: r2, word ty: r3, word width: r4, word height: r5);  
@@ -858,6 +938,7 @@ Purpose: Copy a rectangular screen area to a different location
 
 *[Note: Support for overlapping is not currently implemented.]*
 
+___
 ##### Function Name: GRAPH_draw_oval
 
 Signature: void GRAPH_draw_oval(word x: r0, word y: r1, word width: r2, word height: r3, bool fill: .c);  
@@ -865,6 +946,7 @@ Purpose: Draw an oval or a circle
 
 **Description:** This function draws an oval filling the given bounding box. If width equals height, the resulting shape is a circle. The oval will be outlined by the stroke color. If `fill` is `true`, it will be filled using the fill color. To only fill an oval, set the stroke color to the same value as the fill color.
 
+___
 ##### Function Name: GRAPH_draw_image
 
 Signature: void GRAPH_draw_image(word x: r0, word y: r1, word ptr: r2, word width: r3, word height: r4);  
@@ -872,6 +954,7 @@ Purpose: Draw a rectangular image from data in memory
 
 **Description:** This function copies pixel data from memory onto the screen. The representation of the data in memory has to have one byte per pixel, with the pixels organized line by line top to bottom, and within the line left to right.
 
+___
 ##### Function Name: GRAPH_set_font
 
 Signature: void GRAPH_set_font(void ptr: r0);  
@@ -879,6 +962,7 @@ Purpose: Set the current font
 
 **Description:** This function sets the current font to be used for the remaining font-related functions. The argument is a pointer to the font data structure in memory, which must be in the format of a single point size GEOS font (i.e. one GEOS font file VLIR chunk). An argument of 0 will activate the built-in system font.
 
+___
 ##### Function Name: GRAPH_get_char_size
 
 Signature: (byte baseline: .a, byte width: .x, byte height_or_style: .y, bool is_control: .c) GRAPH_get_char_size(byte c: .a, byte format: .x);  
@@ -890,6 +974,7 @@ Purpose: Get the size and baseline of a character, or interpret a control code
 * The resulting values are measured in pixels.
 * The baseline is measured from the top.
 
+___
 ##### Function Name: GRAPH_put_char
 
 Signature: void GRAPH_put_char(inout word x: r0, inout word y: r1, byte c: .a);  
@@ -923,6 +1008,7 @@ Notes:
 * The stroke color is used to draw the characters, and the underline is drawn using the fill color. In reverse text mode, the text background is filled with the fill color.
 * *[BELL ($07), TAB ($09) and SHIFT+TAB ($18) are not yet implemented.]*
 
+___
 #### Console
 
 $FEDB: `console_init` - initialize console mode  
@@ -933,6 +1019,7 @@ $FED5: `console_set_paging_message` - set paging message or disable paging
 
 The console is a screen mode that allows text output and input in proportional fonts that support the usual styles. It is useful for rich text-based interfaces.
 
+___
 ##### Function Name: console_init
 
 Signature: void console_init(word x: r0, word y: r1, word width: r2, word height: r3);  
@@ -941,6 +1028,7 @@ Call address: $FEDB
 
 **Description:** This function initializes console mode. It sets up the window (text clipping area) passed into it, clears the window and positions the cursor at the top left. All 0 arguments create a full screen console. You have to switch to graphics mode using `screen_mode` beforehand.
 
+___
 ##### Function Name: console_put_char
 
 Signature: void console_put_char(byte char: .a, bool wrapping: .c);  
@@ -951,6 +1039,7 @@ Call address: $FEDE
 
 **Note**: If the bottom of the screen is reached, this function will scroll its contents up to make extra room.
 
+___
 ##### Function Name: console_put_image
 
 Signature: void console_put_image(word ptr: r0, word width: r1, word height: r2);  
@@ -964,6 +1053,7 @@ Call address: $FEE1
 * If the bottom of the screen is reached, this function will scroll its contents up to make extra room.
 * Subsequent line breaks will take the image height into account, so that the new cursor position is below the image.
 
+___
 ##### Function Name: console_get_char
 
 Signature: (byte char: .a) console_get_char();  
@@ -974,6 +1064,7 @@ Call address: $FEE1
 
 This function allows editing the line using BACKSPACE/DEL, but does not allow moving the cursor within the line, write more than one line, or using control codes.
 
+___
 ##### Function Name: console_set_paging_message
 
 Signature: void console_set_paging_message(word message: r0);  
@@ -984,6 +1075,7 @@ Call address: $FED5
 
 **Note:** It is possible to use control codes to change the text style and color. Do not use codes that change the cursor position, like CR or LF. Also, the text must not overflow one line on the screen.
 
+___
 #### Other
 
 $FECF: `entropy_get` - get 24 random bits  
@@ -1029,6 +1121,7 @@ Registers affected: .A, .X, .Y
       ORA #$30  ; convert to ASCII
       JMP $FFD2 ; print character
 
+___
 ##### Function Name: monitor
 
 Purpose: Enter the machine language monitor  
@@ -1048,6 +1141,7 @@ Registers affected: Does not return
 
       JMP monitor
 
+___
 ##### Function Name: enter_basic
 
 Purpose: Enter BASIC  
@@ -1063,7 +1157,7 @@ Error returns: Does not return
 	CLC
 	JMP enter_basic ; returns to the "READY." prompt
 
-
+___
 ##### Function Name: screen_mode
 
 Purpose: Get/Set the screen mode  
@@ -1083,6 +1177,7 @@ Registers affected: .A, .X, .Y
 	JSR screen_mode ; SET 320x200@256C MODE
 	BCS FAILURE
 
+___
 ##### Function Name: screen_set_charset
 
 Purpose: Activate a 8x8 text mode charset  
@@ -1111,6 +1206,7 @@ If .A is zero, .X (lo) and .Y (hi) contain a pointer to a 2 KB RAM area that get
 	LDY #>MY_CHARSET
 	JSR screen_set_charset ; UPLOAD CUSTOM CHARSET "MY_CHARSET"
 
+___
 ##### Function Name: JSRFAR
 
 Purpose: Execute a routine on another RAM or ROM bank  
@@ -1137,3 +1233,4 @@ The 16 bit address and the 8 bit bank number have to follow the instruction stre
 ---
 
 [^1]: [https://github.com/emmanuel-marty/lzsa](https://github.com/emmanuel-marty/lzsa)
+  
