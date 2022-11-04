@@ -229,7 +229,7 @@ This document describes the **V**ersatile **E**mbedded **R**etro **A**dapter or 
 		<td>$9F3B</td>
 		<td>AUDIO_CTRL</td>
 		<td colspan="1" align="center">FIFO Full / FIFO Reset</td>
-		<td colspan="1" align="center">-</td>
+		<td colspan="1" align="center">FIFO_Empty<br />(read-only)</td>
 		<td colspan="1" align="center">16-Bit</td>
 		<td colspan="1" align="center">Stereo</td>
 		<td colspan="4" align="center">PCM Volume</td>
@@ -331,7 +331,7 @@ The video output mode can be selected using OUT_MODE in DC_VIDEO.
 
 Setting **'Chroma Disable'** disables output of chroma in NTSC composite mode and will give a better picture on a monochrome display. *(Setting this bit will also disable the chroma output on the S-video output.)*
 
-**'Current Field'** is a read-only bit which reflects the active interlaced field in composite and RGB modes. (0: even, 1: odd)
+**'Current Field'** is a read-only bit which reflects the active interlaced field in composite and RGB modes. In non-interlaced modes, this reflects if the current line is even or odd. (0: even, 1: odd)
 
 Setting **'Layer0 Enable'** / **'Layer1 Enable'** / **'Sprites Enable'** will respectively enable output from layer0 / layer1 and the sprites renderer.
 
@@ -705,13 +705,20 @@ For PCM playback, VERA contains a 4kB FIFO buffer. This buffer needs to be fille
 
 ### Audio registers
 
-**PCM Volume** controls the volume of the PCM playback, this has a logarithmic curve. A value of 0 is silence, 15 is the loudest.
+#### `AUDIO_CTRL ($9F3B)` ####
 
-**Stereo** sets the data format to stereo. If this bit is 0 (mono), the same audio data is send to both channels.
+**FIFO Full** (bit 7) is a read-only flag that indicates whether the FIFO is full. Any writes to the FIFO while this flag is 1 will be ignored. Writing a 1 to this register
+(**FIFO Reset**) will perform a FIFO reset, which will clear the contents of the FIFO buffer.
 
-**16-bit** sets the data format to 16-bit. If this bit is 0, 8-bit data is expected.
+**FIFO Empty** (bit 6) is a read-only flag that indicates whether the FIFO is empty.
 
-**FIFO Full** is a read-only flag that indicated if the FIFO is full. Any writes to the FIFO while this flag is 1 will be ignored. Writing a 1 to this register (**FIFO Reset**) will perform a FIFO reset, which will clear the contents of the FIFO buffer.
+**16-bit** (bit 5) sets the data format to 16-bit. If this bit is 0, 8-bit data is expected.
+
+**Stereo** (bit 4) sets the data format to stereo. If this bit is 0 (mono), the same audio data is send to both channels.
+
+**PCM Volume** (bits 0..3)controls the volume of the PCM playback, this has a logarithmic curve. A value of 0 is silence, 15 is the loudest.
+
+#### `AUDIO_RATE ($9F3C)` ####
 
 **PCM sample rate** controls the speed at which samples are read from the FIFO. A few example values:
 
@@ -724,6 +731,10 @@ For PCM playback, VERA contains a 4kB FIFO buffer. This buffer needs to be fille
 | *>128*          | *invalid*                                   |
 
 Using a value of 128 will give the best quality (lowest distortion); at this value for every output sample, an input sample from the FIFO is read. Lower values will output the same sample multiple times to the audio DAC. Input samples are always read as a complete set (being 1/2/4 bytes).
+
+#### `AUDIO_DATA ($9F3D)` ####
+
+**Audio FIFO data** Writes to this register add one byte to the PCM FIFO. If the FIFO is full, the write will be ignored.
 
 *NOTE: When setting up for PCM playback it is advised to first set the sample rate at 0 to stop playback. First fill the FIFO buffer with some initial data and then set the desired sample rate. This can prevent undesired FIFO underruns.*
 

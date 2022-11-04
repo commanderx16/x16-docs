@@ -2,7 +2,7 @@
 
 ## I/O Programming
 
-There are two 65C22 "Versatile Interface Adapter" (VIA) I/O controllers in the system, VIA#1 at address $9F60 and VIA#2 at address $9F70. The IRQ out lines of VIA#1 is connected to the CPU's NMI line, while the IRQ out line of VIA#2 is connected to the CPU's IRQ line.
+There are two 65C22 "Versatile Interface Adapter" (VIA) I/O controllers in the system, VIA#1 at address $9F00 and VIA#2 at address $9F10. The IRQ out lines of VIA#1 is connected to the CPU's NMI line, while the IRQ out line of VIA#2 is connected to the CPU's IRQ line.
 
 The-following tables describe the connections of the I/O pins:
 
@@ -11,23 +11,26 @@ The-following tables describe the connections of the I/O pins:
 
 |Pin  |Name      | Description                     |
 |-----|----------|---------------------------------|
-| PA0 | PS2KDAT  | PS/2 DATA keyboard              |
-| PA1 | PS2KCLK  | PS/2 CLK  keyboard              |
+| PA0 | I2CDATA  | I2C Data                        |
+| PA1 | I2CCLK   | I2C Clock                       |
 | PA2 | NESLATCH | NES LATCH (for all controllers) |
 | PA3 | NESCLK   | NES CLK   (for all controllers) |
 | PA4 | NESDAT3  | NES DATA  (controller 3)        |
 | PA5 | NESDAT2  | NES DATA  (controller 2)        |
 | PA6 | NESDAT1  | NES DATA  (controller 1)        |
 | PA7 | NESDAT0  | NES DATA  (controller 0)        |
-| PB0 | PS2MDAT  | PS/2 DATA mouse                 |
-| PB1 | PS2MCLK  | PS/2 CLK  mouse                 |
-| PB2 | I2CDATA  | I2C DATA                        |
+| PB0 | _Unused_ |                                 |
+| PB1 | _Unused_ |                                 |
+| PB2 | _Unused_ |                                 |
 | PB3 | SERATNO  | Serial ATN  out                 |
 | PB4 | SERCLKO  | Serial CLK  out                 |
 | PB5 | SERDATAO | Serial DATA out                 |
 | PB6 | SERCLKI  | Serial CLK  in                  |
 | PB7 | SERDATAI | Serial DATA in                  |
-| CB2 | I2CCLK   | I2C CLK                         |
+| CA1 | _Unused_ |                                 |
+| CA2 | _Unused_ |                                 |
+| CB1 | IECSRQ   |                                 |
+| CB2 | _Unused_ |                                 |
 
 The KERNAL uses Timer 2 for timing transmissions on the Serial Bus.
 
