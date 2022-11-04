@@ -400,7 +400,7 @@ For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%
 #### VLOAD
 
 **TYPE: Command**  
-**FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
+**FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VRAM bank (0-1)&gt;, &lt;VRAM address ($0000-$FFFF)&gt;**
 	
 **Action:** Loads a file directly into VERA RAM. 
 
