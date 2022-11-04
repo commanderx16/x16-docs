@@ -154,7 +154,7 @@ The 16 bit ABI generally follows the following conventions:
 | [`memory_decompress`](#function-name-memory_decompress) | `$FEED` | Mem | Decompress an LZSA2 block | r0 r1 | r1 A X Y P | X16
 | [`memory_fill`](#function-name-memory_fill) | `$FEE4` | Mem | Fill a memory region with a byte value | A r0 r1 | r1 X Y P | X16
 | `MEMTOP` | `$FF99` | Mem | Get address of end of usable RAM | | | C64 |
-| [`monitor`](#function-name-monitor) | `$FF44` | Misc | Enter machine language monitor | none | A X Y P | X16
+| [`monitor`](#function-name-monitor) | `$FECC` | Misc | Enter machine language monitor | none | A X Y P | X16
 | [`mouse_config`](#function-name-mouse_config) | `$FF68` | Mouse | Configure mouse pointer | A X Y | A X Y P | X16
 | [`mouse_get`](#function-name-mouse_get) | `$FF6B` | Mouse | Get saved mouse sate | X | A (X) P | X16
 | [`mouse_scan`](#function-name-mouse_scan) | `$FF71` | Mouse | Poll mouse state and save it | none | A X Y P | X16
@@ -1081,7 +1081,7 @@ ___
 #### Other
 
 $FECF: `entropy_get` - get 24 random bits  
-$FF44: `monitor` - enter machine language monitor  
+$FECC: `monitor` - enter machine language monitor  
 $FF47: `enter_basic` - enter BASIC  
 $FF5F: `screen_mode` - get/set screen mode  
 $FF62: `screen_set_charset` - activate 8x8 text mode charset
@@ -1127,7 +1127,7 @@ ___
 ##### Function Name: monitor
 
 Purpose: Enter the machine language monitor  
-Call address: $FF44  
+Call address: $FECC  
 Communication registers: None  
 Preparatory routines: None  
 Error returns: Does not return  
