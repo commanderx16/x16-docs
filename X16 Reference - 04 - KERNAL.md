@@ -96,7 +96,7 @@ The 16 bit ABI generally follows the following conventions:
 | [`clock_set_date_time`](#function-name-clock_set_date_time) | `$FF4D` | Time | Set the date and time | r0 r1 r2 r3L | A X Y P | X16
 | `CHRIN` | `$FFCF` | ChIO | Alias for `BASIN` | | A X | C64 |
 | `CHROUT` | `$FFD2` | ChIO | Alias for `BSOUT` | A | C | C64 |
-| `CLOSE_ALL` | `$FF4A` | ChIO | Close all files on a device  | | A X | C128 |
+| `CLOSE_ALL` | `$FF4A` | ChIO | Close all files on a device  | | | C128 |
 | `CLRCHN` | `$FFCC` | ChIO | Restore character I/O to screen/keyboard | | A X | C64 |
 | [`console_init`](#function-name-console_init) | `$FEDB` | Video | Initialize console mode | none | r0 A P | X16
 | [`console_get_char`](#function-name-console_get_char) | `$FEE1` | Video | Get character from console | A | r0 r1 r2 r3 r4 r5 r6 r12 r13 r14 r15 A X Y P | X16
