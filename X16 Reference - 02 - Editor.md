@@ -179,7 +179,7 @@ On boot, the US layout (`ABC/X16`) is active:
 | Shift+Alt+`b`     | ²      |
 | Shift+Alt+`/`     | ¿      |
 
-(The X16 logo is code point \xad, SHY, soft-hyphen.)
+(The X16 logo is code point \\xad, SHY, soft-hyphen.)
 
 The following combinations are dead keys:
 

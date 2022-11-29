@@ -458,9 +458,9 @@ Range|Type|Description
   </tr>
 </table>
 
-## YM2151 Register Details
+### YM2151 Register Details
 
-### Global Parameters:
+#### Global Parameters:
 
 **LR** (LFO Reset)
 
@@ -581,7 +581,7 @@ Register $1B, Bits 0-1
 Sets the LFO waveform:
 0: Sawtooth, 1: Square (50% duty cycle), 2: Triangle, 3: Noise
 
-### Channel Control Parameters:
+#### Channel Control Parameters:
 
 **RL** (Right/Left output enable)
 
@@ -647,7 +647,7 @@ Sensitivity values: (dB)
 -|-|-|-
 0|23.90625|47.8125|95.625
 
-### Operator Control Parameters:
+#### Operator Control Parameters:
 
 Operators are arranged as follows:
 
