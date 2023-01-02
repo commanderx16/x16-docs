@@ -75,30 +75,62 @@ These presets exist mainly to support playback of drum sounds, and many of them 
 
 | # | Instrument Name | | # | Instrument Name |
 |-|-|-|-|-|
-| 128 | Silent | | 152 | Long Guiro |
-| 129 | Snare Roll | | 153 | Mute Cuica |
-| 130 | Snap | | 154 | Open Cuica |
-| 131 | High Q | | 155 | Mute Triangle |
-| 132 | Scratch | | 156 | Open Triangle |
-| 133 | Square Click | | 157 | Jingle Bell |
-| 134 | Kick | | 158 | Bell Tree |
-| 135 | Rim | | 159 | Mute Surdo |
-| 136 | Snare | | 160 | Pure Sine |
-| 137 | Clap | | 161 | Timbale |
-| 138 | Tom | | 162 | Open Surdo
-| 139 | Closed Hi-Hat | |
-| 140 | Pedal Hi-Hat | |
-| 141 | Open Hi-Hat | |
-| 142 | Crash | |
-| 143 | Ride Cymbal | |
-| 144 | Splash Cymbal | |
+| 128 | Silent | | 146 | Vibraslap | |
+| 129 | Snare Roll | | 147 | Bongo | |
+| 130 | Snap | | 148 | Maracas | |
+| 131 | High Q | | 149 | Short Whistle |
+| 132 | Scratch | | 150 | Long Whistle |
+| 133 | Square Click | | 151 | Short Guiro |
+| 134 | Kick | | 152 | Long Guiro |
+| 135 | Rim | | 153 | Mute Cuica |
+| 136 | Snare | | 154 | Open Cuica |
+| 137 | Clap | | 155 | Mute Triangle |
+| 138 | Tom | | 156 | Open Triangle |
+| 139 | Closed Hi-Hat | | 157 | Jingle Bell |
+| 140 | Pedal Hi-Hat | | 158 | Bell Tree |
+| 141 | Open Hi-Hat | | 159 | Mute Surdo |
+| 142 | Crash | | 160 | Pure Sine |
+| 143 | Ride Cymbal | | 161 | Timbale |
+| 144 | Splash Cymbal | | 162 | Open Surdo |
 | 145 | Tambourine | |
-| 146 | Vibraslap | |
-| 147 | Bongo | |
-| 148 | Maracas | |
-| 149 | Short Whistle | |
-| 150 | Long Whistle | |
-| 151 | Short Guiro | |
+
+## Drum presets
+These are the percussion instrument mappings for the drum number argument of the `ym_playdrum` and `ym_setdrum` API calls, and the `FMDRUM` BASIC command.
+
+| # | Instrument Name | | # | Instrument Name |
+|-|-|-|-|-|
+| | | | 56 | Cowbell |
+| 25 | Snare Roll | | 57 | Crash Cymbal 2 |
+| 26 | Finger Snap | | 58 | Vibraslap |
+| 27 | High Q | | 59 | Ride Cymbal 2 |
+| 28 | Slap | | 60 | High Bongo |
+| 29 | Scratch Pull | | 61 | Low Bongo |
+| 30 | Scratch Push | | 62 | Mute High Conga |
+| 31 | Sticks | | 63 | Open High Conga |
+| 32 | Square Click | | 64 | Low Conga |
+| 33 | Metronome Bell | | 65 | High Timbale |
+| 34 | Metronome Click | | 66 | Low Timbale |
+| 35 | Acoustic Bass Drum | | 67 | High Agogo |
+| 36 | Electric Bass Drum | | 68 | Low Agogo |
+| 37 | Side Stick | | 69 | Cabasa |
+| 38 | Acoustic Snare | | 70 | Maracas |
+| 39 | Hand Clap | | 71 | Short Whistle |
+| 40 | Electric Snare | | 72 | Long Whistle |
+| 41 | Low Floor Tom | | 73 | Short Guiro |
+| 42 | Closed Hi-Hat | | 74 | Long Guiro |
+| 43 | High Floor Tom | | 75 | Claves |
+| 44 | Pedal Hi-Hat | | 76 | High Woodblock |
+| 45 | Low Tom | | 77 | Low Woodblock |
+| 46 | Open Hi-Hat | | 78 | Mute Cuica |
+| 47 | Low-Mid Tom | | 79 | Open Cuica |
+| 48 | High-Mid Tom | | 80 | Mute Triangle |
+| 49 | Crash Cymbal 1 | | 81 | Open Triangle |
+| 50 | High Tom | | 82 | Shaker |
+| 51 | Ride Cymbal 1 | | 83 | Jingle Bell |
+| 52 | Chinese Cymbal | | 84 | Belltree |
+| 53 | Ride Bell | | 85 | Castanets |
+| 54 | Tambourine | | 86 | Mute Surdo |
+| 55 | Splash Cymbal | | 87 | Open Surdo |
 
 ___
 
