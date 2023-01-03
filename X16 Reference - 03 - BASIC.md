@@ -137,7 +137,7 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 **Action:** Play a note by frequency on the YM2151. The accepted range is in Hz from 17 to 4434. FMFREQ also accepts a frequency of 0 to release the note.
 
-**EXAMPLE of FMFREQ statement**
+**EXAMPLE of FMFREQ statement:**
 ```BASIC
 0 FMINST 0,160 : REM LOAD PURE SINE PATCH
 10 FMINST 1,160 : REM HERE TOO
@@ -173,9 +173,9 @@ Load an instrument onto the YM2151 in the form of a [patch preset](X16%20Referen
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 | Release | C | C&#9839; | D | D&#9839; | E | F | F&#9839; | G | G&#9839; | A | A&#9839; | B | no-op |
 
-Notes can also be represented by negative numbers to skip retriggering, and will thus glide to another note without restarting the playback of the note.
+Notes can also be represented by negative numbers to skip retriggering, and will thus snap to another note without restarting the playback of the note.
 
-**EXAMPLE of FMNOTE statement**
+**EXAMPLE of FMNOTE statement:**
 ```BASIC
 0 FMINST 1,64 : REM LOAD SOPRANO SAX
 10 FMNOTE 1,$4A : REM PLAYS CONCERT A
@@ -184,7 +184,7 @@ Notes can also be represented by negative numbers to skip retriggering, and will
 40 FOR X=1 TO 1000 : NEXT X : REM DELAYS FOR A BIT
 50 FMNOTE 1,$3A : REM PLAYS A IN THE 3RD OCTAVE
 60 FOR X=1 TO 2500 : NEXT X : REM SHORT DELAY
-70 FMNOTE 1,-$3B : REM GLIDES UP A HALF STEP TO A#
+70 FMNOTE 1,-$3B : REM UP A HALF STEP TO A# WITHOUT RETRIGGERING
 80 FOR X=1 TO 2500 : NEXT X : REM SHORT DELAY
 90 FMNOTE 1,0 : REM RELEASES THE NOTE
 ```
@@ -226,9 +226,9 @@ The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%2
 
 Only some patch presets (instruments) are sensitive to the LFO. Those are marked in [this table](X16%20Reference%20-%20Appendix%20A%20-%20Sound.md#fm-instrument-patch-presets) with the &#8224; symbol.  The LFO affects all channels equally, and it depends on the instrument as to whether it is affected.
 
-Good values for most instruments are speed somewhere between 190-220 and a depth value below 30.
+Good values for most instruments are speed somewhere between 190-220. A good light vibrato for most wind instruments would have a depth of 10-15, while tremolo instruments like the Vibraphone or Tremolo Strings are most realistic around 20-30.
 
-**EXAMPLE of FMVIB statement**:
+**EXAMPLE of FMVIB statement:**
 ```BASIC
 10 FMVIB 200,30
 20 FMINST 0,11 : REM VIBRAPHONE
@@ -460,7 +460,7 @@ The size of the mouse pointer's area will be configured according to the current
 
 **Action:** Play a note by frequency on the VERA PSG. The accepted range is in Hz from 1 to 24319. PSGFREQ also accepts a frequency of 0 to release the note.
 
-**EXAMPLE of PSGFREQ statement**
+**EXAMPLE of PSGFREQ statement:**
 ```BASIC
 10 PSGINIT : REM RESET ALL VOICES TO SQUARE WAVEFORM
 20 PSGFREQ 0,350 : REM PLAY A SQUARE WAVE AT 350 HZ
@@ -489,7 +489,7 @@ The above BASIC program plays a sound similar to a North American dial tone for 
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 | Release | C | C&#9839; | D | D&#9839; | E | F | F&#9839; | G | G&#9839; | A | A&#9839; | B | no-op |
 
-**EXAMPLE of PSGNOTE statement**
+**EXAMPLE of PSGNOTE statement:**
 ```BASIC
 10 PSGNOTE 1,$4A : REM PLAYS CONCERT A
 20 FOR X=1 TO 5000 : NEXT X : REM DELAYS FOR A BIT
