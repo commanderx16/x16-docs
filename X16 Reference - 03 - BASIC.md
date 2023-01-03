@@ -125,6 +125,37 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
       DOS"S:BAD_FILE" : REM DELETES "BAD_FILE"
       DOS             : REM PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
 
+### FMCHORD
+**TYPE: Command**  
+**FORMAT: FMCHORD &lt;first channel&gt;,&lt;string&gt;**
+
+**Action:** This command uses the same syntax as `FMPLAY`, but instead of playing a series of notes, it will start all of the notes in the string simultaneously on one or more channels. The first parameter to `FMCHORD` is the first channel to use, and will be used for the first note in the string, and subsequent notes in the string will be started on subsequent channels, with the channel after 7 being channel 0.
+
+All macros are supported, even the ones that only affect the behavior of `PSGPLAY` and `FMPLAY`. 
+
+The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%20-%20Sound.md#basic-fmplay-and-psgplay-string-macros).
+
+**EXAMPLE of FMCHORD statement:**
+```BASIC
+10 FMINIT
+20 FMVIB 195,10
+30 FMINST 1,16:FMINST 2,16:FMINST 3,16 : REM ORGAN
+40 FMVOL 1,50:FMVOL 2,50:FMVOL 3,50 : REM MAKE ORGAN QUIETER
+50 FMINST 0,11 : REM VIBRAPHONE
+60 FMCHORD 1,"O3CG>E T90" : REM START SOME ORGAN CHORDS (CHANNELS 1,2,3)
+70 FMPLAY 0,"O4G4.A8G4E2." : REM PLAY MELODY (CHANNEL 0)
+80 FMPLAY 0,"O4G4.A8G4E2."
+90 FMCHORD 1,"O2G>DB" : REM SWITCH ORGAN CHORDS (CHANNELS 1,2,3)
+100 FMPLAY 0,"O5D2D4<B2" : REM PLAY MORE MELODY
+110 FMCHORD 1,"O2F" : REM SWITCH ONE OF THE ORGAN CHORD NOTES
+120 FMPLAY 0,"R4" : REM PAUSE FOR THE LENGTH OF ONE QUARTER NOTE
+130 FMCHORD 1,"O3CEG" : REM SWITCH ALL THREE CHORD NOTES
+140 FMPLAY 0,"O5C2C4<G2." : REM PLAY THE REST OF THE MELODY
+150 FMCHORD 1,"RRR" : REM RELEASE THE CHANNELS THAT ARE PLAYING THE CHORD
+```
+This will play the first few lines of *Silent Night* with a vibraphone lead and organ accompaniment.
+
+
 ### FMDRUM
 **TYPE: Command**  
 **FORMAT: FMDRUM &lt;channel&gt;,&lt;drum number&gt;**
@@ -453,6 +484,29 @@ The size of the mouse pointer's area will be configured according to the current
 	10 SCREEN$80
 	20 FORI=1TO20:PSETRND(1)*320,RND(1)*200,RND(1)*256:NEXT
 	30 GOTO20
+
+### PSGCHORD
+**TYPE: Command**  
+**FORMAT: PSGCHORD &lt;first voice&gt;,&lt;string&gt;**
+
+**Action:** This command uses the same syntax as `PSGPLAY`, but instead of playing a series of notes, it will start all of the notes in the string simultaneously on one or more voices. The first parameter to `PSGCHORD` is the first voice to use, and will be used for the first note in the string, and subsequent notes in the string will be started on subsequent voices, with the voice after 15 being voice 0.
+
+All macros are supported, even the ones that only affect `PSGPLAY` and `FMPLAY`. 
+
+The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%20-%20Sound.md#basic-fmplay-and-psgplay-string-macros).
+
+**EXAMPLE of PSGCHORD statement:**
+```BASIC
+10 PSGINIT
+20 PSGCHORD 15,"O3G>CE" : REM STARTS PLAYING A CHORD ON VOICES 15, 0, AND 1
+30 PSGPLAY 14,">C<DGB>CDE" : REM PLAYS A SERIES OF NOTES ON VOICE 14
+40 PSGCHORD 15,"RRR" : REM RELEASES CHORD ON VOICES 15, 0, AND 1
+50 PSGPLAY 14,"O4CAG>C<A" : REM PLAYS A SERIES OF NOTES ON VOICE 14
+60 PSGCHORD 0,"O3A>CF" : REM STARTS PLAYING A CHORD ON VOICES 0, 1, AND 2
+70 PSGPLAY 14,"F16GAB->CDEF4" : REM PLAYS A SERIES OF NOTES ON VOICE 
+80 PSGCHORD 0,"RRR" : REM RELEASES CHORD ON VOICES 0, 1, AND 2
+```
+
 
 ### PSGFREQ
 **TYPE: Command**  
