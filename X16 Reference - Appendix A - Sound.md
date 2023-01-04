@@ -146,7 +146,7 @@ Example:
 ```
 On the YM2151 using channel 0, plays in the current octave an **A&#9839;** [half note<sup>?</sup>](a "minim") followed by an **A** [quarter note<sup>?</sup>](a "crotchet"), followed by **C** dotted quarter note, followed by **G&#9837;** dotted [eighth note<sup>?</sup>](a "quaver").
 
-Lengths and dots set the default length for subsequent notes and rests that don't otherwise have a length modifier.
+Lengths and dots after the note name or rest set the length just for the current note or rest.  To set the default length for subsequent notes and rests, use the `L` macro.
 
 
 ### Rests
@@ -162,10 +162,17 @@ On the VERA PSG using voice 0, plays in the current octave a **C** quarter note,
 The numeral `4` in `C4` set the length for the `C` itself and all the rests and notes that followed it.
 
 ### Note Length
-* Synopsis: Set the length for notes and rests that follow
+* Synopsis: Set the default length for notes and rests that follow
 * Syntax: `L[<length>][.]`
 
-Example:
+Example values:
+* L4 = quarter note (crotchet)
+* L16 = sixteenth note (semiquaver)
+* L12 = 8th note triplets (quaver triplet)
+* L4. = dotted quarter note (1.5x the length)
+* L4.. = double-dotted quarter note (1.75x the length)
+
+Example program:
 ```BASIC
     10 FMPLAY 0,"L4"
     20 FOR I=1 TO 2
@@ -239,7 +246,7 @@ On the VERA PSG using voice 0, changes to octave 5 and plays the **G major** sca
 * Synopsis: Sets the BPM, the number of quarter notes per minute
 * Syntax: `T<1-255>`
 
-High tempo values and short notes tend to have inaccurate timing due to rounding error. The minimum resolution for a note being played or released is 1/60th of a second (a frame), so fast notes at higher tempos will have a tendency to play too fast.
+High tempo values and short notes tend to have inaccurate lengths due to quantization error. Delays within a string do keep track of fractional frames so the overall playback length should be relatively consistent.
 
 Low tempo values that cause delays (lengths) to exceed 255 frames will also end up being inaccurate. For very long notes, it may be better to use legato to string several together.
 
