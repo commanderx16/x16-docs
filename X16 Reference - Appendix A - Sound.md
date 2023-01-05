@@ -9,7 +9,7 @@
 | 3 | Honky-tonk Piano | | 67 | Baritone Sax |
 | 4 | Electric Piano 1 | | 68 | Oboe &#8224; |
 | 5 | Electric Piano 2 | | 69 | English Horn &#8224; |
-| 6 | Harpsichord | | 70 | Bassoon | 
+| 6 | Harpsichord | | 70 | Bassoon |
 | 7 | Clavinet | | 71 | Clarinet &#8224; |
 | 8 | Celesta | | 72 | Piccolo |
 | 9 | Glockenspiel | | 73 | Flute &#8224; |
@@ -18,7 +18,7 @@
 | 12 | Marimba | | 76 | Blown Bottle |
 | 13 | Xylophone | | 77 | Shakuhachi |
 | 14 | Tubular Bells | | 78 | Whistle &#8224; |
-| 15 | Dulcimer | | 79 | Ocarina | 
+| 15 | Dulcimer | | 79 | Ocarina |
 | 16 | Drawbar Organ &#8224; | | 80 | Lead 1 (Square) &#8224; |
 | 17 | Percussive Organ &#8224; | | 81 | Lead 2 (Sawtooth) &#8224; |
 | 18 | Rock Organ &#8224; | | 82 | Lead 3 (Triangle) &#8224; |
@@ -136,6 +136,44 @@ ___
 
 ## BASIC FMPLAY and PSGPLAY string macros
 
+### Overview
+
+The play commands use a string of tokens to define sequences of notes to be played on a single voice of the corresponding sound chip. Tokens cause various effects to happen, such as triggering notes, changing the playback speed, etc. In order to
+minimize the amount of text required to specify a sequence of sound, the player
+maintains an internal state for most note parameters.
+
+##### Stateful Player Behavior:
+
+Playback parameters such as tempo, octave, volume, note duration, etc do not need to be specified for each note. These states are global between all voices of both the FM and PSG sound chips. The player maintains parameter state during and after playback. For instance, setting the octave to 5 in an `FMPLAY` command will result in subsequent `FMPLAY` and `PSGPLAY` statements beginning with the octave set to 5.
+
+The player state is reset to default values whenever `FMINIT` or `PSGINIT` are used.
+
+Parameter    |Default|Equivalent Token
+-------------|-------|----------------
+Tempo        | 120   | T120
+Octave       | 4     | O4
+Length       | 4     | L4
+Note Spacing | 1     | S1
+
+
+##### Using Tokens:
+The valid tokens are: **`A-G,K,L,O,P,R,S,T,V,<,>`**.
+
+Each token may be followed by optional modifiers such as numbers or symbols. Options to a token must be given in the order they are expected, and must have no spacing between them. Tokens may have spaces between them as desired. Any unknown
+characters are ignored.
+
+Example:
+```BASIC
+    FMPLAY 0,"L4"      : REM DEFAULT LENGTH = QUARTER NOTE
+    FMPLAY 0,"A2. C+." : REM VALID
+    FMPLAY 0,"A.2 C.+" : REM INVALID
+```
+The valid command plays A as a dotted half, followed by C&#9839; as a dotted quarter.
+
+The invalid example would play A as a dotted quarter (not half) because length must come before dots. Next, it would ignore the 2 as garbage. Then it would play natural C (not sharp) as a dotted quarter. Finally, it would ignore the + as garbage, because sharp/flat must precede length and dot.
+
+### Token definitions:
+
 ### Musical notes
 * Synopsis: Play a musical note, optionally setting the length.
 * Syntax: `<A-G>[<+/->][<length>][.]`
@@ -155,11 +193,12 @@ Lengths and dots after the note name or rest set the length just for the current
 
 Example:
 ```BASIC
-    PSGPLAY 0,"C4RDRE"
+    PSGPLAY 0,"CR2DRE"
 ```
-On the VERA PSG using voice 0, plays in the current octave a **C** quarter note, followed by silence of the same length, followed by a **D** of the same length, followed by silence of the same length, and finally an **E** of the same length.
+On the VERA PSG using voice 0, plays in the current octave a **C** quarter note, followed by a half rest (silence), followed by a quarter **D**, followed by a quarter rest (silence), and finally a quarter **E**.
 
-The numeral `4` in `C4` set the length for the `C` itself and all the rests and notes that followed it.
+The numeral `2` in `R2` sets the length for the `R` itself but does not alter the
+default note length (assumed as 4 - quarter notes in this example).
 
 ### Note Length
 * Synopsis: Set the default length for notes and rests that follow
@@ -185,7 +224,7 @@ On the YM2151 using channel 0, this program, when RUN, plays in the current octa
 * Synopsis: Set the spacing between notes, from legato to extreme staccato
 * Syntax: `S<0-7>`
 
-`S0` indicates legato. For FMPLAY, this also means that notes after the first in a phrase don't implicitly retrigger. 
+`S0` indicates legato. For FMPLAY, this also means that notes after the first in a phrase don't implicitly retrigger.
 
 `S1` is the default value, which plays a note for 7/8 of the duration of the note, and releases the note for the remaining 1/8 of the note's duration.
 
