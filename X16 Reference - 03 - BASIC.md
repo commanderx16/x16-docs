@@ -11,47 +11,123 @@ for GitHub's Markdown flavor. Do not remove!
 
 | Keyword | Type | Summary | Origin |
 |-|-|-|-|
-| [`BIN$`](#bin) | Function | Converts numeric to a binary string | X16 |
-| [`BOOT`](#boot) | Command | Loads and runs `AUTOBOOT.X16` | X16 |
-| [`CHAR`](#char) | Command | Draws a text string in graphics mode | X16 |
-| [`CLS`](#cls) | Command | Clears the screen | X16 |
-| [`COLOR`](#color) | Command | Sets text fg and bg color | X16 |
-| [`DOS`](#dos) | Command | Disk or SD card operations | X16 |
-| [`FMCHORD`](#fmchord) | Command | Start or stop simultaneous notes on YM2151 | X16 |
-| [`FMDRUM`](#fmdrum) | Command | Plays a drum sound on YM2151 | X16 |
-| [`FMFREQ`](#fmfreq) | Command | Play a frequency in Hz on YM2151 | X16 |
-| [`FMINIT`](#fminit) | Command | Stop sound and reinitialize YM2151 | X16 |
-| [`FMNOTE`](#fmnote) | Command | Play a musical note on YM2151 | X16 |
-| [`FMPAN`](#fmpan) | Command | Set stereo panning on YM2151 | X16 |
-| [`FMPLAY`](#fmplay) | Command | Play a series of notes on YM2151 | X16 |
-| [`FMVIB`](#fmvib) | Command | Control vibrato and tremolo on YM2151 | X16 |
-| [`FMVOL`](#fmvol) | Command | Set channel volume on YM2151 | X16 |
-| [`FRAME`](#frame) | Command | Draws an unfilled rectangle in graphics mode | X16 |
-| [`GEOS`](#geos) | Command | Enter the GEOS GUI | X16 |
-| [`HEX$`](#hex) | Function | Converts numeric to a hexadecimal string | X16 |
-| [`JOY`](#joy) | Function | Read gamepad button state | X16 |
-| [`KEYMAP`](#keymap) | Command | Change keyboard layout | X16 |
-| [`LINE`](#line) | Command | Draw line in graphics mode | X16 |
-| [`LOCATE`](#locate) | Command | Move text cursor to new location | X16 |
-| [`MON`](#mon) | Command | Enter machine language monitor | X16 |
-| [`MOUSE`](#mouse) | Command | Hide or show mouse pointer | X16 |
-| [`MX/MY/MB`](#mxmymb) | Function | Read the mouse position and button state | X16 |
-| [`OLD`](#old) | Command | Undo a NEW command or warm reset | X16 |
-| [`PSET`](#pset) | Command | Change a pixel's color in graphics mode | X16 |
-| [`PSGCHORD`](#psgchord) | Command | Start or stop simultaneous notes on VERA PSG | X16 |
-| [`PSGFREQ`](#psgfreq) | Command | Play a frequency in Hz on VERA PSG | X16 |
-| [`PSGINIT`](#psginit) | Command | Stop sound and reinitialize VERA PSG | X16 |
-| [`PSGNOTE`](#psgnote) | Command | Play a musical note on VERA PSG | X16 |
-| [`PSGPAN`](#psgpan) | Command | Set stereo panning on VERA PSG | X16 |
-| [`PSGPLAY`](#psgplay) | Command | Play a series of notes on VERA PSG | X16 |
-| [`PSGVOL`](#psgvol) | Command | Set voice volume on VERA PSG | X16 |
-| [`PSGWAV`](#psgwav) | Command | Set waveform on VERA PSG | X16 |
-| [`RECT`](#rect) | Command | Draws a filled rectangle in graphics mode | X16 |
-| [`RESET`](#reset) | Command | Perform a warm reset on the system | X16 |
-| [`SCREEN`](#screen) | Command | Select a text or graphics mode | X16 |
-| [`VPEEK`](#vpeek) | Function | Return a value from VERA's VRAM | X16 |
-| [`VPOKE`](#vpoke) | Command | Set a value in VERA's VRAM | X16 |
-| [`VLOAD`](#vload) | Command | Load a file to VERA's VRAM | X16 |
+| `ABS` | function | Returns absolute value of a number | C64 |
+| `AND` | operator | Returns boolean "AND" or bitwise intersection | C64 |
+| `ASC` | function | Returns numeric PETSCII value from string | C64 |
+| `ATN` | function | Returns arctangent of a number | C64 |
+| [`BIN$`](#bin) | function | Converts numeric to a binary string | X16 |
+| `BLOAD` | command | Loads a headerless binary file from disk to a memory address | X16 |
+| [`BOOT`](#boot) | command | Loads and runs `AUTOBOOT.X16` | X16 |
+| `BVERIFY` | command | Verifies that a file on disk matches RAM contents | X16 |
+| `BVLOAD` | command | Loads a headerless binary file from disk to VRAM | X16 |
+| [`CHAR`](#char) | command | Draws a text string in graphics mode | X16 |
+| `CHR$` | function | Returns PETSCII character from numeric value | X16 |
+| `CLOSE` | command | Closes a logical file number | C64 |
+| `CLR` | command | Clears BASIC variable state | C64 |
+| [`CLS`](#cls) | command | Clears the screen | X16 |
+| `CMD` | command | Redirects output to non-screen device | C64 |
+| `CONT` | command | Resumes execution of a BASIC program | C64 |
+| [`COLOR`](#color) | command | Sets text fg and bg color | X16 |
+| `COS` | function | Returns cosine of an angle in radians | C64 |
+| `DATA` | command | Declares one or more constants | C64 |
+| `DEF` | command | Defines a function for use later in BASIC | C64 |
+| `DIM` | command | Allocates storage for an array | C64 |
+| [`DOS`](#dos) | command | Disk and SD card directory operations | X16 |
+| `END` | command | Terminate program execution and return to `READY.` | C64 |
+| `EXP` | function | Returns the inverse natural log of a number | C64 |
+| [`FMCHORD`](#fmchord) | command | Start or stop simultaneous notes on YM2151 | X16 |
+| [`FMDRUM`](#fmdrum) | command | Plays a drum sound on YM2151 | X16 |
+| [`FMFREQ`](#fmfreq) | command | Plays a frequency in Hz on YM2151 | X16 |
+| [`FMINIT`](#fminit) | command | Stops sound and reinitializes YM2151 | X16 |
+| [`FMNOTE`](#fmnote) | command | Plays a musical note on YM2151 | X16 |
+| [`FMPAN`](#fmpan) | command | Sets stereo panning on YM2151 | X16 |
+| [`FMPLAY`](#fmplay) | command | Plays a series of notes on YM2151 | X16 |
+| [`FMPOKE`](#fmpoke) | command | Writes a value into a YM2151 register | X16 |
+| [`FMVIB`](#fmvib) | command | Controls vibrato and tremolo on YM2151 | X16 |
+| [`FMVOL`](#fmvol) | command | Sets channel volume on YM2151 | X16 |
+| `FN` | function | Calls a previously defined function | C64 |
+| `FOR` | command | Declares the start of a loop construct | C64 |
+| [`FRAME`](#frame) | command | Draws an unfilled rectangle in graphics mode | X16 |
+| `FRE` | function | Returns the number of unused BASIC bytes free | C64 |
+| [`GEOS`](#geos) | command | Enter the GEOS GUI | X16 |
+| `GET` | command | Polls the keyboard cache for a single keystroke | C64 |
+| `GET#` | command | Polls an open logical file for a single character | C64 |
+| `GOSUB` | command | Jumps to a BASIC subroutine | C64 |
+| `GOTO` | command | Branches immediately to a line number | C64 |
+| [`HEX$`](#hex) | function | Converts numeric to a hexadecimal string | X16 |
+| `IF` | command | Tests a boolean condition and branches on result | C64 |
+| `INPUT` | command | Reads a line or values from the keyboard | C64 |
+| `INPUT#` | command | Reads lines or values from a logical file | C64 |
+| `INT` | function | Discards the fractional part of a number | C64 |
+| [`JOY`](#joy) | function | Reads gamepad button state | X16 |
+| [`KEYMAP`](#keymap) | command | Changes the keyboard layout | X16 |
+| `LEFT$` | function | Returns a substring starting from the beginning of a string | C64 |
+| `LEN` | function | Returns the length of a string | C64 |
+| `LET` | command | Explicitly declares a variable | C64 |
+| [`LINE`](#line) | command | Draws a line in graphics mode | X16 |
+| `LIST` | command | Outputs the program listing to the screen | C64 |
+| `LOAD` | command | Loads a program from disk into memory | C64 |
+| [`LOCATE`](#locate) | command | Moves the text cursor to new location | X16 |
+| `LOG` | function | Returns the natural logarithm of a number | C64 |
+| `MID$` | function | Returns a substring from the middle of a string | C64 |
+| [`MON`](#mon) | command | Enters the machine language monitor | X16 |
+| [`MOUSE`](#mouse) | command | Hides or shows mouse pointer | X16 |
+| [`MX/MY/MB`](#mxmymb) | variable | Reads the mouse position and button state | X16 |
+| `NEW` | command | Resets the state of BASIC and clears program memory | C64 |
+| `NEXT` | command | Declares the end of a loop construct | C64 |
+| `NOT` | operator | Bitwise or boolean inverse | C64 |
+| [`OLD`](#old) | command | Undoes a NEW command or warm reset | X16 |
+| `ON` | command | A GOTO/GOSUB table based on a variable value | C64 |
+| `OPEN` | command | Opens a logical file to disk or other device | C64 |
+| `OR` | operator | Bitwise or boolean "OR" | C64 |
+| `PEEK` | function | Returns a value from a memory address | C64 |
+| `π` | function | Returns the constant for the value of pi | C64 |
+| `POKE` | command | Assigns a value to a memory address | C64 |
+| `POS` | function | Returns the column position of the text cursor | C64 |
+| `PRINT` | command | Prints data to the screen or other output | C64 |
+| `PRINT#` | command | Prints data to an open logical file | C64 |
+| [`PSET`](#pset) | command | Changes a pixel's color in graphics mode | X16 |
+| [`PSGCHORD`](#psgchord) | command | Starts or stops simultaneous notes on VERA PSG | X16 |
+| [`PSGFREQ`](#psgfreq) | command | Plays a frequency in Hz on VERA PSG | X16 |
+| [`PSGINIT`](#psginit) | command | Stops sound and reinitializes VERA PSG | X16 |
+| [`PSGNOTE`](#psgnote) | command | Plays a musical note on VERA PSG | X16 |
+| [`PSGPAN`](#psgpan) | command | Sets stereo panning on VERA PSG | X16 |
+| [`PSGPLAY`](#psgplay) | command | Plays a series of notes on VERA PSG | X16 |
+| [`PSGVOL`](#psgvol) | command | Sets voice volume on VERA PSG | X16 |
+| [`PSGWAV`](#psgwav) | command | Sets waveform on VERA PSG | X16 |
+| `READ` | command | Assigns the next `DATA` constant to one or more variables | C64 |
+| [`RECT`](#rect) | command | Draws a filled rectangle in graphics mode | X16 |
+| `REM` | command | Declares a comment | C64 |
+| [`RESET`](#reset) | command | Performs a warm reset on the system | X16 |
+| `RESTORE` | command | Resets the `READ` pointer to the first `DATA` constant | C64 |
+| `RETURN` | command | Returns from a subroutine to the statement following a GOSUB | C64 |
+| `RIGHT$` | function | Returns a substring from the end of a string | C64 |
+| `RND` | function | Returns a floating point number 0 <= n < 1 | C64 |
+| `RUN` | command | Clears the variable state and starts a BASIC program | C64 |
+| `SAVE` | command | Saves a BASIC program from memory to disk | C64 |
+| [`SCREEN`](#screen) | command | Selects a text or graphics mode | X16 |
+| `SGN` | function | Returns the sign of a numeric value | C64 |
+| `SIN` | function | Returns the sine of an angle in radians | C64 | 
+| `SPC` | function | Returns a string with a set number of spaces | C64 |
+| `SQR` | function | Returns the square root of a numeric value | C64 |
+| `ST` | variable | Returns the status of certain DOS/peripheral operations | C64 |
+| `STEP` | keyword | Used in a `FOR` declaration to declare the iterator step | C64 |
+| `STOP` | command | Breaks out of a BASIC program | C64 |
+| `STR$` | function | Converts a numeric value to a string | C64 |
+| `SYS` | command | Transfers control to machine language at a memory address | C64 |
+| `TAB` | function | Returns a string with spaces used for column alignment | C64 |
+| `TAN` | function | Return the tangent for an angle in radians | C64 |
+| `THEN` | keyword | Control structure as part of an `IF` statement | C64 |
+| `TI` | variable | Returns the jiffy timer value | C64 |
+| `TI$` | variable | Returns HHMMSS from the system clock | C64 |
+| `TO` | keyword | Part of the `FOR` loop declaration syntax | C64 |
+| `USR` | function | Call a user-defined function in machine language | C64 |
+| `VAL` | function | Parse a string to return a numeric value | C64 |
+| `VERIFY` | command | Verify that a BASIC program was written to disk correctly | C64 |
+| [`VPEEK`](#vpeek) | function | Returns a value from VERA's VRAM | X16 |
+| [`VPOKE`](#vpoke) | command | Sets a value in VERA's VRAM | X16 |
+| [`VLOAD`](#vload) | command | Loads a file to VERA's VRAM | X16 |
+| `WAIT` | command | Waits for a memory location to match a condition | C64 |
 
 
 ## Commodore 64 Compatibility
@@ -295,6 +371,19 @@ The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%2
 50 FMPLAY 1,"C<G>CRC<G>CR" : REM FOURTH LINE
 ```
 
+### FMPOKE
+**TYPE: Command**  
+**FORMAT: FMPOKE &lt;register&gt;,&lt;value&gt;**
+
+**Action:** This command uses the AUDIO API to write a value to one of the the YM2151's registers at a low level.
+
+**EXAMPLE of FMPOKE statement:**
+```BASIC
+10 FMINIT
+20 FMPOKE $28,$4A : REM SET KC TO A4 (A-440) ON CHANNEL 0
+30 FMPOKE $08,$00 : REM RELEASE CHANNEL 0
+40 FMPOKE $08,$78 : REM START NOTE PLAYBACK ON CHANNEL 0 W/ ALL OPERATORS
+```
 
 ### FMVIB
 **TYPE: Command**  
