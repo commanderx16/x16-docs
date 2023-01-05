@@ -19,7 +19,7 @@ for GitHub's Markdown flavor. Do not remove!
 | `BLOAD` | command | Loads a headerless binary file from disk to a memory address | X16 |
 | [`BOOT`](#boot) | command | Loads and runs `AUTOBOOT.X16` | X16 |
 | `BVERIFY` | command | Verifies that a file on disk matches RAM contents | X16 |
-| `BVLOAD` | command | Loads a headerless binary file from disk to VRAM | X16 |
+| [`BVLOAD`](#bvload) | command | Loads a headerless binary file from disk to VRAM | X16 |
 | [`CHAR`](#char) | command | Draws a text string in graphics mode | X16 |
 | `CHR$` | function | Returns PETSCII character from numeric value | X16 |
 | `CLOSE` | command | Closes a logical file number | C64 |
@@ -29,6 +29,7 @@ for GitHub's Markdown flavor. Do not remove!
 | `CONT` | command | Resumes execution of a BASIC program | C64 |
 | [`COLOR`](#color) | command | Sets text fg and bg color | X16 |
 | `COS` | function | Returns cosine of an angle in radians | C64 |
+| `DA$` | variable | Returns the date in YYYYMMDD format from the system clock | X16 |
 | `DATA` | command | Declares one or more constants | C64 |
 | `DEF` | command | Defines a function for use later in BASIC | C64 |
 | `DIM` | command | Allocates storage for an array | C64 |
@@ -119,7 +120,7 @@ for GitHub's Markdown flavor. Do not remove!
 | `TAN` | function | Return the tangent for an angle in radians | C64 |
 | `THEN` | keyword | Control structure as part of an `IF` statement | C64 |
 | `TI` | variable | Returns the jiffy timer value | C64 |
-| `TI$` | variable | Returns HHMMSS from the system clock | C64 |
+| `TI$` | variable | Returns the time HHMMSS from the system clock | C64 |
 | `TO` | keyword | Part of the `FOR` loop declaration syntax | C64 |
 | `USR` | function | Call a user-defined function in machine language | C64 |
 | `VAL` | function | Parse a string to return a numeric value | C64 |
@@ -206,6 +207,19 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 	50 CHAR0,6+12*3,0,CHR$($0B)+A$ :REM ITALICS
 	60 CHAR0,6+12*4,0,CHR$($0C)+A$ :REM OUTLINE
 	70 CHAR0,6+12*5,0,CHR$($12)+A$ :REM REVERSE
+
+### BVLOAD
+
+**TYPE: Command**  
+**FORMAT: BVLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
+	
+**Action:** Loads a binary file directly into VERA RAM.
+
+**EXAMPLES of BVLOAD:**
+```BASIC	
+BVLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $4000.
+BVLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($1F000).
+```
 
 ### CLS
 
@@ -568,7 +582,7 @@ The size of the mouse pointer's area will be configured according to the current
 
 ### MX/MY/MB
 
-**TYPE: Integer Function**  
+**TYPE: System variable**  
 **FORMAT: MX**  
 **FORMAT: MY**  
 **FORMAT: MB**
@@ -584,7 +598,7 @@ The size of the mouse pointer's area will be configured according to the current
 | 2     | right  |
 | 4     | third  |
 
-**EXAMPLE of MX/MY/MB Functions:**
+**EXAMPLE of MX/MY/MB variables:**
 
 	REM SIMPLE DRAWING PROGRAM
 	10 SCREEN$80
@@ -803,12 +817,13 @@ For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%
 **TYPE: Command**  
 **FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
 	
-**Action:** Loads a file directly into VERA RAM. 
+**Action:** Loads a file directly into VERA RAM, skipping the two-byte header that is presumed to be in the file.
 
 **EXAMPLES of VLOAD:**
-	
-	VLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $4000.
-	VLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($1F000).
+```BASIC	
+VLOAD "MYFILE.PRG", 8, 0, $4000  :REM LOADS MYFILE.PRG FROM DEVICE 8 TO VRAM $4000, WHILE SKIPPING THE FIRST TWO BYTES OF THE FILE.
+```
+To load a raw binary file without skipping the first two bytes, use [`BVLOAD`](#bvload)
 
 ## Other New Features
 
