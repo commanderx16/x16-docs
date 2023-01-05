@@ -7,6 +7,53 @@ for GitHub's Markdown flavor. Do not remove!
 
 # Chapter 3: BASIC Programming
 
+## Table of BASIC statements and functions
+
+| Keyword | Type | Summary | Origin |
+|-|-|-|-|
+| [`BIN$`](#bin) | Function | Converts numeric to a binary string | X16 |
+| [`BOOT`](#boot) | Command | Loads and runs `AUTOBOOT.X16` | X16 |
+| [`CHAR`](#char) | Command | Draws a text string in graphics mode | X16 |
+| [`CLS`](#cls) | Command | Clears the screen | X16 |
+| [`COLOR`](#color) | Command | Sets text fg and bg color | X16 |
+| [`DOS`](#dos) | Command | Disk or SD card operations | X16 |
+| [`FMCHORD`](#fmchord) | Command | Start or stop simultaneous notes on YM2151 | X16 |
+| [`FMDRUM`](#fmdrum) | Command | Plays a drum sound on YM2151 | X16 |
+| [`FMFREQ`](#fmfreq) | Command | Play a frequency in Hz on YM2151 | X16 |
+| [`FMINIT`](#fminit) | Command | Stop sound and reinitialize YM2151 | X16 |
+| [`FMNOTE`](#fmnote) | Command | Play a musical note on YM2151 | X16 |
+| [`FMPAN`](#fmpan) | Command | Set stereo panning on YM2151 | X16 |
+| [`FMPLAY`](#fmplay) | Command | Play a series of notes on YM2151 | X16 |
+| [`FMVIB`](#fmvib) | Command | Control vibrato and tremolo on YM2151 | X16 |
+| [`FMVOL`](#fmvol) | Command | Set channel volume on YM2151 | X16 |
+| [`FRAME`](#frame) | Command | Draws an unfilled rectangle in graphics mode | X16 |
+| [`GEOS`](#geos) | Command | Enter the GEOS GUI | X16 |
+| [`HEX$`](#hex) | Function | Converts numeric to a hexadecimal string | X16 |
+| [`JOY`](#joy) | Function | Read gamepad button state | X16 |
+| [`KEYMAP`](#keymap) | Command | Change keyboard layout | X16 |
+| [`LINE`](#line) | Command | Draw line in graphics mode | X16 |
+| [`LOCATE`](#locate) | Command | Move text cursor to new location | X16 |
+| [`MON`](#mon) | Command | Enter machine language monitor | X16 |
+| [`MOUSE`](#mouse) | Command | Hide or show mouse pointer | X16 |
+| [`MX/MY/MB`](#mxmymb) | Function | Read the mouse position and button state | X16 |
+| [`OLD`](#old) | Command | Undo a NEW command or warm reset | X16 |
+| [`PSET`](#pset) | Command | Change a pixel's color in graphics mode | X16 |
+| [`PSGCHORD`](#psgchord) | Command | Start or stop simultaneous notes on VERA PSG | X16 |
+| [`PSGFREQ`](#psgfreq) | Command | Play a frequency in Hz on VERA PSG | X16 |
+| [`PSGINIT`](#psginit) | Command | Stop sound and reinitialize VERA PSG | X16 |
+| [`PSGNOTE`](#psgnote) | Command | Play a musical note on VERA PSG | X16 |
+| [`PSGPAN`](#psgpan) | Command | Set stereo panning on VERA PSG | X16 |
+| [`PSGPLAY`](#psgplay) | Command | Play a series of notes on VERA PSG | X16 |
+| [`PSGVOL`](#psgvol) | Command | Set voice volume on VERA PSG | X16 |
+| [`PSGWAV`](#psgwav) | Command | Set waveform on VERA PSG | X16 |
+| [`RECT`](#rect) | Command | Draws a filled rectangle in graphics mode | X16 |
+| [`RESET`](#reset) | Command | Perform a warm reset on the system | X16 |
+| [`SCREEN`](#screen) | Command | Select a text or graphics mode | X16 |
+| [`VPEEK`](#vpeek) | Function | Return a value from VERA's VRAM | X16 |
+| [`VPOKE`](#vpoke) | Command | Set a value in VERA's VRAM | X16 |
+| [`VLOAD`](#vload) | Command | Load a file to VERA's VRAM | X16 |
+
+
 ## Commodore 64 Compatibility
 
 The Commander X16 BASIC interpreter is 100% backwards-compatible with the Commodore 64 one. This includes the following features:

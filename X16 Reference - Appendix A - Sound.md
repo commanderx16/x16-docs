@@ -144,7 +144,7 @@ Example:
 ```BASIC
     FMPLAY 0,"A+2A4C.G-8."
 ```
-On the YM2151 using channel 0, plays in the current octave an **A&#9839;** [half note<sup>?</sup>](a "minim") followed by an **A** [quarter note<sup>?</sup>](a "crotchet"), followed by **C** dotted quarter note, followed by **G&#9837;** dotted [eighth note<sup>?</sup>](a "quaver").
+On the YM2151 using channel 0, plays in the current octave an **A&#9839;** [half note<sup>?</sup>](# "minim") followed by an **A** [quarter note<sup>?</sup>](# "crotchet"), followed by **C** dotted quarter note, followed by **G&#9837;** dotted [eighth note<sup>?</sup>](# "quaver").
 
 Lengths and dots after the note name or rest set the length just for the current note or rest.  To set the default length for subsequent notes and rests, use the `L` macro.
 
