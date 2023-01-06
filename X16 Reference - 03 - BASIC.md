@@ -40,6 +40,7 @@ for GitHub's Markdown flavor. Do not remove!
 | [`FMDRUM`](#fmdrum) | command | Plays a drum sound on YM2151 | X16 |
 | [`FMFREQ`](#fmfreq) | command | Plays a frequency in Hz on YM2151 | X16 |
 | [`FMINIT`](#fminit) | command | Stops sound and reinitializes YM2151 | X16 |
+| [`FMINST`](#fminst) | command | Loads a patch preset into a YM2151 channel | X16 |
 | [`FMNOTE`](#fmnote) | command | Plays a musical note on YM2151 | X16 |
 | [`FMPAN`](#fmpan) | command | Sets stereo panning on YM2151 | X16 |
 | [`FMPLAY`](#fmplay) | command | Plays a series of notes on YM2151 | X16 |
