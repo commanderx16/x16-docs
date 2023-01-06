@@ -164,9 +164,9 @@ characters are ignored.
 
 Example:
 ```BASIC
-    FMPLAY 0,"L4"      : REM DEFAULT LENGTH = QUARTER NOTE
-    FMPLAY 0,"A2. C+." : REM VALID
-    FMPLAY 0,"A.2 C.+" : REM INVALID
+FMPLAY 0,"L4"      : REM DEFAULT LENGTH = QUARTER NOTE
+FMPLAY 0,"A2. C+." : REM VALID
+FMPLAY 0,"A.2 C.+" : REM INVALID
 ```
 The valid command plays A as a dotted half, followed by C&#9839; as a dotted quarter.
 
@@ -180,7 +180,7 @@ The invalid example would play A as a dotted quarter (not half) because length m
 
 Example:
 ```BASIC
-    FMPLAY 0,"A+2A4C.G-8."
+FMPLAY 0,"A+2A4C.G-8."
 ```
 On the YM2151 using channel 0, plays in the current octave an **A&#9839;** [half note<sup>?</sup>](# "minim") followed by an **A** [quarter note<sup>?</sup>](# "crotchet"), followed by **C** dotted quarter note, followed by **G&#9837;** dotted [eighth note<sup>?</sup>](# "quaver").
 
@@ -193,7 +193,7 @@ Lengths and dots after the note name or rest set the length just for the current
 
 Example:
 ```BASIC
-    PSGPLAY 0,"CR2DRE"
+PSGPLAY 0,"CR2DRE"
 ```
 On the VERA PSG using voice 0, plays in the current octave a **C** quarter note, followed by a half rest (silence), followed by a quarter **D**, followed by a quarter rest (silence), and finally a quarter **E**.
 
@@ -213,10 +213,10 @@ Example values:
 
 Example program:
 ```BASIC
-    10 FMPLAY 0,"L4"
-    20 FOR I=1 TO 2
-    30 FMPLAY 0,"CDECL8"
-    40 NEXT
+10 FMPLAY 0,"L4"
+20 FOR I=1 TO 2
+30 FMPLAY 0,"CDECL8"
+40 NEXT
 ```
 On the YM2151 using channel 0, this program, when RUN, plays in the current octave the sequence **C** **D** **E** **C** first as quarter notes, then as eighth notes the second time around.
 
@@ -232,7 +232,7 @@ You can think of `S` is, out of 8, how much space is put between the notes.
 
 Example:
 ```BASIC
-    FMPLAY 0,"L4S1CDES0CDES4CDE"
+FMPLAY 0,"L4S1CDES0CDES4CDE"
 ```
 On the YM2151 using channel 0, plays in the current octave the sequence **C** **D** **E** three times, first with normal articulation, next with legato (notes all run together and without retriggering), and finally with a moderate staccato.
 
@@ -243,7 +243,7 @@ On the YM2151 using channel 0, plays in the current octave the sequence **C** **
 
 Example:
 ```BASIC
-    FMPLAY 0,"S0CDEKFGA"
+FMPLAY 0,"S0CDEKFGA"
 ```
 On the YM2151 using channel 0, plays in the current octave the sequence **C** **D** **E** using legato, only triggering on the first note, then the sequence **F** **G** **A** the same way. The note **F** is triggered without needing to release the previous note early.
 
@@ -254,7 +254,7 @@ On the YM2151 using channel 0, plays in the current octave the sequence **C** **
 
 Example:
 ```BASIC
-    PSGPLAY 0,"O4AO2AO6CDE"
+PSGPLAY 0,"O4AO2AO6CDE"
 ```
 On the VERA PSG using voice 0, changes to octave 4 and plays **A** (440Hz), then switches to octave 2, and plays **A** (110Hz), then switches to octave 6 and plays the sequence **C** **D** **E**
 
@@ -266,7 +266,7 @@ If the octave would go above 7, this macro has no effect.
 
 Example:
 ```BASIC
-    PSGPLAY 0,"O4AB>C+DE"
+PSGPLAY 0,"O4AB>C+DE"
 ```
 On the VERA PSG using voice 0, changes to octave 4 and plays the first five notes of the **A major** scale by switching to octave 5 starting at the **C&#9839;**
 
@@ -277,7 +277,7 @@ On the VERA PSG using voice 0, changes to octave 4 and plays the first five note
 If the octave would go below 0, this macro has no effect.
 Example:
 ```BASIC
-    PSGPLAY 0,"O5GF+EDC<BAG"
+PSGPLAY 0,"O5GF+EDC<BAG"
 ```
 On the VERA PSG using voice 0, changes to octave 5 and plays the **G major** scale from the top down by switching to octave 4 starting at the **B**
 
@@ -291,8 +291,8 @@ Low tempo values that cause delays (lengths) to exceed 255 frames will also end 
 
 Example:
 ```BASIC
-    10 FMPLAY 0,"T120C4CGGAAGR"
-    20 FMPLAY 0,"T180C4CGGAAGR"
+10 FMPLAY 0,"T120C4CGGAAGR"
+20 FMPLAY 0,"T180C4CGGAAGR"
 ```
 On the YM2151 using channel 0, plays in the current octave the first 7 notes of *Twinkle Twinkle Little Star*, first at 120 beats per minute, then again 1.5 times as fast at 180 beats per minute.
 
@@ -304,7 +304,7 @@ This macro mirrors the `PSGVOL` and `FMVOL` BASIC commands for setting a channel
 
 Example:
 ```BASIC
-    FMPLAY 0,"V40ECV45ECV50ECV55ECV60ECV63EC"
+FMPLAY 0,"V40ECV45ECV50ECV55ECV60ECV63EC"
 ```
 On the YM2151 using channel 0, starting at a moderate volume, plays the sequence **E** **C**, repeatedly, increasing the volume steadily each time.
 
@@ -319,9 +319,9 @@ On the YM2151 using channel 0, starting at a moderate volume, plays the sequence
 
 Example:
 ```BASIC
-    10 FOR I=1 TO 4
-    20 PSGPLAY 0,"P1CP2B+"
-    30 NEXT I
-    40 PSGPLAY 0,"P3C"
+10 FOR I=1 TO 4
+20 PSGPLAY 0,"P1CP2B+"
+30 NEXT I
+40 PSGPLAY 0,"P3C"
 ```
 On the VERA PSG using voice 0, in the current octave, repeatedly plays a **C** out of the left speaker, then a **B&#9839;** (effectively a **C** one octave higher) out of the right speaker.  After 4 such loops, it plays a **C** out of both speakers.

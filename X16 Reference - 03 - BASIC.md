@@ -173,10 +173,10 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 **Action:** Return a string representing the binary value of n. If n <= 255, 8 characters are returned and if 255 < n <= 65535, 16 characters are returned.
 
 **EXAMPLE of BIN$ Function:**
-
-	PRINT BIN$(200)   : REM PRINTS 11001000 AS BINARY REPRESENTATION OF 200
-	PRINT BIN$(45231) : REM PRINTS 1011000010101111 TO REPRESENT 16 BITS
-
+```BASIC
+PRINT BIN$(200)   : REM PRINTS 11001000 AS BINARY REPRESENTATION OF 200
+PRINT BIN$(45231) : REM PRINTS 1011000010101111 TO REPRESENT 16 BITS
+```
 ### BOOT
 
 **TYPE: Command**  
