@@ -144,7 +144,7 @@ The Commander X16 BASIC interpreter is 100% backwards-compatible with the Commod
 	* `CHR$(18)`: reverse
 	* `CHR$(14)`: switch to upper/lowercase font
 	* `CHR$(142)`: switch to uppercase/graphics font
-* The BASIC vector table ($0300-0$30B, $0311/$0312)
+* The BASIC vector table ($0300-$030B, $0311/$0312)
 * SYS arguments in RAM ($030C-$030F).
 	* `$030C`: X Register
 	* `$030D`: Y Register
@@ -185,8 +185,9 @@ There are several new statement and functions. Note that all BASIC keywords (suc
 **Action:** Load and run a PRG file named `AUTOBOOT.X16` from device 8. If the file is not found, nothing is done and no error is printed.
 
 **EXAMPLE of BOOT Statement:**
-
-	BOOT
+```BASIC
+BOOT
+```
 
 ### CHAR
 
@@ -199,14 +200,16 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 
 **EXAMPLE of CHAR Statement:**
 
-	10 SCREEN$80
-	20 A$="The quick brown fox jumps over the lazy dog."
-	24 CHAR0,6,0,A$
-	30 CHAR0,6+12,0,CHR$($04)+A$   :REM UNDERLINE
-	40 CHAR0,6+12*2,0,CHR$($06)+A$ :REM BOLD
-	50 CHAR0,6+12*3,0,CHR$($0B)+A$ :REM ITALICS
-	60 CHAR0,6+12*4,0,CHR$($0C)+A$ :REM OUTLINE
-	70 CHAR0,6+12*5,0,CHR$($12)+A$ :REM REVERSE
+```BASIC
+10 SCREEN $80
+20 A$="The quick brown fox jumps over the lazy dog."
+24 CHAR 0,6,0,A$
+30 CHAR 0,6+12,0,CHR$($04)+A$   :REM UNDERLINE
+40 CHAR 0,6+12*2,0,CHR$($06)+A$ :REM BOLD
+50 CHAR 0,6+12*3,0,CHR$($0B)+A$ :REM ITALICS
+60 CHAR 0,6+12*4,0,CHR$($0C)+A$ :REM OUTLINE
+70 CHAR 0,6+12*5,0,CHR$($12)+A$ :REM REVERSE
+```
 
 ### BVLOAD
 
@@ -229,8 +232,9 @@ BVLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATIO
 **Action:** Clears the screen. Same effect as `?CHR$(147);`.
 
 **EXAMPLE of CLS Statement:**
-
-	CLS
+```BASIC
+CLS
+```
 
 ### COLOR
 
@@ -240,9 +244,10 @@ BVLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATIO
 **Action:** This command works sets the text mode foreground color, and optionally the background color.
 
 **EXAMPLES of COLOR Statement:**
-
-      COLOR 2   : SET FG COLOR TO RED, KEEP BG COLOR
-      COLOR 2,0 : SET FG COLOR TO RED, BG COLOR TO BLACK
+```BASIC
+COLOR 2   : REM SET FG COLOR TO RED, KEEP BG COLOR
+COLOR 2,0 : REM SET FG COLOR TO RED, BG COLOR TO BLACK
+```
 
 ### DOS
 
@@ -257,10 +262,11 @@ BVLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATIO
 * Any other argument will be sent as a DOS command.
 
 **EXAMPLES of DOS Statement:**
-
-      DOS"$"          : REM SHOWS DIRECTORY
-      DOS"S:BAD_FILE" : REM DELETES "BAD_FILE"
-      DOS             : REM PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
+```BASIC
+DOS"$"          : REM SHOWS DIRECTORY
+DOS"S:BAD_FILE" : REM DELETES "BAD_FILE"
+DOS             : REM PRINTS DOS STATUS, E.G. "01,FILES SCRATCHED,01,00"
+```
 
 ### FMCHORD
 **TYPE: Command**  
@@ -339,7 +345,7 @@ Load an instrument onto the YM2151 in the form of a [patch preset](X16%20Referen
 
 | `$x0` | `$x1` | `$x2` | `$x3` | `$x4` | `$x5` | `$x6` | `$x7` | `$x8` | `$x9` | `$xA` | `$xB` | `$xC` | `$xD-$xF` |
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|
-| Release | C | C&#9839; | D | D&#9839; | E | F | F&#9839; | G | G&#9839; | A | A&#9839; | B | no-op |
+| Release | C | C&#9839;/D&#9837; | D | D&#9839;/E&#9837; | E | F | F&#9839;/G&#9837; | G | G&#9839;/A&#9837; | A | A&#9839;/B&#9837; | B | no-op |
 
 Notes can also be represented by negative numbers to skip retriggering, and will thus snap to another note without restarting the playback of the note.
 
@@ -433,10 +439,11 @@ The above BASIC program plays a C major scale with a vibraphone patch, first wit
 **Action:** This command draws a rectangle frame on the graphics screen in a given color.
 
 **EXAMPLE of FRAME Statement:**
-
-	10 SCREEN$80
-	20 FORI=1TO20:FRAMERND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*128:NEXT
-	30 GOTO20
+```BASIC
+10 SCREEN$80
+20 FORI=1TO20:FRAMERND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*128:NEXT
+30 GOTO20
+```
 
 ### GEOS
 
@@ -453,10 +460,10 @@ The above BASIC program plays a C major scale with a vibraphone patch, first wit
 **Action:** Return a string representing the hexadecimal value of n. If n <= 255, 2 characters are returned and if 255 < n <= 65535, 4 characters are returned.
 
 **EXAMPLE of HEX$ Function:**
-
-	PRINT HEX$(200)   : REM PRINTS C8 AS HEXADECIMAL REPRESENTATION OF 200
-	PRINT HEX$(45231) : REM PRINTS B0AF TO REPRESENT 16 BIT VALUE
-
+```BASIC
+PRINT HEX$(200)   : REM PRINTS C8 AS HEXADECIMAL REPRESENTATION OF 200
+PRINT HEX$(45231) : REM PRINTS B0AF TO REPRESENT 16 BIT VALUE
+```
 ### JOY
 
 **TYPE: Integer Function**  
@@ -486,20 +493,20 @@ If no controller is connected to the SNES port (or no keyboard is connected), th
 Note that this bitfield is different from the `joystick_get` KERNEL API one. Also note that the keyboard joystick will allow LEFT and RIGHT as well as UP and DOWN to be pressed at the same time, while controllers usually prevent this mechanically.
 
 **EXAMPLE of JOY Function:**
-
-	10 REM DETECT CONTROLLER, FALL BACK TO KEYBOARD
-	20 J = 0: FOR I=1 TO 4: IF JOY(I) >= 0 THEN J = I: GOTO40
-	30 NEXT
-	40 :
-	50 V=JOY(J)
-	60 PRINT CHR$(147);V;": ";
-	70 IF V = -1 THEN PRINT"DISCONNECTED ": GOTO50
-	80 IF V AND 8 THEN PRINT"UP ";
-	90 IF V AND 4 THEN PRINT"DOWN ";
-	100 IF V AND 2 THEN PRINT"LEFT ";
-	110 IF V AND 1 THEN PRINT"RIGHT ";
-	120 GOTO50
-
+```BASIC
+10 REM DETECT CONTROLLER, FALL BACK TO KEYBOARD
+20 J = 0: FOR I=1 TO 4: IF JOY(I) >= 0 THEN J = I: GOTO40
+30 NEXT
+40 :
+50 V=JOY(J)
+60 PRINT CHR$(147);V;": ";
+70 IF V = -1 THEN PRINT"DISCONNECTED ": GOTO50
+80 IF V AND 8 THEN PRINT"UP ";
+90 IF V AND 4 THEN PRINT"DOWN ";
+100 IF V AND 2 THEN PRINT"LEFT ";
+110 IF V AND 1 THEN PRINT"RIGHT ";
+120 GOTO50
+```
 ### KEYMAP
 
 **TYPE: Command**  
@@ -508,10 +515,10 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 **Action:** This command sets the current keyboard layout. It can be put into an AUTOBOOT file to always set the keyboard layout on boot.
 
 **EXAMPLE of KEYMAP Statement:**
-
-	10 KEYMAP"SV-SE"    :REM SMALL BASIC PROGRAM TO SET LAYOUT TO SWEDISH/SWEDEN
-	SAVE"AUTOBOOT.X16"  :REM SAVE AS AUTOBOOT FILE
-
+```BASIC
+10 KEYMAP"SV-SE"    :REM SMALL BASIC PROGRAM TO SET LAYOUT TO SWEDISH/SWEDEN
+SAVE"AUTOBOOT.X16"  :REM SAVE AS AUTOBOOT FILE
+```
 ### LINE
 
 **TYPE: Command**  
@@ -520,11 +527,21 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 **Action:** This command draws a line on the graphics screen in a given color.
 
 **EXAMPLE of LINE Statement:**
+```BASIC
+10 SCREEN128
+20 FORA=0TO2*πSTEP2*π/200
+30 LINE100,100,100+SIN(A)*100,100+COS(A)*100
+40 NEXT
+```
 
-	10 SCREEN128
-	20 FORA=0TO2*\XFFSTEP2*\XFF/200
-	30 :  LINE100,100,100+SIN(A)*100,100+COS(A)*100
-	40 NEXT
+**If you're pasting this example into the Commander X16 emulator, use this code block instead so that the &pi; symbol is properly received.**
+```BASIC
+10 SCREEN128
+20 FORA=0TO2*\XFFSTEP2*\XFF/200
+30 LINE100,100,100+SIN(A)*100,100+COS(A)*100
+40 NEXT
+```
+
 
 ### LOCATE
 
@@ -534,18 +551,18 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 **Action:** This command positions the text mode cursor at the given location. The values are 1-based. If no column is given, only the line is changed.
 
 **EXAMPLE of LOCATE Statement:**
-
-	100 REM DRAW CIRCLE ON TEXT SCREEN
-	110 SCREEN0
-	120 R=25
-	130 X0=40
-	140 Y0=30
-	150 FORT=0TO360STEP1
-	160 :  X=X0+R*COS(T)
-	170 :  Y=Y0+R*SIN(T)
-	180 :  LOCATEY,X:PRINTCHR$($12);" ";
-	190 NEXT
-
+```BASIC
+100 REM DRAW CIRCLE ON TEXT SCREEN
+110 SCREEN0
+120 R=25
+130 X0=40
+140 Y0=30
+150 FORT=0TO360STEP1
+160 :  X=X0+R*COS(T)
+170 :  Y=Y0+R*SIN(T)
+180 :  LOCATEY,X:PRINTCHR$($12);" ";
+190 NEXT
+```
 ### MON
 
 **TYPE: Command**  
@@ -555,9 +572,10 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 
 **EXAMPLE of MON Statement:**
 
-      MON
-      MONITOR
-
+```BASIC
+MON
+MONITOR
+```
 ### MOUSE
 
 **TYPE: Command**  
@@ -576,10 +594,10 @@ Note that this bitfield is different from the `joystick_get` KERNEL API one. Als
 The size of the mouse pointer's area will be configured according to the current screen mode. If the screen mode is changed, the MOUSE statement has to be repeated.
 
 **EXAMPLES of MOUSE Statement:**
-
-	MOUSE 1 : REM ENABLE MOUSE
-	MOUSE 0 : REM DISABLE MOUSE
-
+```BASIC
+MOUSE 1 : REM ENABLE MOUSE
+MOUSE 0 : REM DISABLE MOUSE
+```
 ### MX/MY/MB
 
 **TYPE: System variable**  
@@ -599,18 +617,18 @@ The size of the mouse pointer's area will be configured according to the current
 | 4     | third  |
 
 **EXAMPLE of MX/MY/MB variables:**
-
-	REM SIMPLE DRAWING PROGRAM
-	10 SCREEN$80
-	20 MOUSE1
-	25 OB=0
-	30 TX=MX:TY=MY:TB=MB
-	35 IFTB=0GOTO25
-	40 IFOBTHENLINEOX,OY,TX,TY,16
-	50 IFOB=0THENPSETTX,TY,16
-	60 OX=TX:OY=TY:OB=TB
-	70 GOTO30
-
+```BASIC
+REM SIMPLE DRAWING PROGRAM
+10 SCREEN$80
+20 MOUSE1
+25 OB=0
+30 TX=MX:TY=MY:TB=MB
+35 IFTB=0GOTO25
+40 IFOBTHENLINEOX,OY,TX,TY,16
+50 IFOB=0THENPSETTX,TY,16
+60 OX=TX:OY=TY:OB=TB
+70 GOTO30
+```
 ### OLD
 
 **TYPE: Command**  
@@ -619,8 +637,9 @@ The size of the mouse pointer's area will be configured according to the current
 **Action:** This command recovers the BASIC program in RAM that has been previously deleted using the `NEW` command or through a RESET.
 
 **EXAMPLE of OLD Statement:**
-
-      OLD
+```
+OLD
+```
 
 ### PSET
 
@@ -630,11 +649,11 @@ The size of the mouse pointer's area will be configured according to the current
 **Action:** This command sets a pixel on the graphics screen to a given color.
 
 **EXAMPLE of PSET Statement:**
-
-	10 SCREEN$80
-	20 FORI=1TO20:PSETRND(1)*320,RND(1)*200,RND(1)*256:NEXT
-	30 GOTO20
-
+```BASIC
+10 SCREEN$80
+20 FORI=1TO20:PSETRND(1)*320,RND(1)*200,RND(1)*256:NEXT
+30 GOTO20
+```
 ### PSGCHORD
 **TYPE: Command**  
 **FORMAT: PSGCHORD &lt;first voice&gt;,&lt;string&gt;**
@@ -691,7 +710,7 @@ The above BASIC program plays a sound similar to a North American dial tone for 
 
 | `$x0` | `$x1` | `$x2` | `$x3` | `$x4` | `$x5` | `$x6` | `$x7` | `$x8` | `$x9` | `$xA` | `$xB` | `$xC` | `$xD-$xF` |
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|
-| Release | C | C&#9839; | D | D&#9839; | E | F | F&#9839; | G | G&#9839; | A | A&#9839; | B | no-op |
+| Release | C | C&#9839;/D&#9837; | D | D&#9839;/E&#9837; | E | F | F&#9839;/G&#9837; | G | G&#9839;/A&#9837; | A | A&#9839;/B&#9837; | B | no-op |
 
 **EXAMPLE of PSGNOTE statement:**
 ```BASIC
@@ -758,11 +777,11 @@ The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%2
 **Action:** This command draws a solid rectangle on the graphics screen in a given color.
 
 **EXAMPLE of RECT Statement:**
-
-	10 SCREEN$80
-	20 FORI=1TO20:RECTRND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*256:NEXT
-	30 GOTO20
-
+```BASIC
+10 SCREEN$80
+20 FORI=1TO20:RECTRND(1)*320,RND(1)*200,RND(1)*320,RND(1)*200,RND(1)*256:NEXT
+30 GOTO20
+```
 ### RESET
 
 **TYPE: Command**  
@@ -771,9 +790,9 @@ The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%2
 **Action:** Performs a software reset of the system.
 
 **EXAMPLE of RESET Statement:**
-
-	RESET
-
+```BASIC
+RESET
+```
 ### SCREEN
 
 **TYPE: Command**  
@@ -784,11 +803,11 @@ The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%2
 For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%20-%20Editor.md). The value of -1 toggles between modes $00 and $03.
 
 **EXAMPLE of SCREEN Statement:**
-
-      SCREEN 3 : REM SWITCH TO 40 CHARACTER MODE
-      SCREEN 0 : REM SWITCH TO 80 CHARACTER MODE
-      SCREEN -1 : REM SWITCH BETWEEN 40 and 80 CHARACTER MODE
-
+```BASIC
+SCREEN 3 : REM SWITCH TO 40 CHARACTER MODE
+SCREEN 0 : REM SWITCH TO 80 CHARACTER MODE
+SCREEN -1 : REM SWITCH BETWEEN 40 and 80 CHARACTER MODE
+```
 ### VPEEK
 
 **TYPE: Integer Function**  
@@ -797,9 +816,9 @@ For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%
 **Action:** Return a byte from the video address space. The video address space has 20 bit addresses, which is exposed as 16 banks of 65536 addresses each.
 
 **EXAMPLE of VPEEK Function:**
-
-      PRINT VPEEK(1,$B000) : REM SCREEN CODE OF CHARACTER AT 0/0 ON SCREEN
-
+```BASIC
+PRINT VPEEK(1,$B000) : REM SCREEN CODE OF CHARACTER AT 0/0 ON SCREEN
+```
 ### VPOKE
 
 **TYPE: Command**  
@@ -808,10 +827,10 @@ For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%
 **Action:** Set a byte in the video address space. The video address space has 20 bit addresses, which is exposed as 16 banks of 65536 addresses each.
 
 **EXAMPLE of VPOKE Statement:**
-
-      VPOKE 1,$B000+1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
-                                   REM AT 0/0 TO RED ON WHITE
-
+```BASIC
+VPOKE 1,$B000+1,1 * 16 + 2 : REM SETS THE COLORS OF THE CHARACTER
+							 REM AT 0/0 TO RED ON WHITE
+```
 ### VLOAD
 
 **TYPE: Command**  
@@ -821,7 +840,8 @@ For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%
 
 **EXAMPLES of VLOAD:**
 ```BASIC	
-VLOAD "MYFILE.PRG", 8, 0, $4000  :REM LOADS MYFILE.PRG FROM DEVICE 8 TO VRAM $4000, WHILE SKIPPING THE FIRST TWO BYTES OF THE FILE.
+VLOAD "MYFILE.PRG", 8, 0, $4000  :REM LOADS MYFILE.PRG FROM DEVICE 8 TO VRAM $4000
+                                  REM WHILE SKIPPING THE FIRST TWO BYTES OF THE FILE.
 ```
 To load a raw binary file without skipping the first two bytes, use [`BVLOAD`](#bvload)
 
@@ -830,9 +850,9 @@ To load a raw binary file without skipping the first two bytes, use [`BVLOAD`](#
 ### Hexadecimal and Binary Literals
 
 The numeric constants parser supports both hex (`$`) and binary (`%`) literals, like this:
-
-      PRINT $EA31 + %1010
-
+```BASIC
+PRINT $EA31 + %1010
+```
 The size of hex and binary values is only restricted by the range that can be represented by BASIC's internal floating point representation.
 
 ### LOAD into VRAM
@@ -840,14 +860,14 @@ The size of hex and binary values is only restricted by the range that can be re
 In BASIC, the contents of files can be directly loaded into VRAM with the `LOAD` statement. When a secondary address greater than one is used, the KERNAL will now load the file into the VERA's VRAM address space. The first two bytes of the file are used as lower 16 bits of the address. The upper 4 bits are `(SA-2) & 0x0ff` where `SA` is the secondary address.
 
 Examples:
-
-	  10 REM LOAD VERA SETTINGS
-	  20 LOAD"VERA.BIN",1,17 : REM SET ADDRESS TO $FXXXX
-	  30 REM LOAD TILES
-	  40 LOAD"TILES.BIN",1,3 : REM SET ADDRESS TO $1XXXX
-	  50 REM LOAD MAP
-      60 LOAD"MAP.BIN",1,2 : REM SET ADDRESS TO $0XXXX
-
+```BASIC
+10 REM LOAD VERA SETTINGS
+20 LOAD"VERA.BIN",1,17 : REM SET ADDRESS TO $FXXXX
+30 REM LOAD TILES
+40 LOAD"TILES.BIN",1,3 : REM SET ADDRESS TO $1XXXX
+50 REM LOAD MAP
+60 LOAD"MAP.BIN",1,2 : REM SET ADDRESS TO $0XXXX
+```
 ### Default Device Numbers
 
 In BASIC, the LOAD, SAVE and OPEN statements default to the last-used IEEE device (device numbers 8 and above), or 8.
