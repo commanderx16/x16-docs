@@ -769,7 +769,25 @@ The full set of macros is documented [here](X16%20Reference%20-%20Appendix%20A%2
 * w = 128-191 -> Triangle (all values have identical effect)
 * w = 192-255 -> Noise (all values have identical effect)
 
-
+**EXAMPLE of PSGWAV Statement:**
+```BASIC
+10 FOR O=$20 TO $50 STEP $10:REM OCTAVE LOOP
+20 FOR N=1 TO 11 STEP 2:REM NOTE LOOP, EVERY OTHER NOTE
+30 PSGNOTE 0,O+N:REM START PLAYBACK OF THE NOTE
+40 FOR P=0 TO 30:REM PULSE WIDTH MODULATION LOOP (INCREASING DUTY)
+50 PSGWAV 0,P:REM SET PW
+60 FOR D=1 TO 60:NEXT D:REM DELAY LOOP
+70 NEXT P
+80 PSGNOTE 0,O+N+1:REM START PLAYBACK OF THE NOTE + A SEMITONE
+90 FOR P=31 TO 1 STEP -1:REM PWM LOOP (DECREASING DUTY)
+100 PSGWAV 0,P:REM SET PW
+110 FOR D=1 TO 60:NEXT D:REM DELAY LOOP
+120 NEXT P
+130 NEXT N
+140 NEXT O
+150 PSGNOTE 0,0:REM STOP SOUND
+```
+This example plays a chromatic scale while applying pulse-width modulation on the voice.
 ### RECT
 
 **TYPE: Command**  
