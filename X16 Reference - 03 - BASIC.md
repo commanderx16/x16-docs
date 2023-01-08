@@ -16,7 +16,7 @@ for GitHub's Markdown flavor. Do not remove!
 | `ASC` | function | Returns numeric PETSCII value from string | C64 |
 | `ATN` | function | Returns arctangent of a number | C64 |
 | [`BIN$`](#bin) | function | Converts numeric to a binary string | X16 |
-| `BLOAD` | command | Loads a headerless binary file from disk to a memory address | X16 |
+| [`BLOAD`](#bload) | command | Loads a headerless binary file from disk to a memory address | X16 |
 | [`BOOT`](#boot) | command | Loads and runs `AUTOBOOT.X16` | X16 |
 | `BVERIFY` | command | Verifies that a file on disk matches RAM contents | X16 |
 | [`BVLOAD`](#bvload) | command | Loads a headerless binary file from disk to VRAM | X16 |
@@ -190,6 +190,33 @@ PRINT BIN$(45231) : REM PRINTS 1011000010101111 TO REPRESENT 16 BITS
 BOOT
 ```
 
+### BLOAD
+
+**TYPE: Command**  
+**FORMAT: BLOAD &lt;filename&gt;, &lt;device&gt;, &lt;bank&gt;, &lt;address&gt;**
+	
+**Action:** Loads a binary file directly into RAM, advancing the RAM bank if necessary. The active RAM bank will be left pointing to where the next byte would have been loaded.
+
+**EXAMPLES of BLOAD:**
+```BASIC	
+BLOAD "MYFILE.BIN",8,1,$A000:REM LOADS MYFILE.BIN FROM DEVICE 8 STARTING AT BANK 1 AT $A000.
+BLOAD "WHO.PNG",8,10,$B000:REM LOADS A PNG FILE INTO RAM STARTING AT BANK 10 AT $B000.
+```
+
+
+### BVLOAD
+
+**TYPE: Command**  
+**FORMAT: BVLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
+	
+**Action:** Loads a binary file directly into VERA RAM.
+
+**EXAMPLES of BVLOAD:**
+```BASIC	
+BVLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $4000.
+BVLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($1F000).
+```
+
 ### CHAR
 
 **TYPE: Command**  
@@ -210,19 +237,6 @@ The string can contain printable ASCII characters (`CHR$($20)` to `CHR$($7E)`), 
 50 CHAR 0,6+12*3,0,CHR$($0B)+A$ :REM ITALICS
 60 CHAR 0,6+12*4,0,CHR$($0C)+A$ :REM OUTLINE
 70 CHAR 0,6+12*5,0,CHR$($12)+A$ :REM REVERSE
-```
-
-### BVLOAD
-
-**TYPE: Command**  
-**FORMAT: BVLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
-	
-**Action:** Loads a binary file directly into VERA RAM.
-
-**EXAMPLES of BVLOAD:**
-```BASIC	
-BVLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $4000.
-BVLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($1F000).
 ```
 
 ### CLS
