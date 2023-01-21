@@ -4,7 +4,16 @@
 
 The Commander X16 provides many convenience routines for controlling the YM2151 and VERA PSG. These are called similarly to how KERNAL API calls are done in machine language.
 
-In order to gain access to these routines, you must switch to ROM bank `$0A`.
+In order to gain access to these routines, you must either use `jsrfar` from the KERNAL API:
+```
+  AUDIO_BANK = $0A
+  
+  jsr jsrfar  ; $FF6E
+  .word ym_init ; $C063
+  .byte AUDIO_BANK
+```
+
+or switch to ROM bank `$0A` directly:
 
 ```
   lda #$0A ; Audio bank number
@@ -12,8 +21,6 @@ In order to gain access to these routines, you must switch to ROM bank `$0A`.
 ```
 
 Conveniently, the KERNAL API still exists in this bank, and calling a KERNAL API routine will automatically switch your ROM bank back to the KERNAL bank to perform the routine and then switch back right before returning, so there's usually no need for your audio-centric program to switch away from the audio bank to perform the occasional KERNAL API call.
-
-Alternately, you can access these routines while having another ROM bank active by using `jsrfar` from the KERNAL API.
 
 ### Audio API routines
 
