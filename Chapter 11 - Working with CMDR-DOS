@@ -1,0 +1,11 @@
+# Chapter 11: Working With CMDR-DOS
+
+## CMDR-DOS
+
+Commander-16 duplicates and extends the programming interface used by Commodore's line of disk drives. Aside from the LOAD, SAVE, OPEN commands, and their variants,
+the DOS interface is accessed through the DOS command. 
+
+Typing DOS by itself will query the disk drive and return the drive's status code:
+`DOS`
+`00, 0K, 00, 00`
+`READY.`
