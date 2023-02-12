@@ -117,7 +117,7 @@ The 16 bit ABI generally follows the following conventions:
 | [`FB_move_pixels`](#function-name-FB_move_pixels) | `$FF1D` | Video | Copy horizontally consecutive pixels to a different position | r0 r1 r2 r3 r4 | A X Y P | X16
 | [`FB_set_8_pixels`](#function-name-FB_set_8_pixels) | `$FF11` | Video | Set 8 pixels from bit mask (transparent), update cursor | A X | A P | X16
 | [`FB_set_8_pixels_opaque`](#function-name-FB_set_8_pixels_opaque) | `$FF14` | Video | Set 8 pixels from bit mask (opaque), update cursor | r0L A X Y| r0L A P | X16
-| [`FB_set_palette`](#function-name-FB_set_palette) &#128683; | `$FEFC` | Video | Set (parts of) the palette | - | - | X16
+| [`FB_set_palette`](#function-name-FB_set_palette) | `$FEFC` | Video | Set (parts of) the palette | r0 A X | - | X16
 | [`FB_set_pixel`](#function-name-FB_set_pixel) | `$FF0B` | Video | Set one pixel, update cursor | A | none | X16
 | [`FB_set_pixels`](#function-name-FB_set_pixels) | `$FF0E` | Video | Copy pixels from RAM, update cursor | r0 r1 | A X P | X16
 | `GETIN` | `$FFE4` | Kbd | Get character from keyboard | | | C64 |
@@ -773,10 +773,11 @@ Purpose: Return the resolution and color depth
 ___
 ##### Function Name: FB_set_palette
 
-Signature: void FB_set_palette(word pointer: r0, index: .a, byte count: .x);  
-Purpose: Set (parts of) the palette
+Signature: void FB_set_palette(word colors: r0, colorindex: .a, colorcount: .x);  
+Purpose: Set the VERA color palette (or a part thereof)
 
-[Note: This is not yet implemented.]
+**Description:** set the VERA color palette. r0 must be the pointer to the color data to set,
+.a is the color index in the VERA palette to start from, and .x is the number of colors to set.
 
 ___
 ##### Function Name: FB_cursor_position
