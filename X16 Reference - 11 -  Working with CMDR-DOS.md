@@ -4,15 +4,18 @@ This manual describes Commodore DOS on FAT32, aka CMDR-DOS.
 ## CMDR-DOS
 
 Commander-16 duplicates and extends the programming interface used by Commodore's line of disk drives, including the 
-famous (or infamous) VIC-1541. Unlike CBM-DOS, which uses a proprietary disk format, CMDR-DOS uses the industry-standard
-FAT-32 format, which can handle partitions as small as 32MB or as large as 2TB on SDXC or SDHC memory cards.  
+famous (or infamous) VIC-1541. CMDR-DOS uses the industry-standard FAT-32 format. Partitions can be 32MB up to 
+(in theory) 2TB. 
 
-CMDR-DOS works in three modes: Binary Load/Save, Sequential file, and Command mode.
+There are three basic interfaces for CMDR-DOS: the binary interface (SAVE,LOAD), the data file interface (OPEN, 
+PRINT#, INPUT#, GET#), and the command interface. We will give a brief summary of BASIC commands here, but please refer
+to the BASIC chapter for full syntax of each command. 
 
 ## Binary Load/Save
 
-A Binary file can be read into the computer with the `LOAD` command. Binary files can be saved to storage with the 
-`SAVE` command. 
+The primary use of the binary interface is loading and saving program files and loading binary files into RAM. 
+
+Your binary commands are LOAD, SAVE, BLOAD, VLOAD, and BVLOAD. 
 
 This is a brief summary of the BASIC disk commands LOAD and SAVE. For full documentation, refer to Chapter 3: BASIC 
 Programming.
@@ -68,13 +71,28 @@ the filename with @:, like this:
 You may need to save arbitrary binary data from other locations. To do this, use the S command in the MONITOR (Chapter 
 6: Machine Language Monitor). 
 
-`S "filename",8,<start>,<end>`
+`S "filename",8,<start_address>,<end_address>`
 
-Where <start> and <end> are a 16-bit hexadecimal address. 
+Where <start_address> and <end_address> are a 16-bit hexadecimal address. 
 
-### BLOAD, VLOAD
+### BLOAD
 
-BLOAD loads a file *without an address header* to an arbitrary location in memory. U
+BLOAD loads a file *without an address header* to an arbitrary location in memory. Usage is similar to LOAD. However, BLOAD does not require
+or use the 2-byte header. The first byte in the file is the first byte loaded into memory.
+  
+`BLOAD "filename",8,<bank>,<start_address>`
+
+### VLOAD 
+
+Read binary data into VERA. VLOAD requires the 2-byte address header. The third byte in the file is the first byte loaded at <start_address>.
+
+`VLOAD "filename",8,<bank>,<start_address>`
+
+### BVLOAD 
+
+Read binary data into VERA without a header. This works like BLOAD, but into VERA RAM. 
+
+`VLOAD "filename",8,<bank>,<start_address>`
 
 ## Sequential Files
 
@@ -149,6 +167,6 @@ You can also read the name of the current directory with "$=C"
 Integrate and deprecate:
 https://github.com/X16Community/x16-rom/tree/master/dos#readme
 
-Footnote
-https://github.com/X16Community/x16-rom/tree/master/dos/fat32#readme
+More information on the FAT32 API can be found in the [FAT32 Readme](https://github.com/X16Community/x16-rom/tree/master/dos/fat32#readme).
+
 
