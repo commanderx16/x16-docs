@@ -117,7 +117,7 @@ To open the command channel, you can use the OPEN command with secondary address
 
 If you want to issue a command immediately, add your command string at the end of the OPEN statement: 
 
-`10 OPEN 15,8,15, "CD:/"
+`10 OPEN 15,8,15, "CD:/"`
 
 This example changes to the root directory of your SD card. 
 
