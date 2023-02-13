@@ -159,9 +159,11 @@ DOS "CD:/"
 ```
 
 The special case of `DOS "$"` will print a directory listing.
+
 `DOS "$"`
 
 You can also read the name of the current directory with "$=C"
+
 `DOS "$=C"`
 
 ## TODO
