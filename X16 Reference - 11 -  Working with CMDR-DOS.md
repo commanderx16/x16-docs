@@ -132,8 +132,10 @@ To actually read the error channel and clear the error status, you need to read 
 A is the error number. B$ is the error message. C and D are unused in CBM-DOS, but will return the track and sector when
 used with a Commodore disk drive. 
 
-`40 PRINT A;B$;C;D`
-`50 CLOSE 15`
+```
+40 PRINT A;B$;C;D
+50 CLOSE 15
+```
 
 So the entire program looks like: 
 
