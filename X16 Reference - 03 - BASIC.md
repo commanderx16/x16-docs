@@ -400,13 +400,13 @@ For a list of supported modes, see [Chapter 2: Editor](X16%20Reference%20-%2002%
 #### VLOAD
 
 **TYPE: Command**  
-**FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VERA_high_address&gt;, &lt;VERA_low_address&gt;**
+**FORMAT: VLOAD &lt;filename&gt;, &lt;device&gt;, &lt;VRAM bank (0-1)&gt;, &lt;VRAM address ($0000-$FFFF)&gt;**
 	
 **Action:** Loads a file directly into VERA RAM. 
 
 **EXAMPLES of VLOAD:**
 	
-	VLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $4000.
+	VLOAD "MYFILE.BIN", 8, 0, $4000  :REM LOADS MYFILE.BIN FROM DEVICE 8 TO VRAM $04000.
 	VLOAD "MYFONT.BIN", 8, 1, $F000  :REM LOAD A FONT INTO THE DEFAULT FONT LOCATION ($1F000).
 
 ### Other New Features
@@ -419,18 +419,18 @@ The numeric constants parser supports both hex (`$`) and binary (`%`) literals, 
 
 The size of hex and binary values is only restricted by the range that can be represented by BASIC's internal floating point representation.
 
-#### LOAD into VRAM
+#### LOAD into HIRAM
 
-In BASIC, the contents of files can be directly loaded into VRAM with the `LOAD` statement. When a secondary address greater than one is used, the KERNAL will now load the file into the VERA's VRAM address space. The first two bytes of the file are used as lower 16 bits of the address. The upper 4 bits are `(SA-2) & 0x0ff` where `SA` is the secondary address.
+In BASIC, the contents of files can be directly loaded into HIRAM (banked RAM located at $A000-$BFFF) with the `LOAD` statement.
+If the file is larger than a single bank, the load process will automatically continue into the next bank (starting again at $A000).
 
-Examples:
+There are two ways to achieve this:
 
-	  10 REM LOAD VERA SETTINGS
-	  20 LOAD"VERA.BIN",1,17 : REM SET ADDRESS TO $FXXXX
-	  30 REM LOAD TILES
-	  40 LOAD"TILES.BIN",1,3 : REM SET ADDRESS TO $1XXXX
-	  50 REM LOAD MAP
-      60 LOAD"MAP.BIN",1,2 : REM SET ADDRESS TO $0XXXX
+| Command                   | Explanation |
+| ------------------------- | ----------- |
+| LOAD "FILENAME",8,1       | as usual: loads the file into memory location specified by the 2-byte load header at the start of the file. If that is an address in HIRAM, the load process described above takes place. |
+| LOAD "FILENAME",8,2,$A000 | here 2 = the RAM bank to load into and $A000 = the start address. This skips the 2-byte header at the start of the file and the remainder is loaded to the address specified here. |
+  
 
 #### Default Device Numbers
 
