@@ -62,10 +62,10 @@ information about using * and ? to access files of a certain type or with unprin
 
 ### SAVE 
 
-`SAVE <filename>{,device}`
+`SAVE <filename>[,device]`
 
 Save a file from the computer to the SD card. SAVE always reads from the beginning of BASIC memory at $0801, up to the
-end of the BASIC program. 
+end of the BASIC program. Device is optional and defaults to 8 (the SD card, or an IEC disk drive, if one is plugged in.) 
 
 One word of caution: CMDR-DOS will not let you overwrite a file by default. To overwrite a file, you need to prefix
 the filename with @:, like this: 
