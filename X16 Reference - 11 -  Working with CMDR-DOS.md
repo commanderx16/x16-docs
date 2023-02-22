@@ -230,6 +230,7 @@ Or the core feature set, these are the supported functions:
 | Dir with time filtering   | `$=T<`/`$=T<`                 | not yet   |         |
 | Partition listing         | `$=P`                         | yes       |         |
 | Partition filtering       | `$:NAME*=P`                   | no        |         |
+| List Current Directory    | `$=C`                         | yes       |         |
 
 And this table shows which of the standard commands are supported:
 
@@ -338,6 +339,19 @@ OPEN 15,8,15,"P"+CHR$(5)+CHR$(128)+CHR$(0)+CHR$(0)+CHR$(0)
 
 This time, the secondary address is 5, and the pointer is at byte 128.
 
+### Current Working Directory
+
+The $=C command will list the current working directory and its parent path. The current directory will be at the top of the listing, with each parent
+directory beneath, with / at the bottom.
+
+```
+DOS"$=C"
+
+0 "/TEST            " 
+0    "TEST"             DIR
+0    "/"                DIR
+65535 BLOCKS FREE.
+```
 
 ## License
 
