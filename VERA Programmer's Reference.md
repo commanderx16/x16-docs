@@ -279,7 +279,7 @@ The video RAM (VRAM) isn't directly accessible on the CPU bus. VERA only exposes
 There are 2 data ports to the VRAM. Which can be accessed using DATA0 and DATA1. The address and increment associated with the data port is specified in ADDRx_L/ADDRx_M/ADDRx_H. These 3 registers are multiplexed using the ADDR_SEL in the CTRL register. When ADDR_SEL = 0, ADDRx_L/ADDRx_M/ADDRx_H become ADDR0_L/ADDR0_M/ADDR0_H.  
 When ADDR_SEL = 1, ADDRx_L/ADDRx_M/ADDRx_H become ADDR1_L/ADDR1_M/ADDR1_H.
 
-By setting the 'Address Increment' field in ADDRx_H, the address will be increment after each access to the data register. The increment register values and corresponding increment amounts are shown in the following table:
+By setting the 'Address Increment' field in ADDRx_H, the address will be increment after each access (read or write) to the data register. Both addresses are incremented individually. When DATA0 is accessed, ADDR0 is incremented and ADDR1 is unchanged. The increment register values and corresponding increment amounts are shown in the following table:
 
 | Register value | Increment amount |
 | -------------: | ---------------: |
@@ -301,6 +301,44 @@ By setting the 'Address Increment' field in ADDRx_H, the address will be increme
 | 15             | 640              |
 
 Setting the **DECR** bit, will decrement instead of increment by the value set by the 'Address Increment' field.
+
+### Video RAM access example
+DATA0/1 registers can get accessed both at the same time enabling efficient screen copy operations such as copy a memory segment, a column or row of text and others. ADDR0_L/M/H is set to the source address and ADDR1_L/M/H to the target address. To copy data read from DATA0 and write to DATA 1. You can loop for the length or do other fancy tricks with it. The increment ammount will give much control on what you want to copy.
+
+To access the three ADDR registers for the correct DATA byte, ADDR_SEL in $9F25 (bit0) need to set accordingly before writing to the ADDRESS registers. 
+Here is a code example to copy 256 bytes from $1000 to $4000. 
+
+```
+begin
+  ;load ADDR0 with $01000 and increment=1
+  LDA #$01   ;load ADDR_SEL for DATA0
+  TRB $9F25
+  LDA #$00   ;ADDR_L
+  STA $9F20
+  LDA #$10   ;ADDR_M
+  STA $9F21
+  LDA #$10   ;ADDR_H + INCREMENT
+  STA $9F22
+
+  ;load ADDR1 with $04000 and increment=1
+  LDA #$01   ;load ADDR_SEL for DATA1
+  TSB $9F25
+  LDA #$00   ;ADDR_L
+  STA $9F20
+  LDA #$40   ;ADDR_M
+  STA $9F21
+  LDA #$10   ;ADDR_H + INCREMENT
+  STA $9F22
+
+  LDX #$00
+loop
+  LDA $9F23   ;load byte from DATA0 and increment DATA0
+  STA $9F24   ;write byte to DATA1 and increment DATA1
+  DEX
+  BNE loop
+  
+;end
+```
 
 ## Reset
 
@@ -490,7 +528,77 @@ Each pixel in the tile data gives a color index of either 0-3 (2bpp), 0-15 (4bpp
 
 ### Bitmap mode 1/2/4/8 bpp
 
-**MAP_BASE** isn’t used in these modes. **TILE_BASE** points to the bitmap data.
+**MAP_BASE** isn’t used in these modes. 
+
+**TILE_BASE** points to the bitmap data.
+
+**BITMAP DATA**
+
+The bitmap data is organized in VRAM as a series of bits (according to the bpp) for each pixel. Therefore in lower bpp settings multiple bits will be stored in a single byte. The pixel color code is stored in the order of MSB to LSB. For example a 4bpp bitmap will have the bits ordered for each pixel in the form of bits[3210] or in numbers the color 7 will be defined as bits[0111]. 
+
+The diagram below shows how the pixels are organized in VRAM bytes for the different bitmap depth.
+
+
+<table>
+	<tr>
+		<td>Pixels</td>
+		<td>ABCDEFGH</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th>Bitmap mode</th>
+		<th>Byte&nbsp;0</th>
+		<th>Byte&nbsp;1</th>
+		<th>Byte&nbsp;2</th>
+		<th>Byte&nbsp;3</th>
+		<th>Byte&nbsp;4</th>
+		<th>Byte&nbsp;5</th>
+		<th>Byte&nbsp;6</th>
+		<th>Byte&nbsp;7</th>
+	</tr>
+	<tr>
+		<td align="right">Bits</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+		<td align="center" >76543210</td>
+	</tr>
+	<tr>
+		<td>1bpp</td>
+		<td align="center" >ABCDEFGH</td>
+		<td colspan="7"></td>
+	<tr>
+		<td>2bpp</td>
+		<td align="center" >AABBCCDD</td>
+		<td align="center" >EEFFGGHH</td>
+		<td colspan="6"></td>
+	</tr>
+	<tr>
+		<td>4bpp</td>
+		<td align="center" >AAAABBBB</td>
+		<td align="center" >CCCCDDDD</td>
+		<td align="center" >EEEEFFFF</td>
+		<td align="center" >GGGGHHHH</td>
+		<td align="center" colspan="4"></td>
+	</tr>
+	<tr>
+		<td>8bpp</td>
+		<td align="center" >AAAAAAAA</td>
+		<td align="center" >BBBBBBBB</td>
+		<td align="center" >CCCCCCCC</td>
+		<td align="center" >DDDDDDDD</td>
+		<td align="center" >EEEEEEEE</td>
+		<td align="center" >FFFFFFFF</td>
+		<td align="center" >GGGGGGGG</td>
+		<td align="center" >HHHHHHHH</td>
+	</tr>
+</table>
 
 **TILEW** specifies the bitmap width. TILEW=0 results in 320 pixels width and TILEW=1 results in 640 pixels width.
 
