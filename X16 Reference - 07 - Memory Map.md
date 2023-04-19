@@ -2,8 +2,7 @@
 
 The Commander X16 has 512 KB of ROM and 2,088 KB (2 MB[^1] + 40 KB) of RAM with up to 3.5MB of RAM or ROM available to cartridges.
 
-Some of the ROM and RAM is always visible at certain address ranges, while the remaining ROM and RAM is banked into one of two address windows. 
-Banked cartridge RAM/ROM is also available.
+Some of the ROM/RAM is always visible at certain address ranges, while the remaining ROM/RAM is banked into one of two address windows. 
 
 This is an overview of the X16 memory map:
 
@@ -12,7 +11,7 @@ This is an overview of the X16 memory map:
 |$0000-$9EFF|Fixed RAM (40 KB minus 256 bytes)						                                |
 |$9F00-$9FFF|I/O Area (256 bytes)										                            |
 |$A000-$BFFF|Banked RAM (8 KB window into one of 256 banks for a total of 2 MB)                     |
-|$C000-$FFFF|Banked System ROM and Catridge ROM/RAM (16 KB window into one of 255 banks, see below) |
+|$C000-$FFFF|Banked System ROM and Cartridge ROM/RAM (16 KB window into one of 255 banks, see below) |
 
 ### Banked Memory
 
@@ -42,6 +41,11 @@ This is the allocation of the banks of banked ROM/Cartridge:
 |8     |GRAPH  |Kernal graph and font routines                         |
 |9-31  |–      |*[Currently unused]*                                   |
 |32-255|–      | Cartridge RAM/ROM                                     |
+
+#### Cartridge Allocation
+
+Cartridges can use the remaining 32-255 banks in any combination of ROM, RAM, Memory-Mapped IO, etc. See Kevin's reference cartridge design
+for ideas on how this may be used.
 
 **Important**: The layout of the banks is not yet final.
 
