@@ -5,41 +5,53 @@
 | logo         = 
 | image        = 
 | caption      = <!-- include if image is not a logo -->
-| developer    = 
-| manufacturer = 
-| carrier      = 
-| type         = [[Retrocomputing]]
-| generation   = 
+| designer     = [[The 8-Bit Guy]]
+| developer    = {{Collapsible list
+| Graphics     =
+| Hardware     =
+| Kernal       =
+}}
+| manufacturer = [[TexElec]
+| type         = [[Retrocomputing]], [[8-bit computing|8-bit Computer]]
+| generation   = n/a
 | releasedate  = n/a
 | lifespan     = n/a
 | price        = TBD
 | discontinued = n/a
 | unitssold    = n/a
 | unitsshipped = n/a
-| media        = 
+| media        = SD card, [[Game Cartridges|Cartridge]]
 | os           = {{nowrap|Commodore [[KERNAL]]}}<br>{{nowrap|[[Commodore BASIC]]}}
-| power        = 
+| power        = [[ATX#Power_supply|ATXX]]-compatible Power Connector
 | cpu          = [[WDC 65C02]] {{nowrap|@ 8 MHz}} {{cite web|title=Commander X16 FAQ|url=https://www.commanderx16.com/forum/index.php?/about-faq/}}
-| storage      = [[SD card]], [[floppy disk]]
-| memory       = {{nowrap|512 [[kilobyte|KiB]] [[read-only memory|ROM]]}} + {{nowrap|40 KiB [[random-access memory|RAM]]}} + {{nowrap|512 KiB banked [[random-access memory|RAM]]}} (expandable to 2&nbsp;MiB)
-| display      = [[VGA]]
-| graphics     = Custom FGPA
-| sound        = TBD
-| input        = SD card, Floppy disk, GPIO 
-| location     = n/a
-| controllers  = SNES x4
+| storage      = {{Collapsible list
+| title = Storage media
+| [[SD card]]
+| [[Commodore bus|Commodore IEC Bus]] - attached Storage Devices including [[SD2IEC| Floppy disk hardware emulator]]
+| 50-pin [[Game Cartridges|ROM cartridge]]
+}}
+| memory       = 2087,75[[kilobyte|KB]] (standard) in Total. 39,75[[kilobyte|KB]]  useable in BASIC + 2[[megabyte|MB]] in 256 Banks of 8[[kilobyte|KB]].
+| display      = [[VGA]], [[S-Video]], [[Composite]], [[HDMI|HDMI-compatible]] (future developemts)
+| graphics     = [[Versatile Embedded Retro Adapter]]<ref name="Video Embedded Retro Adapter">{{Cite web |last=van den Hoef |first=Frank |date=March 17, 2023 |title= |url=https://github.com/fvdhoef/vera-module |url-status=live |website=[[GitHub]]}}></ref> (Based off a Custom [[FPGA]]) with 128[[kilobyte|KB]] dedicaded Video Memory
+| sound        = [[Versatile Embedded Retro Adapter]] + [[Yamaha YM2151]]<ref>https://www.c64-wiki.com/wiki/Commander_X16#Sound</ref> <ref>{{Cite web |last=Murray |first=David |date=October 12, 2022 |title=The Commander X16 has finally arrived! |url=https://www.youtube.com/watch?v=AcWqMGju7fk |url-status=live |archive-url=https://web.archive.org/web/20221028140720/https://www.youtube.com/watch?v=AcWqMGju7fk |archive-date=October 28, 2022 |access-date=October 28, 2022 |website=[[YouTube]]}}</ref>
+| input        = [[/PS/2_port|PS/2]] for mouse and keyboard in addition to [[Super_Nintendo_Entertainment_System#Peripherals|SNES Controllers]]
+| controllers  = {{Collapsible list
+|title= 4 [[Super_Nintendo_Entertainment_System#Peripherals|SNES Controllers]]
+| 2 Controller Ports on the [[ATX#Connectors|ATX-compatible I/O Shield]]
+| 2 [[Pin_header|Pin Headers]] for two additional ports on-board.
+| }}
 | camera       = No
 | touchpad     = No
 | connectivity = No
-| service      = No
+| onlineservice = TBD
 | dimensions   = TBD
 | weight       = TBD
 | topgame      = TBD
 | compatibility = {{nowrap|Commodore [[KERNAL]]}}<br>{{nowrap|[[Commodore BASIC]]}}
-| predecessor  = n/a
+| predecessor  = inofficially: [[Commodore C64]]
 | successor    = n/a
-| related      = 
-| website      = http://commanderx16.com
+| related      = [[Commodore C128]]
+| website = {{url|https://www.commanderx16.com/}}
 }}
 
 The '''Commander X16''' (colloquially known as the '''X-16''') is an [[8-bit]] [[Retrocomputing]] [[home computer]]. It is the brainchild of '''The 8-Bit Guy''', who wanted an accessible and affordable 8-bit hobbyist platform. It is intended not only as an educational tool, but also to solve some of the issues of finding an 8-bit system to tinker with today; namely ever-increasing costs, auction site price gouging/sniping, and unreliability of 30-year old hardware. The X16 is made entirely with off-the-shelf modern parts, ensuring availability without reliability issues. It has a real 8-bit CPU rather than using emulation or an FPGA recreation of a processor. It is intended to be inexpensive enough to promote a critical mass of users, to create its own software ecosystem, yet be simple enough that a single person can understand the entire system.<ref>{{cite web|title=Commander X16 FAQ|url=https://www.commanderx16.com/forum/index.php?/about-faq/}}</ref>
@@ -58,13 +70,16 @@ The X16 is expected to ship with an augmented Commodore KERNAL, BASIC (with a DO
 The X16 ships with {{nowrap|40 KB}} [[Static random-access memory|RAM]]. {{nowrap|1 KB}} of this used by the system for I/O. The 512K [[read-only memory|ROM]] is split into banks of 16K; Bank 0 holds the Commodore KERNAL and BASIC. The X16 also ships with 512K "high" [[Static random-access memory|RAM]], which is split into banks of 8K.  High RAM is expandable up to 2MiB.
 
 === Ports and sockets ===
-The X16 has four expansion slots with access to the CPU databus.  There is no datasette port, and device 0 is re-purposed for the SD card. The X16 also has an IEC connector, and can connect to a Commodore disk drive.  It also has two exposed SNES game controller connectors, with two internal pin headers that can support two more connectors. It accepts a PS/2 keyboard and mouse.<ref>{{cite web|title=Commander X16 FAQ|url=https://www.commanderx16.com/forum/index.php?/about-faq/}}</ref>
+The X16 has four 50-pin expansion slots with access to the CPU databus.  There is no datasette port, and device 0 is re-purposed for the SD card. The X16 also has an IEC connector, and can connect to a Commodore disk drive via a [[Commodore bus|IEC Port]].  It also has two exposed SNES game controller connectors, with two internal pin headers that can support two more connectors. It accepts a PS/2 keyboard and mouse.<ref>{{cite web|title=Commander X16 FAQ|url=https://www.commanderx16.com/forum/index.php?/about-faq/}}</ref>
+
+==== Non-Compatibility ====
+Whilst the Connector for the Cartridge will mechanically fit a [[Nintendo_Entertainment_System|Famicom Cartridge]], it is not electrically compatible and Famicom Cartridges should not be plugged in, as this can and most likely will damage the System or Cartridge.
 
 === Graphics ===
-The graphics capabilities of the X16 are provided by the single FGPA, code named "VERA". This chip has multiple output formats, at a fixed resolution of 640x480@60HZ. It supports two layers with various tile and bitmap modes, and up to 128 sprites. Its color palette is 256 colors, using a total range of 4096 colors.<ref>{{cite web|title=Commander X16 FAQ|url=https://www.commanderx16.com/forum/index.php?/about-faq/}}</ref>
+The graphics capabilities of the X16 are provided by the single FGPA, named "[[Video Embedded Retro Adapter|VERA]]". This chip has multiple output formats, at a fixed resolution of 640x480@60HZ. It supports two layers with various tile and bitmap modes, and up to 128 sprites. Its color palette is 256 colors, using a total range of 4096 colors.<ref>{{cite web|title=Commander X16 FAQ|url=https://www.commanderx16.com/forum/index.php?/about-faq/}}</ref>
 
 === Sound ===
-Audio is not finalized; there are three separate sound generators being considered. For basic sound, the VERA chip itself has a programmable sound generator based loosely on the SID; the SAA1099 is also being looked at. For MIDI-like sound, the Yamaha YM2151 is being considered.<ref>{{cite web|title=Commander X16 FAQ|url=https://www.commanderx16.com/forum/index.php?/about-faq/}}</ref>
+Besides the [[Video Embedded Retro Adapter|VERA]] offering a 16 Channel [[Programmable_sound_generator|PSG]], it also uses the [[Yamaha_YM2151#Uses|Yamaha OPM]] for 8 Channels FM-Synthesis.
 
 === Memory Map ===
 
