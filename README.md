@@ -1,4 +1,9 @@
-This is the Commander X16 documentation.
+<p align="center">
+  <img src="./.gh/logo.png" />
+</p>
 
-* [Commander X16 Programmer's Reference Guide](Commander%20X16%20Programmer's%20Reference%20Guide.md)
-* [VERA Programmer’s Reference](VERA%20Programmer's%20Reference.md)
+This project has moved
+--------
+Please find our project at its new repository: https://github.com/x16community/x16-docs.
+
+The Commander X16 team and community would like to apologize for any confusion the new repo has caused, and we hope the new location will be permanent.
